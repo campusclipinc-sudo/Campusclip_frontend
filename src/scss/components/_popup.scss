@@ -1,0 +1,65 @@
+@use "../common/variables" as v;
+
+/* Popup/Confirm/Modal shared styles */
+
+/* Overlay tweaks for react-confirm-alert */
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: saturate(120%) blur(1px);
+  padding: 0 15px;
+
+  .cc-confirm {
+    max-width: 420px;
+    background-color: #eef4fe;
+
+    .card-body {
+      padding: 0;
+      
+    }
+  }
+}
+
+/* Our custom confirm container used in ClassDetails customUI */
+.cc-confirm {
+  border: 1px solid v.$border;
+  border-radius: v.$radius-md;
+  background: v.$surface;
+  box-shadow: v.$shadow;
+
+  .card-title {
+    color: v.$text;
+  }
+
+  p {
+    color: v.$muted;
+    font-size: 0.95rem;
+  }
+
+  .btn-danger {
+    background: #ef4444;
+    border-color: #ef4444;
+  }
+
+  .btn-light {
+    background: #fff;
+    border: 1px solid v.$border;
+    color: v.$text;
+  }
+}
+
+/* Generic modal refinements we can reuse (e.g., TaskModal) */
+.cc-modal {
+  .modal-content {
+    border-radius: v.$radius-md;
+    border: 1px solid v.$border;
+    box-shadow: v.$shadow;
+  }
+
+  .modal-header {
+    border-bottom-color: v.$border;
+  }
+
+  .modal-footer {
+    border-top-color: v.$border;
+  }
+}

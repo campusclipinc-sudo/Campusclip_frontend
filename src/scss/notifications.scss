@@ -1,0 +1,828 @@
+.notifications-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  scroll-padding-top: 100px;
+
+  .cc-tabs-main {
+    .nav-cc-tabs {
+      border-radius: 0.375rem;
+      padding: 0.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+      background: rgba(255, 255, 255, 0.13);
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      align-items: center;
+
+      .nav-link {
+        border-radius: 0.125rem;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 500;
+        padding: 0.8rem 0.75rem 0.7rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        color: white;
+        background-color: rgba(255, 255, 255, 0.13);
+        gap: 0.25rem;
+        text-decoration: none;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+
+        &.active {
+          background: linear-gradient(
+            80deg,
+            rgb(37, 99, 235) 0%,
+            rgb(79, 70, 229) 100%
+          );
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    .notifications-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #fff;
+
+      svg {
+        color: #fff;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #fff;
+      }
+    }
+  }
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 0;
+
+    p {
+      margin-top: 1rem;
+      color: #666;
+    }
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+
+    .empty-icon {
+      width: 80px;
+      height: 80px;
+      background-color: #ffffff1a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+
+      svg {
+        color: #999;
+      }
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #fff;
+      margin: 0;
+    }
+  }
+
+  .notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .notification-card {
+      border-radius: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      overflow: hidden;
+      position: relative;
+      animation: slideInFade 0.4s ease-out;
+
+      // Base gradient background (will be overridden by type-specific classes)
+      background: linear-gradient(
+        135deg,
+        rgba(99, 102, 241, 0.25) 0%,
+        rgba(139, 92, 246, 0.2) 100%
+      );
+      backdrop-filter: blur(12px);
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+      &:hover {
+        transform: translateY(-2px) scale(1.01);
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.2),
+          0 4px 6px -2px rgba(0, 0, 0, 0.1);
+      }
+
+      // Event notifications - Vibrant Cyan/Teal gradient
+      &.notification-event {
+        background: linear-gradient(
+          135deg,
+          rgba(6, 182, 212, 0.3) 0%,
+          rgba(34, 211, 238, 0.25) 100%
+        );
+        border-left: 4px solid rgba(6, 182, 212, 0.9);
+
+        &:hover {
+          box-shadow:
+            0 10px 15px -3px rgba(6, 182, 212, 0.4),
+            0 4px 6px -2px rgba(34, 211, 238, 0.3);
+        }
+
+        .notification-icon {
+          background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+          box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+        }
+
+        .notification-type {
+          background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+          color: #fff;
+        }
+      }
+
+      // Post notifications - Vibrant Emerald/Green gradient
+      &.notification-post {
+        background: linear-gradient(
+          135deg,
+          rgba(16, 185, 129, 0.3) 0%,
+          rgba(5, 150, 105, 0.25) 100%
+        );
+        border-left: 4px solid rgba(16, 185, 129, 0.9);
+
+        &:hover {
+          box-shadow:
+            0 10px 15px -3px rgba(16, 185, 129, 0.4),
+            0 4px 6px -2px rgba(5, 150, 105, 0.3);
+        }
+
+        .notification-icon {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .notification-type {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          color: #fff;
+        }
+      }
+
+      // Follow/Club Request notifications - Vibrant Orange/Amber gradient
+      &.notification-follow_request,
+      &.notification-club_request {
+        background: linear-gradient(
+          135deg,
+          rgba(251, 146, 60, 0.3) 0%,
+          rgba(245, 158, 11, 0.25) 100%
+        );
+        border-left: 4px solid rgba(251, 146, 60, 0.9);
+
+        &:hover {
+          box-shadow:
+            0 10px 15px -3px rgba(251, 146, 60, 0.4),
+            0 4px 6px -2px rgba(245, 158, 11, 0.3);
+        }
+
+        .notification-icon {
+          background: linear-gradient(135deg, #fb923c 0%, #f59e0b 100%);
+          box-shadow: 0 4px 12px rgba(251, 146, 60, 0.4);
+        }
+
+        .notification-type {
+          background: linear-gradient(135deg, #fb923c 0%, #f59e0b 100%);
+          color: #fff;
+        }
+      }
+
+      // Announcement notifications - Orange/Red gradient
+      &.notification-announcement {
+        background: linear-gradient(
+          135deg,
+          rgba(249, 115, 22, 0.25) 0%,
+          rgba(239, 68, 68, 0.2) 100%
+        );
+        border-left: 4px solid rgba(249, 115, 22, 0.8);
+
+        &:hover {
+          box-shadow:
+            0 10px 15px -3px rgba(249, 115, 22, 0.3),
+            0 4px 6px -2px rgba(239, 68, 68, 0.2);
+        }
+
+        .notification-icon {
+          background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+          box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
+        }
+
+        .notification-type {
+          background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+          color: #fff;
+        }
+      }
+
+      // Reminder notifications - Yellow/Amber gradient
+      &.notification-reminder {
+        background: linear-gradient(
+          135deg,
+          rgba(245, 158, 11, 0.25) 0%,
+          rgba(249, 115, 22, 0.2) 100%
+        );
+        border-left: 4px solid rgba(245, 158, 11, 0.8);
+
+        &:hover {
+          box-shadow:
+            0 10px 15px -3px rgba(245, 158, 11, 0.3),
+            0 4px 6px -2px rgba(249, 115, 22, 0.2);
+        }
+
+        .notification-icon {
+          background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+          box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .notification-type {
+          background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+          color: #fff;
+        }
+      }
+
+      // Alert notifications - Red/Orange gradient
+      &.notification-alert {
+        background: linear-gradient(
+          135deg,
+          rgba(239, 68, 68, 0.25) 0%,
+          rgba(249, 115, 22, 0.2) 100%
+        );
+        border-left: 4px solid rgba(239, 68, 68, 0.8);
+
+        &:hover {
+          box-shadow:
+            0 10px 15px -3px rgba(239, 68, 68, 0.3),
+            0 4px 6px -2px rgba(249, 115, 22, 0.2);
+        }
+
+        .notification-icon {
+          background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+          box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+        }
+
+        .notification-type {
+          background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+          color: #fff;
+        }
+      }
+
+      // General/Default notifications - Vibrant Indigo/Violet gradient
+      &.notification-general,
+      &.notification-default {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.3) 0%,
+          rgba(139, 92, 246, 0.25) 100%
+        );
+        border-left: 4px solid rgba(99, 102, 241, 0.9);
+
+        &:hover {
+          box-shadow:
+            0 10px 15px -3px rgba(99, 102, 241, 0.4),
+            0 4px 6px -2px rgba(139, 92, 246, 0.3);
+        }
+
+        .notification-icon {
+          background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .notification-type {
+          background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+          color: #fff;
+        }
+      }
+
+      .card-body {
+        padding: 1.25rem;
+      }
+
+      .notification-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+
+        .notification-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          transition: transform 0.3s ease;
+
+          svg {
+            color: #fff;
+            width: 22px;
+            height: 22px;
+          }
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+
+        .notification-details {
+          flex: 1;
+
+          .notification-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+          }
+
+          .notification-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+          }
+
+          .notification-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+
+            .notification-type {
+              padding: 0.35rem 0.85rem;
+              border-radius: 20px;
+              font-weight: 600;
+              text-transform: capitalize;
+              font-size: 0.8rem;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              transition: transform 0.2s ease;
+
+              &:hover {
+                transform: scale(1.05);
+              }
+            }
+
+            .notification-time {
+              color: rgba(255, 255, 255, 0.8);
+              font-weight: 500;
+            }
+          }
+        }
+
+        .delete-btn {
+          padding: 0.5rem;
+          color: rgba(255, 255, 255, 0.7);
+          transition: all 0.2s ease;
+          margin-top: -0.25rem;
+          border-radius: 8px;
+
+          &:hover {
+            color: #ff4444;
+            background-color: rgba(255, 68, 68, 0.1);
+            transform: scale(1.1);
+          }
+
+          &:focus {
+            box-shadow: none;
+          }
+
+          svg {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  // Animation for notification cards
+  @keyframes slideInFade {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // Pulse animation for follow request cards
+  @keyframes subtlePulse {
+    0%,
+    100% {
+      box-shadow:
+        0 4px 6px -1px rgba(16, 185, 129, 0.3),
+        0 2px 4px -1px rgba(5, 150, 105, 0.2);
+    }
+    50% {
+      box-shadow:
+        0 6px 10px -1px rgba(16, 185, 129, 0.4),
+        0 4px 6px -1px rgba(5, 150, 105, 0.3);
+    }
+  }
+
+  .follow-requests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .request-card {
+      border: none;
+      border-radius: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      position: relative;
+      animation:
+        slideInFade 0.4s ease-out,
+        subtlePulse 3s ease-in-out infinite;
+      // Vibrant Emerald/Green gradient background
+      background: linear-gradient(
+        135deg,
+        rgba(16, 185, 129, 0.35) 0%,
+        rgba(5, 150, 105, 0.3) 100%
+      );
+      backdrop-filter: blur(12px);
+      border-left: 4px solid rgba(16, 185, 129, 0.95);
+      box-shadow:
+        0 4px 6px -1px rgba(16, 185, 129, 0.3),
+        0 2px 4px -1px rgba(5, 150, 105, 0.2);
+
+      &:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          0 12px 20px -3px rgba(16, 185, 129, 0.5),
+          0 6px 10px -2px rgba(5, 150, 105, 0.4);
+        border-left-width: 5px;
+      }
+
+      .card-body {
+        padding: 1.25rem;
+      }
+
+      .request-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .request-user-info {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          flex: 1;
+
+          .request-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            display: block;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            transition:
+              transform 0.3s ease,
+              box-shadow 0.3s ease;
+
+            &:hover {
+              transform: scale(1.1);
+              box-shadow: 0 6px 16px rgba(16, 185, 129, 0.6);
+            }
+          }
+
+          .request-avatar-placeholder {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+            transition:
+              transform 0.3s ease,
+              box-shadow 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+
+            &:hover {
+              transform: scale(1.1);
+              box-shadow: 0 6px 16px rgba(16, 185, 129, 0.6);
+            }
+          }
+
+          .request-details {
+            display: flex;
+            gap: 3px;
+            flex: 1;
+
+            .requester-name {
+              font-size: 1rem;
+              font-weight: 600;
+              color: #fff;
+              margin-bottom: 0.25rem;
+            }
+
+            .requester-username {
+              font-size: 0.85rem;
+              color: #fff;
+              margin-bottom: 0.25rem;
+            }
+
+            .request-message {
+              font-size: 0.9rem;
+              color: #fff;
+              margin-bottom: 0.25rem;
+
+              strong {
+                color: #fff;
+                font-weight: 600;
+              }
+            }
+
+            .request-time {
+              font-size: 0.8rem;
+              color: rgba(255, 255, 255, 0.8);
+              font-weight: 500;
+            }
+          }
+        }
+
+        .request-actions {
+          display: flex;
+          gap: 0.5rem;
+          flex-shrink: 0;
+
+          .btn {
+            padding: 0.5rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+
+            &.btn-primary {
+              background: linear-gradient(
+                80deg,
+                rgb(37, 99, 235) 0%,
+                rgb(79, 70, 229) 100%
+              );
+              border-color: #0066ff;
+
+              &:hover {
+                background: linear-gradient(
+                  80deg,
+                  rgb(37, 99, 235) 0%,
+                  rgb(79, 70, 229) 100%
+                );
+                border-color: #0052cc;
+              }
+            }
+
+            &.btn-success,
+            &.accept-btn {
+              background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+              border: none;
+              color: #fff;
+              font-weight: 600;
+              box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+              position: relative;
+              overflow: hidden;
+
+              &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255, 255, 255, 0.2),
+                  transparent
+                );
+                transition: left 0.5s ease;
+              }
+
+              &:hover:not(:disabled) {
+                background: linear-gradient(135deg, #059669 0%, #047857 100%);
+                transform: translateY(-2px) scale(1.05);
+                box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4);
+
+                &::before {
+                  left: 100%;
+                }
+              }
+
+              &:active:not(:disabled) {
+                transform: translateY(0) scale(1.02);
+              }
+
+              &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none;
+              }
+            }
+
+            &.btn-outline-secondary {
+              color: #666;
+              border-color: #d0d0d0;
+
+              &:hover {
+                background-color: #f5f5f5;
+                border-color: #b0b0b0;
+                color: #1a1a1a;
+              }
+            }
+          }
+          .btn-cross {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+
+            &:hover {
+              color: #ff4444;
+              background-color: rgba(255, 68, 68, 0.15);
+              transform: scale(1.1) rotate(90deg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .notifications-page {
+    padding: 1rem;
+
+    .notifications-header {
+      margin-bottom: 1.5rem;
+
+      .notifications-title {
+        h2 {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    .notifications-list {
+      .notification-card {
+        .card-body {
+          padding: 1rem;
+        }
+
+        .notification-content {
+          gap: 0.75rem;
+
+          .notification-icon {
+            width: 36px;
+            height: 36px;
+
+            svg {
+              width: 18px;
+              height: 18px;
+            }
+          }
+
+          .notification-details {
+            .notification-title {
+              font-size: 0.95rem;
+            }
+
+            .notification-description {
+              font-size: 0.85rem;
+            }
+
+            .notification-meta {
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+
+    .empty-state {
+      padding: 3rem 1rem;
+
+      .empty-icon {
+        width: 64px;
+        height: 64px;
+
+        svg {
+          width: 48px;
+          height: 48px;
+        }
+      }
+
+      h3 {
+        font-size: 1.25rem;
+      }
+    }
+
+    .follow-requests-list {
+      .request-card {
+        .card-body {
+          padding: 1rem;
+        }
+
+        .request-content {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+
+          .request-user-info {
+            width: 100%;
+
+            .request-avatar {
+              width: 44px;
+              height: 44px;
+            }
+
+            .request-details {
+              .requester-name {
+                font-size: 0.95rem;
+              }
+
+              .requester-username {
+                font-size: 0.8rem;
+              }
+
+              .request-message {
+                font-size: 0.85rem;
+              }
+            }
+          }
+
+          .request-actions {
+            width: 100%;
+            justify-content: flex-end;
+
+            .btn {
+              flex: 1;
+              max-width: 120px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

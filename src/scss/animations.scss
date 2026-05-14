@@ -1,0 +1,58 @@
+/**
+ * Global custom animations
+ * Replaces AOS library for better performance and compatibility
+ */
+
+// Base animation classes for fade-in and slide-up effect
+.animate-item {
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+    &.animate-hidden {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    &.animate-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Variants for different animation durations
+.animate-item-fast {
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.animate-item-slow {
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+// Fade-only animation (no slide)
+.animate-fade {
+    transition: opacity 0.6s ease-out;
+
+    &.animate-hidden {
+        opacity: 0;
+        transform: none;
+    }
+
+    &.animate-visible {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+// Slide-only animation (no fade)
+.animate-slide {
+    transition: transform 0.6s ease-out;
+
+    &.animate-hidden {
+        opacity: 1;
+        transform: translateY(20px);
+    }
+
+    &.animate-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

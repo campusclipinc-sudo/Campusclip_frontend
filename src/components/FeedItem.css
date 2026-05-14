@@ -1,0 +1,73 @@
+/* Combined Feed Styles */
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.post-item .card,
+.event-item .card {
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.post-item .card:hover,
+.event-item .card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.post-item .author-info {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.post-item .post-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #212529;
+}
+
+.post-item .post-image img {
+  max-height: 300px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.event-item .event-card {
+  border-left: 4px solid #28a745;
+}
+
+.event-item h5 {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.event-item .text-muted small {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.feed-item .badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .feed-list {
+    gap: 0.75rem;
+  }
+
+  .post-item .card,
+  .event-item .card {
+    margin-bottom: 0;
+  }
+
+  .post-item .post-image img {
+    max-height: 200px;
+  }
+}

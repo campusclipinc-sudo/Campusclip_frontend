@@ -1,0 +1,59 @@
+// LoginForm.scss
+@use "./common/variables" as v;
+
+.login-form-container {
+  max-width: 520px;
+  margin: 4rem auto;
+  padding: 32px 28px;
+  background-color: v.$surface;
+  box-shadow: v.$shadow;
+  border-radius: v.$radius-lg;
+  border: 1px solid v.$border;
+
+  h3 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 700;
+    color: v.$text;
+  }
+
+  .form-field {
+    border: 1px solid v.$border;
+    border-radius: 10px;
+    padding: 0.65rem 0.75rem;
+    font-size: 1rem;
+    background: v.$surface;
+    color: v.$text;
+    &:focus-visible {
+      outline: none;
+      border-color: v.$primary;
+      box-shadow: 0 0 0 0.2rem rgba(46, 112, 255, 0.15);
+    }
+  }
+
+  .form-field-error { border-color: #dc3545; }
+  .form-field-success { border-color: #28a745; }
+
+  .field-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: v.$muted;
+  }
+
+  .submit-button {
+    width: 100%;
+    margin-top: 1rem;
+    background: v.$primary;
+    border-color: v.$primary;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .text-danger {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .alert { margin-top: 1rem; }
+}

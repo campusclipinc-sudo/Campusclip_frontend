@@ -1,0 +1,2336 @@
+@use "feed.scss";
+
+.campus-clubs-main {
+    padding: 2rem 1rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    width: 100%;
+
+    @media screen and (max-width: 767px) {
+        padding: 0.75rem;
+    }
+
+    @media screen and (max-width: 480px) {
+        padding: 0.5rem;
+    }
+
+    .page-head {
+        position: relative;
+        margin-bottom: 2.5rem;
+
+        @media screen and (max-width: 767px) {
+            row-gap: 15px;
+            margin-bottom: 0;
+        }
+
+        .title {
+            width: calc(100% - 60px);
+
+            h2 {
+                margin-bottom: 0;
+                letter-spacing: -0.025em;
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+
+                @media screen and (max-width: 767px) {
+                    font-size: 1rem;
+                    line-height: normal;
+                }
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+
+        .titles {
+            @media screen and (max-width: 767px) {
+                display: none !important;
+            }
+        }
+
+        .actions {
+            position: relative;
+            z-index: 2;
+            pointer-events: auto;
+
+            >* {
+                pointer-events: auto;
+            }
+        }
+    }
+}
+
+.my-clubs-main {
+    margin: 2rem 0;
+
+    @media screen and (max-width: 767px) {
+        margin: 15px 0;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        @media screen and (max-width: 767px) {
+            font-size: 1rem;
+            line-height: normal;
+        }
+
+        svg {
+            width: 20px;
+        }
+    }
+
+    .view-more-link {
+        display: flex;
+        align-items: center;
+        height: 2.25rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        padding: 0 0.75rem;
+        font-weight: 500;
+        color: rgb(52, 211, 153);
+        gap: 0.5rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+
+        &:hover {
+            color: rgb(16, 185, 129);
+            transform: translateX(2px);
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+            margin-left: 0.25rem;
+        }
+    }
+
+    .row {
+        --bs-gutter-x: 1rem;
+        row-gap: 1rem;
+    }
+
+    .myclub-card {
+        border-radius: 0.5rem;
+        box-shadow:
+            0 4px 6px -1px rgb(0 0 0 / 0.1),
+            0 2px 4px -2px rgb(0 0 0 / 0.1);
+        background: rgb(255 255 255 / 0.1);
+        border: 1px solid rgb(255 255 255 / 0.2);
+        padding: 1rem;
+        min-height: 7rem;
+        position: relative;
+
+        @media screen and (max-width: 767px) {
+            min-height: unset;
+            padding: 15px;
+        }
+
+        .myclub-card-img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            color: #fff;
+            font-weight: 700;
+            background: linear-gradient(80deg,
+                    rgb(37, 99, 235) 0%,
+                    rgb(79, 70, 229) 100%);
+
+            @media screen and (max-width: 767px) {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        .myclub-card-name {
+            flex: 1;
+            padding-left: 1rem;
+
+            @media screen and (max-width: 767px) {
+                padding-left: 0.5rem;
+            }
+
+            .card-name-top {
+                margin-bottom: 0.25rem;
+
+                h4 {
+                    font-weight: 500;
+                    font-size: 16px;
+                    margin-bottom: 0;
+                    color: #fff;
+
+                    @media screen and (max-width: 767px) {
+                        font-size: 14px;
+                    }
+                }
+
+                span {
+                    display: flex;
+                    align-items: center;
+                    font-weight: 500;
+                    font-size: 0.75rem;
+                    line-height: 1rem;
+                    padding: 0.125rem 0.625rem;
+                    color: rgb(30, 64, 175);
+                    background-color: rgb(219, 234, 254);
+                    border-radius: 50px;
+                    border: 1px solid rgb(191, 219, 254);
+
+                    svg {
+                        width: 12px;
+                        height: 12px;
+                        margin-right: 0.25rem;
+                    }
+                }
+            }
+
+            .card-name-bottom {
+                span {
+                    font-weight: 500;
+                    font-size: 0.75rem;
+                    line-height: 1rem;
+                    padding: 0.125rem 0.625rem;
+                    background-color: rgb(219, 234, 254);
+                    color: rgb(30, 64, 175);
+                    border-radius: 50px;
+                }
+
+                .members {
+                    font-size: 0.75rem;
+                    line-height: 1rem;
+                    color: #fff;
+                    display: flex;
+                    align-items: center;
+
+                    svg {
+                        width: 12px;
+                        height: 12px;
+                        margin-right: 0.25rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.cc-class-header-bg {}
+
+.discover-Clubs-main {
+    .row {
+        row-gap: 0.75rem;
+        --bs-gutter-x: 0.75rem;
+
+        @media screen and (min-width: 991px) {
+            .col-sm-6 {
+                width: 20%;
+            }
+        }
+    }
+
+    .discover-clubs-box {
+        box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        cursor: pointer;
+
+        .discover-clubs-head {
+            margin-bottom: 0.5rem;
+
+            .club-avatar {
+                width: 2rem;
+                height: 2rem;
+                background: linear-gradient(80deg,
+                        rgb(37, 99, 235) 0%,
+                        rgb(79, 70, 229) 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.75rem;
+                line-height: 1rem;
+                font-weight: 700;
+                color: #fff;
+                border-radius: 50%;
+            }
+
+            h4 {
+                color: rgb(255 255 255);
+                line-height: 1.25;
+                font-weight: 500;
+                font-size: 0.75rem;
+                margin-bottom: 0;
+                max-width: 100px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            span {
+                color: rgb(191 219 254);
+                text-transform: capitalize;
+                font-size: 0.75rem;
+                line-height: 1rem;
+                margin-top: 0.125rem;
+                display: flex;
+            }
+        }
+
+        .members {
+            color: rgb(191 219 254);
+            font-size: 0.75rem;
+            line-height: 1rem;
+            gap: 0.25rem;
+            display: flex;
+            align-items: center;
+
+            svg {
+                width: 0.75rem;
+                height: 0.75rem;
+            }
+        }
+
+        .foll-btn {
+            color: rgb(255 255 255 / 0.7);
+            font-weight: 500;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .requested-btn {
+            button {
+                width: 100%;
+                font-size: 0.75rem;
+                line-height: 1rem;
+                box-shadow:
+                    0 4px 6px -1px rgb(0 0 0 / 0.1),
+                    0 2px 4px -2px rgb(0 0 0 / 0.1);
+                min-height: 28px;
+                color: #fff;
+                border: none;
+
+                &.btn-btns {
+                    background: linear-gradient(to right, #f59e0b, #f97316);
+                }
+            }
+        }
+    }
+}
+
+.create-club-popup {
+    .modal-dialog {
+        max-width: 32rem;
+    }
+
+    .modal-header {
+        padding: 0;
+        border-bottom: 0;
+
+        .btn-close {
+            position: absolute;
+            right: 26px;
+            top: 26px;
+            font-size: 12px;
+            z-index: 1;
+            padding: 0;
+            outline: none;
+        }
+    }
+
+    .modal-content {
+        background-color: #eef4fe;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+
+        h4 {
+            letter-spacing: -0.025em;
+            font-weight: 600;
+            font-size: 1.125rem;
+            line-height: 1;
+            color: rgb(9, 9, 11);
+            margin-bottom: 0;
+        }
+
+        p {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: rgb(113, 113, 122);
+            margin: 0.375rem 0 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+
+            label.form-label {
+                font-size: 0.875rem;
+                line-height: 22px;
+                font-weight: 500;
+                margin-bottom: 0.25rem;
+                color: rgb(9, 9, 11);
+            }
+
+            >input {
+                height: 40px;
+                border: 1px solid rgb(228, 228, 231);
+            }
+
+            >textarea {
+                height: 80px;
+            }
+        }
+
+        .css-13cymwt-control {
+            min-height: 40px;
+            border: 1px solid rgb(229, 231, 235);
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+
+        .cancel-add-btn {
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+            gap: 0.75rem;
+
+            .btn {
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                font-weight: 500;
+                padding: 0.5rem 2rem;
+                border: 1px solid;
+                border-radius: 0.375rem;
+                height: 2.5rem;
+
+                &.btn-light {
+                    padding: 0.5rem 1.5rem;
+                    border: 1px solid rgb(228, 228, 231);
+                }
+
+                &.btn-btns {
+                    border: 0;
+                }
+            }
+        }
+    }
+}
+
+.create-event-popup {
+    .modal-dialog {
+        max-width: 32rem;
+    }
+
+    .modal-header {
+        padding: 0;
+        border-bottom: 0;
+
+        .btn-close {
+            position: absolute;
+            right: 26px;
+            top: 26px;
+            font-size: 12px;
+            z-index: 1;
+            padding: 0;
+            outline: none;
+        }
+    }
+
+    .modal-content {
+        background-color: #eef4fe;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+
+        h4 {
+            letter-spacing: -0.025em;
+            font-weight: 700;
+            font-size: 1.5rem;
+            line-height: 2rem;
+            background: #2563eb;
+            background: linear-gradient(80deg,
+                    rgb(37, 99, 235) 0%,
+                    rgb(79, 70, 229) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0;
+        }
+
+        p {
+            margin: 0.375rem 0 1rem;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #71717a;
+        }
+
+        form {
+            padding: 1rem 0;
+
+            .form-group {
+                margin-bottom: 1rem;
+
+                label {
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    margin-bottom: 0.5rem;
+                }
+
+                input {
+                    font-size: 0.875rem;
+                    line-height: 1.25rem;
+                    padding: 0.5rem 0.75rem;
+                    height: 2.5rem;
+                }
+
+                textarea {
+                    min-height: 80px;
+                }
+            }
+        }
+    }
+}
+
+.clubs-details-main {
+    flex: 1;
+
+    .members-header h3 {
+        color: #fff;
+    }
+
+    p {
+        color: rgb(191, 219, 254);
+    }
+
+    .all-member-card {
+        .card {
+            padding: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            box-shadow:
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-radius: 0.5rem;
+
+            h5 {
+                color: #fff;
+            }
+
+            p {
+                color: rgb(191, 219, 254);
+            }
+        }
+    }
+
+    .clubs-details {
+        padding: 1rem;
+        max-width: 56rem;
+        margin: 0 auto;
+        padding-bottom: 0.5rem;
+
+        @media screen and (max-width: 767px) {
+            padding: 0.5rem 0.75rem 0.3rem;
+        }
+
+        @media screen and (max-width: 480px) {
+            padding: 0.4rem 0.5rem 0.2rem;
+        }
+
+        .back-btn {
+            display: flex;
+            margin-bottom: 1rem;
+
+            @media screen and (max-width: 767px) {
+                margin-bottom: 0.6rem;
+            }
+
+            .btn-link {
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                padding: 0 0.75rem;
+                display: flex;
+                align-items: center;
+                height: 2.25rem;
+                gap: 0.5rem;
+                text-decoration: none;
+                color: #fff;
+                font-weight: 500;
+
+                @media screen and (max-width:767px) {
+                    height: unset;
+                    padding: 0;
+                    font-size: 0.8rem;
+                }
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+
+        .club-profile-bg {
+            background: #21439c;
+            min-height: 12rem;
+            padding: 1.5rem;
+            gap: 1rem;
+
+            @media screen and (max-width: 767px) {
+                min-height: unset;
+                align-items: center;
+                padding: 8px;
+                margin-bottom: 0.6rem;
+            }
+
+            @media screen and (max-width: 480px) {
+                padding: 12px;
+                margin-bottom: 0.4rem;
+            }
+        }
+
+        .club-profile {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow:
+                0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.13);
+            padding-bottom: 1.5rem;
+            overflow: visible;
+            border-radius: 0.5rem;
+
+            @media screen and (max-width: 767px) {
+                padding-bottom: 0.8rem;
+            }
+
+            @media screen and (max-width: 480px) {
+                padding-bottom: 0.6rem;
+            }
+
+            .club-profile-img {
+                width: 6rem;
+                height: 6rem;
+                border: 4px solid #ffffff;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                box-shadow:
+                    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                    0 0 0 4px rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-image: linear-gradient(to bottom right, #3b82f6, #4f46e5);
+                font-weight: 700;
+                font-size: 1.5rem;
+                line-height: 2rem;
+                color: #fff;
+
+                @media screen and (max-width: 767px) {
+                    width: 3rem;
+                    height: 3rem;
+                    border-width: 2px;
+                }
+
+                @media screen and (max-width: 480px) {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    border-width: 2px;
+                }
+            }
+        }
+
+        .club-profile-name {
+            h3 {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+                color: #fff;
+                margin-bottom: 0.25rem;
+
+                @media screen and (max-width: 767px) {
+                    font-size: 14px;
+                    line-height: 1.2;
+                    margin-bottom: 0.15rem;
+                }
+
+                @media screen and (max-width: 480px) {
+                    font-size: 13px;
+                    line-height: 1.1;
+                }
+            }
+
+            p {
+                color: rgb(255 255 255 / 0.9);
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                gap: 0.5rem;
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.25rem;
+
+                @media screen and (max-width: 767px) {
+                    font-size: 0.75rem;
+                    line-height: 1rem;
+                    gap: 0.25rem;
+                    margin-bottom: 0.1rem;
+                }
+
+                @media screen and (max-width: 480px) {
+                    font-size: 0.7rem;
+                    gap: 0.2rem;
+                }
+
+                svg {
+                    width: 1rem;
+                    height: 1rem;
+
+                    @media screen and (max-width: 480px) {
+                        width: 0.8rem;
+                        height: 0.8rem;
+                    }
+                }
+            }
+        }
+
+        .club-profile-description {
+            p {
+                text-align: center;
+                margin: 1.5rem 0 0;
+                color: #fff;
+                line-height: 1.625;
+                font-size: 0.875rem;
+
+                @media screen and (max-width: 767px) {
+                    margin: 0.8rem 0 0;
+                    font-size: 0.8rem;
+                    line-height: 1.4;
+                }
+
+                @media screen and (max-width: 480px) {
+                    margin: 0.5rem 0 0;
+                    font-size: 0.75rem;
+                    display: none;
+                }
+            }
+        }
+
+        // Bootstrap Dropdown positioning fix
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            z-index: 1050 !important;
+            position: absolute !important;
+        }
+
+        .requests-manage-btn {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            padding: 0.25rem;
+            border-radius: 50px;
+            margin-top: 1.2rem;
+            gap: 0.25rem;
+            position: relative;
+            z-index: 100;
+
+            @media screen and (max-width: 767px) {
+                margin-top: 0.6rem;
+                padding: 0.2rem;
+            }
+
+            @media screen and (max-width: 480px) {
+                margin-top: 0.4rem;
+            }
+
+            .border {
+                height: 1.25rem;
+
+                @media screen and (max-width: 480px) {
+                    height: 1rem;
+                }
+            }
+
+            button.btn,
+            .club-manage-toggle {
+                border: 0 !important;
+                background-color: transparent;
+                font-weight: 500;
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                padding: 0.375rem 1rem;
+                color: #fff;
+                height: auto;
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                box-shadow: none !important;
+
+                @media screen and (max-width: 767px) {
+                    font-size: 0.8rem;
+                    padding: 0.3rem 0.75rem;
+                }
+
+                @media screen and (max-width: 480px) {
+                    font-size: 0.75rem;
+                    padding: 0.25rem 0.5rem;
+                }
+
+                &::after {
+                    display: none;
+                }
+
+                &:hover,
+                &:focus,
+                &.show {
+                    background-color: rgba(255, 255, 255, 0.15);
+                    border-radius: 50px;
+                    color: #fff;
+                }
+            }
+        }
+
+        // Club manage dropdown menu
+        .club-manage-menu {
+            min-width: 220px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+            padding: 0.5rem;
+            overflow: visible;
+            z-index: 1050 !important;
+
+            .club-manage-menu-header {
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: #94a3b8;
+                padding: 0.25rem 0.75rem 0.5rem;
+            }
+
+            .club-manage-divider {
+                margin: 0.25rem 0;
+                border-color: rgba(0, 0, 0, 0.06);
+            }
+
+            .club-manage-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.6rem 0.75rem;
+                border-radius: 8px;
+                transition: background 0.15s ease;
+
+                &:hover {
+                    background: #f1f5f9;
+                }
+
+                .club-manage-item-icon {
+                    width: 34px;
+                    height: 34px;
+                    border-radius: 8px;
+                    background: #f1f5f9;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                    color: #475569;
+                    transition: background 0.15s ease, color 0.15s ease;
+                }
+
+                &:hover .club-manage-item-icon {
+                    background: #e2e8f0;
+                    color: #1e40af;
+                }
+
+                .club-manage-item-text {
+                    display: flex;
+                    flex-direction: column;
+
+                    .club-manage-item-label {
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        color: #1e293b;
+                        line-height: 1.3;
+                    }
+
+                    .club-manage-item-desc {
+                        font-size: 0.72rem;
+                        color: #94a3b8;
+                        line-height: 1.2;
+                        margin-top: 1px;
+                    }
+                }
+            }
+        }
+
+        .request-btn {
+            background: linear-gradient(80deg,
+                    rgb(37, 99, 235) 0%,
+                    rgb(79, 70, 229) 100%);
+            color: #fff;
+        }
+    }
+
+    .nav-cc-tabs {
+        border-radius: 0.375rem;
+        padding: 0.25rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+        background: rgba(255, 255, 255, 0.13);
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        @media screen and (max-width: 767px) {
+            margin: 0.5rem 0 0.3rem 0;
+            padding: 0.2rem;
+        }
+
+        @media screen and (max-width: 480px) {
+            margin: 0.3rem 0 0.5rem 0;
+            padding: 0.15rem;
+        }
+
+        .nav-link {
+            border-radius: 0.125rem;
+            font-size: 0.75rem;
+            position: relative;
+            line-height: 1rem;
+            font-weight: 500;
+            padding: 0.8rem 0.75rem 0.7rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.13);
+            gap: 0.25rem;
+            text-decoration: none;
+
+            @media screen and (max-width: 767px) {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.7rem;
+            }
+
+            @media screen and (max-width: 480px) {
+                padding: 0.5rem 0.4rem;
+                font-size: 0.65rem;
+            }
+
+            svg {
+                width: 16px;
+                height: 16px;
+
+                @media screen and (max-width: 480px) {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+
+            &.active {
+                background: #2563eb;
+                background: linear-gradient(80deg,
+                        rgb(37, 99, 235) 0%,
+                        rgb(79, 70, 229) 100%);
+                color: #fff;
+            }
+        }
+    }
+}
+
+.upcoming-events {
+    h3 {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 0;
+        color: #fff;
+    }
+}
+
+.no-data {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+    margin-top: 1.5rem;
+    border-radius: 0.5rem;
+    padding: 3rem;
+
+    @media screen and (max-width: 767px) {
+        padding: 1.5rem;
+        margin-top: 0;
+    }
+
+    svg {
+        color: rgb(147, 197, 253);
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        font-weight: 600;
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+
+    p {
+        color: rgb(75, 85, 99);
+        margin-bottom: 0;
+        color: white;
+    }
+}
+
+.event-data {
+    svg {
+        color: rgb(209, 213, 219);
+    }
+}
+
+.clubSetting {
+    .modal-dialog {
+        max-width: 32rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        max-height: 90vh;
+        overflow: auto;
+        background-color: #eef2ff;
+    }
+
+    .modal-header {
+        border-bottom: 0;
+        padding: 0;
+
+        .btn-close {
+            position: absolute;
+            right: 26px;
+            top: 26px;
+            font-size: 12px;
+            z-index: 1;
+            padding: 0;
+            outline: none;
+        }
+    }
+
+    .modal-body {
+        padding: 0;
+
+        .club-settings-head {
+            h3 {
+                font-size: 1.5rem;
+                line-height: 2rem;
+                letter-spacing: -0.025em;
+                font-weight: 700;
+                background: #2563eb;
+                background: linear-gradient(80deg,
+                        rgb(37, 99, 235) 0%,
+                        rgb(79, 70, 229) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            p {
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                color: #71717a;
+                margin-bottom: 32px;
+            }
+        }
+
+        .pro-setting-head {
+            gap: 1rem;
+
+            .club-setting-profile {
+                width: 5rem;
+                height: 5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #f4f4f5;
+                border-radius: 50%;
+                box-shadow: 0 0 0 4px rgb(191, 219, 254);
+            }
+
+            button.btn {
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+                padding: 0.5rem 1rem;
+                color: rgb(37, 99, 235);
+                min-height: auto;
+                gap: 0.5rem;
+
+                svg {
+                    margin-right: 0.5rem;
+                }
+            }
+
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+
+            label {
+                font-size: 0.875rem;
+                font-weight: 500;
+                line-height: 1;
+                margin-bottom: 12px;
+            }
+
+            input {
+                height: 40px;
+            }
+
+            textarea {
+                height: 98px;
+            }
+        }
+
+        .switch-card-main {
+            background-color: rgb(255 255 255 / 0.5);
+            border: 1px solid rgb(219, 234, 254);
+            border-radius: 0.5rem;
+            padding: 19px 1rem;
+
+            h3 {
+                color: rgb(30, 58, 138);
+                font-weight: 600;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.manage-club {
+    .modal-header {
+        border: 0;
+        padding: 0;
+
+        .btn-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            margin: 0;
+            font-size: 14px;
+            padding: 0;
+            z-index: 9;
+        }
+    }
+
+    .modal-dialog {
+        max-width: 32rem;
+    }
+
+    .modal-content {
+        background-color: #eef4fe;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+
+        >h3 {
+            letter-spacing: -0.025em;
+            line-height: 1;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            svg {
+                width: 20px;
+                color: rgb(202 138 4);
+            }
+        }
+
+        >p {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .club-avatar {
+            width: 3rem;
+            height: 3rem;
+            background: #f4f4f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.create-club-post {
+    &.modern-modal {
+        .modal-dialog {
+            max-width: 28rem;
+        }
+
+        .modal-content {
+            background: linear-gradient(to bottom, #f8f9ff, #ffffff);
+            border: 1px solid rgba(79, 70, 229, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(79, 70, 229, 0.1);
+        }
+
+        .modern-header {
+            border: 0;
+            padding: 0;
+            background: transparent;
+
+            .btn-close {
+                position: absolute;
+                right: 16px;
+                top: 16px;
+                margin: 0;
+                padding: 0;
+                z-index: 9;
+                font-size: 24px;
+                opacity: 0.6;
+                transition: opacity 0.2s;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            .modal-title {
+                width: 100%;
+                padding: 20px 24px;
+
+                .modal-title-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+
+                    .club-avatar-small {
+                        width: 44px;
+                        height: 44px;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-weight: 700;
+                        font-size: 18px;
+                        overflow: hidden;
+                        flex-shrink: 0;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+
+                    .title-text {
+                        h5 {
+                            font-weight: 700;
+                            font-size: 20px;
+                            color: #0f1419;
+                            margin: 0;
+                            line-height: 1;
+                        }
+
+                        .club-name {
+                            font-size: 13px;
+                            color: #536471;
+                            margin: 4px 0 0;
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+        }
+
+        .modern-body {
+            padding: 0 24px 24px;
+
+            .post-input-section {
+                margin-bottom: 16px;
+
+                .post-input-container {
+                    .modern-textarea {
+                        textarea {
+                            font-size: 16px;
+                            line-height: 1.5;
+                            padding: 12px;
+                            border: none;
+                            border-radius: 12px;
+                            background-color: #f7f9fa;
+                            min-height: 100px;
+                            resize: none;
+                            color: #0f1419;
+                            transition: all 0.2s;
+
+                            &:focus {
+                                background-color: #fff;
+                                box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+                                outline: none;
+                            }
+
+                            &::placeholder {
+                                color: #536471;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .post-values {
+                background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+                border-radius: 12px;
+                border: 1px solid rgba(79, 70, 229, 0.15);
+                padding: 12px 16px;
+                margin-bottom: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+
+                .icon-box {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+
+                    &.icon-purple {
+                        background-color: rgba(147, 51, 234, 0.15);
+                        color: rgb(147, 51, 234);
+                    }
+
+                    &.icon-success {
+                        background-color: rgba(22, 163, 74, 0.15);
+                        color: rgb(22, 163, 74);
+                    }
+
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+
+                > div:nth-child(2) {
+                    flex: 1;
+
+                    h6 {
+                        font-weight: 700;
+                        font-size: 14px;
+                        color: #0f1419;
+                        margin: 0;
+                        line-height: 1.2;
+                    }
+
+                    p {
+                        margin: 4px 0 0;
+                        color: #536471;
+                        font-size: 13px;
+                        line-height: 1.2;
+                    }
+                }
+
+                .form-check {
+                    margin: 0;
+                }
+            }
+
+            .post-img-preview {
+                margin-bottom: 16px;
+                border-radius: 12px;
+                overflow: hidden;
+                position: relative;
+
+                img {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                }
+
+                button.btn {
+                    font-size: 20px;
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    position: absolute;
+                    top: 8px;
+                    right: 8px;
+                    background-color: rgba(239, 68, 68, 0.9);
+                    border: none;
+                    padding: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    transition: all 0.2s;
+
+                    &:hover {
+                        background-color: rgb(239, 68, 68);
+                        transform: scale(1.05);
+                    }
+                }
+            }
+
+            .file-upload-submit {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+
+                button.btn {
+                    &.btn-light {
+                        background-color: transparent;
+                        border: 2px solid #3b82f6;
+                        color: #3b82f6;
+                        padding: 6px 16px;
+                        border-radius: 20px;
+                        font-weight: 600;
+                        transition: all 0.2s;
+
+                        &:hover {
+                            background-color: rgba(59, 130, 246, 0.1);
+                        }
+
+                        svg {
+                            margin-right: 6px;
+                        }
+                    }
+
+                    &.btn-btns {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        border: none;
+                        color: white;
+                        padding: 10px 24px;
+                        border-radius: 20px;
+                        font-weight: 600;
+                        font-size: 15px;
+                        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+                        &:hover:not(:disabled) {
+                            transform: translateY(-2px);
+                            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+                        }
+
+                        &:disabled {
+                            opacity: 0.6;
+                            cursor: not-allowed;
+                        }
+                    }
+                }
+            }
+
+            .form-check-input:checked {
+                background-color: rgb(22, 163, 74);
+                border-color: rgb(22, 163, 74);
+            }
+        }
+    }
+}
+
+// ==========================================
+// MOBILE REDESIGN (max-width: 767px)
+// ==========================================
+
+@media screen and (max-width: 767px) {
+    .campus-clubs-main {
+        padding: 0.5rem !important;
+
+        .page-head {
+            margin-bottom: 1.5rem !important;
+            flex-direction: column !important;
+            gap: 1rem !important;
+            align-items: stretch !important;
+
+            .titles {
+                display: none !important;
+            }
+
+            .actions {
+                width: 100% !important;
+
+                .btn {
+                    width: 100% !important;
+                    padding: 12px 16px !important;
+                    font-size: 14px !important;
+                    border-radius: 12px !important;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+                    border: none !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    gap: 8px !important;
+                    transition: all 0.3s ease !important;
+                    cursor: pointer !important;
+                    min-height: 48px !important;
+
+                    &:active {
+                        transform: scale(0.98) !important;
+                    }
+
+                    svg {
+                        width: 20px !important;
+                        height: 20px !important;
+                    }
+                }
+            }
+        }
+    }
+
+    // My Clubs Section - Mobile
+    .my-clubs-main {
+        margin: 1.5rem 0 !important;
+        padding: 0 !important;
+
+        h3 {
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.8px !important;
+            color: #bfdbfe !important;
+            margin-bottom: 1rem !important;
+            padding: 0 0.5rem !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+
+            svg {
+                width: 18px !important;
+                height: 18px !important;
+                opacity: 0.8 !important;
+            }
+        }
+
+        .row {
+            --bs-gutter-x: 0 !important;
+            row-gap: 0.75rem !important;
+            padding: 0 0.5rem !important;
+        }
+
+        .myclub-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15)) !important;
+            border: 1px solid rgba(102, 126, 234, 0.3) !important;
+            border-radius: 14px !important;
+            padding: 14px !important;
+            min-height: auto !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            flex-wrap: nowrap !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            cursor: pointer !important;
+
+            &:active {
+                transform: scale(0.98) !important;
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.25), rgba(118, 75, 162, 0.25)) !important;
+            }
+
+            .myclub-card-img {
+                width: 50px !important;
+                height: 50px !important;
+                min-width: 50px !important;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                font-size: 1.25rem !important;
+                box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3) !important;
+            }
+
+            .myclub-card-name {
+                flex: 1 !important;
+                padding-left: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 6px !important;
+
+                .card-name-top {
+                    margin-bottom: 0 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 8px !important;
+                    flex-wrap: wrap !important;
+
+                    h4 {
+                        font-size: 15px !important;
+                        font-weight: 600 !important;
+                        color: white !important;
+                        margin: 0 !important;
+                    }
+
+                    span {
+                        padding: 4px 8px !important;
+                        font-size: 10px !important;
+                        font-weight: 600 !important;
+                        border-radius: 12px !important;
+                        background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(168, 85, 247, 0.2)) !important;
+                        border: 1px solid rgba(147, 51, 234, 0.4) !important;
+                        color: #d8b4fe !important;
+
+                        svg {
+                            width: 10px !important;
+                            height: 10px !important;
+                        }
+                    }
+                }
+
+                .card-name-bottom {
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 8px !important;
+
+                    span {
+                        padding: 4px 10px !important;
+                        font-size: 11px !important;
+                        font-weight: 600 !important;
+                        background: rgba(59, 130, 246, 0.15) !important;
+                        color: #93c5fd !important;
+                        border-radius: 12px !important;
+                        border: 1px solid rgba(59, 130, 246, 0.3) !important;
+                    }
+
+                    .members {
+                        font-size: 12px !important;
+                        color: rgba(255, 255, 255, 0.7) !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 4px !important;
+
+                        svg {
+                            width: 14px !important;
+                            height: 14px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Discover Clubs Section - Mobile (2 Columns)
+    .discover-Clubs-main {
+        margin: 1.5rem 0 !important;
+        padding: 0 !important;
+
+        h3 {
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.8px !important;
+            color: #bfdbfe !important;
+            margin-bottom: 1rem !important;
+            padding: 0 0.5rem !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+
+            svg {
+                width: 18px !important;
+                height: 18px !important;
+                opacity: 0.8 !important;
+            }
+        }
+
+        .row {
+            --bs-gutter-x: 0.5rem !important;
+            row-gap: 0.75rem !important;
+            padding: 0 0.25rem !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .col-sm-6,
+        .col-md-4,
+        .col-lg-3,
+        .col-xl-3 {
+            width: 100% !important;
+            max-width: none !important;
+        }
+
+        .discover-clubs-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border-radius: 12px !important;
+            padding: 10px !important;
+            overflow: hidden !important;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+
+            &:active {
+                transform: scale(0.98) !important;
+            }
+
+            .discover-clubs-head {
+                margin-bottom: 8px !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+
+                .club-avatar {
+                    width: 42px !important;
+                    height: 42px !important;
+                    min-width: 42px !important;
+                    border-radius: 50% !important;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                    font-size: 1.1rem !important;
+                    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+                }
+
+                h4 {
+                    font-size: 13px !important;
+                    font-weight: 600 !important;
+                    color: white !important;
+                    margin: 0 !important;
+                    line-height: 1.2 !important;
+                }
+
+                span {
+                    font-size: 10px !important;
+                    color: rgba(255, 255, 255, 0.6) !important;
+                    text-transform: capitalize !important;
+                    display: block !important;
+                    margin-top: 2px !important;
+                }
+            }
+
+            .d-flex {
+                margin-bottom: 8px !important;
+            }
+
+            .members {
+                font-size: 11px !important;
+                color: rgba(255, 255, 255, 0.7) !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 4px !important;
+
+                svg {
+                    width: 13px !important;
+                    height: 13px !important;
+                }
+            }
+
+            .foll-btn {
+                padding: 5px 10px !important;
+                background: rgba(255, 255, 255, 0.1) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                border-radius: 10px !important;
+                font-size: 11px !important;
+                color: rgba(255, 255, 255, 0.8) !important;
+                cursor: pointer !important;
+                transition: all 0.2s !important;
+                font-weight: 500 !important;
+
+                &:active {
+                    background: rgba(255, 255, 255, 0.15) !important;
+                }
+            }
+
+            .requested-btn {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 5px !important;
+
+                button {
+                    width: 100% !important;
+                    font-size: 12px !important;
+                    min-height: 36px !important;
+                    border-radius: 8px !important;
+                    font-weight: 600 !important;
+                    border: none !important;
+                    cursor: pointer !important;
+                    transition: all 0.3s !important;
+                    padding: 8px 12px !important;
+
+                    &.btn-btns {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                        color: white !important;
+                        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+
+                        &:active:not(:disabled) {
+                            transform: scale(0.98) !important;
+                        }
+
+                        &:disabled {
+                            opacity: 0.6 !important;
+                        }
+                    }
+
+                    &.follow-btn {
+                        background: rgba(255, 255, 255, 0.1) !important;
+                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                        color: rgba(255, 255, 255, 0.8) !important;
+
+                        &:active:not(:disabled) {
+                            background: rgba(255, 255, 255, 0.15) !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Mobile animations
+    @keyframes slideUpMobile {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .myclub-card,
+    .discover-clubs-box {
+        animation: slideUpMobile 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .my-clubs-main h3,
+    .discover-Clubs-main h3 {
+        animation: slideUpMobile 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+}
+
+// ==========================================
+// Extra small mobile (max-width: 480px)
+// ==========================================
+
+@media screen and (max-width: 480px) {
+    .campus-clubs-main {
+        padding: 0.4rem !important;
+
+        .page-head {
+            margin-bottom: 1.2rem !important;
+            gap: 0.75rem !important;
+
+            .actions {
+                .btn {
+                    padding: 11px 14px !important;
+                    font-size: 13px !important;
+                    min-height: 44px !important;
+                }
+            }
+        }
+    }
+
+    .my-clubs-main,
+    .discover-Clubs-main {
+        margin: 1.2rem 0 !important;
+
+        h3 {
+            font-size: 12px !important;
+            margin-bottom: 0.8rem !important;
+            padding: 0 0.4rem !important;
+        }
+
+        .row {
+            padding: 0 0.4rem !important;
+            row-gap: 0.6rem !important;
+        }
+    }
+
+    .myclub-card {
+        padding: 12px !important;
+        gap: 10px !important;
+
+        .myclub-card-img {
+            width: 44px !important;
+            height: 44px !important;
+            min-width: 44px !important;
+            font-size: 1.1rem !important;
+        }
+
+        .myclub-card-name {
+            gap: 4px !important;
+
+            .card-name-top h4 {
+                font-size: 14px !important;
+            }
+
+            .card-name-top span,
+            .card-name-bottom span {
+                padding: 3px 6px !important;
+                font-size: 9px !important;
+            }
+
+            .card-name-bottom .members {
+                font-size: 11px !important;
+            }
+        }
+    }
+
+    .discover-clubs-box {
+        padding: 9px !important;
+
+        .discover-clubs-head {
+            margin-bottom: 7px !important;
+            gap: 7px !important;
+            flex-wrap: wrap !important;
+
+            .club-avatar {
+                width: 38px !important;
+                height: 38px !important;
+                min-width: 38px !important;
+                font-size: 0.95rem !important;
+            }
+
+            h4 {
+                font-size: 12px !important;
+                flex: 1 !important;
+                min-width: 80px !important;
+            }
+
+            span {
+                font-size: 9px !important;
+                width: 100% !important;
+                margin-left: 46px !important;
+                margin-top: -2px !important;
+            }
+        }
+
+        .members {
+            font-size: 10px !important;
+        }
+
+        .foll-btn {
+            padding: 4px 8px !important;
+            font-size: 10px !important;
+        }
+
+        .requested-btn {
+            gap: 4px !important;
+
+            button {
+                font-size: 11px !important;
+                min-height: 32px !important;
+                border-radius: 7px !important;
+                padding: 6px 10px !important;
+            }
+        }
+    }
+
+    // Very small phones - single column for discover clubs
+    @media screen and (max-width: 360px) {
+        .discover-Clubs-main {
+            .row {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    }
+}
+
+.events-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+
+    .events-list-box {
+        opacity: 0.6;
+        border-radius: 0.5rem;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        background-color: #fff;
+        padding: 1.5rem;
+    }
+}
+
+// Club Create Post Floating Action Button
+.club-create-post-btn {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 2rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1rem;
+    background-image: linear-gradient(to right, #2563eb, #4f46e5);
+    border: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    z-index: 1000;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+        background-image: linear-gradient(to right, #3b82f6, #6366f1);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    svg {
+        width: 20px;
+        color: white;
+    }
+
+    @media screen and (max-width: 769px) {
+        bottom: 80px;
+        width: 3.5rem;
+        height: 3.5rem;
+        right: 1rem;
+
+        svg {
+            width: 18px;
+        }
+    }
+}
+
+// ===== MOBILE CLUB DETAILS REDESIGN =====
+// Bold, eye-catching modern gradient design matching indigo/violet system
+
+@media screen and (max-width: 767px) {
+    .clubs-details-main {
+        background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #16213e 100%);
+        min-height: 100vh;
+
+        .clubs-details {
+            padding: 0.5rem;
+            padding-bottom: 2.5rem;
+
+            // Back button - refined
+            .back-btn {
+                margin-bottom: 0.75rem;
+                padding: 0 0.25rem;
+
+                .btn-link {
+                    font-size: 0.8rem;
+                    padding: 0.35rem 0.5rem;
+                    color: rgba(255, 255, 255, 0.85);
+                    text-decoration: none;
+                    transition: all 0.2s ease;
+                    display: inline-flex;
+                    gap: 0.35rem;
+
+                    &:hover {
+                        color: #fff;
+                        transform: translateX(-3px);
+                    }
+
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+            }
+
+            // Club profile card - bold gradient
+            .club-profile {
+                background: rgba(255, 255, 255, 0.13);
+                border: 1px solid rgba(99, 102, 241, 0.3);
+                box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+                border-radius: 1rem;
+                overflow: hidden;
+                padding-bottom: 0.75rem;
+                -webkit-backdrop-filter: blur(20px);
+                backdrop-filter: blur(20px);
+
+                .club-profile-bg {
+                    background: linear-gradient(80deg, rgb(37, 99, 235) 0%, rgb(79, 70, 229) 100%);
+                    min-height: 100px;
+                    padding: 0.8rem;
+                    gap: 0.6rem;
+                    align-items: flex-end;
+                    position: relative;
+                    overflow: hidden;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        right: -10%;
+                        width: 200px;
+                        height: 200px;
+                        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+                        border-radius: 50%;
+                        pointer-events: none;
+                    }
+
+                    .club-profile-img {
+                        width: 3.5rem;
+                        height: 3.5rem;
+                        border: 3px solid #fff;
+                        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, #06b6d4, #0891b2);
+                        font-size: 1.5rem;
+                        font-weight: 800;
+                        color: #fff;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        position: relative;
+                        z-index: 2;
+                        cursor: pointer;
+                        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+                        &:active {
+                            transform: scale(0.95);
+                        }
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            border-radius: 50%;
+                        }
+                    }
+
+                    .club-profile-name {
+                        flex: 1;
+                        position: relative;
+                        z-index: 2;
+                        min-width: 0;
+
+                        h3 {
+                            font-size: 1.25rem;
+                            line-height: 1.4;
+                            color: #fff;
+                            margin-bottom: 0.3rem;
+                            font-weight: 800;
+                            letter-spacing: -0.015em;
+                            word-break: break-word;
+                        }
+
+                        p {
+                            color: rgba(255, 255, 255, 0.85);
+                            font-size: 0.7rem;
+                            line-height: 1.3;
+                            margin: 0;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.25rem;
+                            flex-wrap: wrap;
+
+                            svg {
+                                width: 13px;
+                                height: 13px;
+                                flex-shrink: 0;
+                            }
+                        }
+                    }
+                }
+
+                // Description section
+                .club-profile-description {
+                    padding: 0.7rem 0.8rem;
+                    border-top: 1px solid rgba(99, 102, 241, 0.2);
+
+                    p {
+                        font-size: 0.75rem;
+                        line-height: 1.4;
+                        color: rgba(255, 255, 255, 0.85) !important;
+                        text-align: center;
+                        margin: 0 !important;
+                        display: block !important;
+                    }
+                }
+
+                // Action buttons container
+                .d-flex.justify-content-center {
+                    margin-top: 0;
+                    padding: 0 0.8rem;
+                    gap: 0.4rem !important;
+                    flex-wrap: wrap;
+
+                    .btn {
+                        flex: 1;
+                        min-width: 100px;
+                        font-size: 0.75rem;
+                        padding: 0.5rem 0.75rem;
+                        min-height: 2.25rem;
+                        border-radius: 0.5rem;
+                        font-weight: 600;
+                        transition: all 0.2s ease;
+                        border: none;
+
+                        &.btn-primary,
+                        &.request-btn {
+                            background: linear-gradient(135deg, #2563eb, #4f46e5);
+                            color: #fff;
+                            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+
+                            &:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+                            }
+
+                            &:active {
+                                transform: translateY(0);
+                            }
+                        }
+
+                        &.btn-light {
+                            background: rgba(255, 255, 255, 0.1);
+                            color: #fff;
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+
+                            &:hover {
+                                background: rgba(255, 255, 255, 0.15);
+                                border-color: rgba(255, 255, 255, 0.3);
+                            }
+                        }
+
+                        &.btn-danger {
+                            background: rgba(239, 68, 68, 0.9);
+                            color: #fff;
+
+                            &:hover {
+                                background: #dc2626;
+                            }
+                        }
+
+                        &.btn-outline-primary {
+                            background: transparent;
+                            border: 1.5px solid #2563eb;
+                            color: #fff;
+
+                            &:hover {
+                                background: rgba(37, 99, 235, 0.1);
+                            }
+                        }
+                    }
+                }
+
+                // Admin manage buttons
+                .requests-manage-btn {
+                    margin-top: 0.6rem;
+                    padding: 0.4rem;
+                    background: rgba(255, 255, 255, 0.08);
+                    border: 1px solid rgba(99, 102, 241, 0.4);
+                    border-radius: 0.75rem;
+                    -webkit-backdrop-filter: blur(10px);
+                    backdrop-filter: blur(10px);
+                    width: 100%;
+                    justify-content: space-around;
+                    gap: 0;
+
+                    button,
+                    .club-manage-toggle {
+                        flex: 1;
+                        min-height: 2rem;
+                        font-size: 0.65rem;
+                        padding: 0.4rem 0.4rem;
+                        border: none !important;
+                        background: transparent !important;
+                        color: #fff;
+                        border-radius: 0.5rem;
+                        transition: all 0.2s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 0.25rem;
+
+                        &:hover {
+                            background: rgba(255, 255, 255, 0.1) !important;
+                        }
+
+                        svg {
+                            width: 14px;
+                            height: 14px;
+                        }
+                    }
+
+                    .border {
+                        height: 1.3rem;
+                    }
+                }
+            }
+
+
+            // Tabs section margins
+            .cc-tabs-main {
+                margin-top: 10px;
+                margin-bottom: 10px;
+
+                .nav-cc-tabs {
+                    padding: 0.25rem;
+                }
+            }
+
+            // Member cards - gradient styling
+            .all-member-card {
+                gap: 0.6rem;
+                row-gap: 0.75rem;
+
+                .card {
+                    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+                    border: 1px solid rgba(99, 102, 241, 0.25);
+                    border-radius: 0.75rem;
+                    padding: 0.85rem;
+                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                    -webkit-backdrop-filter: blur(10px);
+                    backdrop-filter: blur(10px);
+                    transition: all 0.3s ease;
+
+                    &:active {
+                        transform: scale(0.98);
+                    }
+
+                    h5 {
+                        color: #fff;
+                        font-size: 0.8rem;
+                        font-weight: 700;
+                        margin-bottom: 0.2rem;
+                    }
+
+                    p {
+                        color: rgba(191, 219, 254, 0.85);
+                        font-size: 0.7rem;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    // Club create post floating button
+    .club-create-post-btn {
+        width: 50px;
+        height: 50px;
+        bottom: 1.5rem;
+        right: 1rem;
+        border-radius: 0.75rem;
+
+        svg {
+            width: 20px;
+        }
+    }
+}

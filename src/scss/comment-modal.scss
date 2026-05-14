@@ -1,0 +1,430 @@
+// Comment Modal Styles - Enhanced Professional Design
+.comment-modal {
+  .modal-content {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 20px 60px rgba(0, 0, 0, 0.15);
+    max-height: 85vh;
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .comment-modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 16px 20px;
+    background: #fff;
+    z-index: 10;
+    border-radius: 20px 20px 0 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    h5 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f1419;
+      margin: 0;
+      text-align: center;
+    }
+
+    .comment-modal-close {
+      padding: 8px;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #536471;
+      text-decoration: none;
+      border: none;
+      background: transparent;
+      transition: all 0.2s ease;
+      position: absolute;
+      left: 16px;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(15, 20, 25, 0.1);
+        color: #0f1419;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .comment-modal-body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .comment-modal-original-post {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    background: #f7f9fa;
+    flex-shrink: 0;
+
+    .d-flex {
+      gap: 12px;
+    }
+
+    img,
+    .rounded-circle {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    p {
+      margin: 0 0 8px 0;
+      color: #0f1419;
+      font-size: 15px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    strong {
+      color: #0f1419;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .small {
+      color: #536471;
+      font-size: 13px;
+    }
+
+    > div > div:last-child {
+      > div:first-child {
+        margin-bottom: 4px;
+      }
+
+      > div:last-child {
+        color: #536471;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+    }
+  }
+
+  .comment-modal-input {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    background: #fff;
+    flex-shrink: 0;
+
+    .d-flex {
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .comment-textarea {
+      border: none;
+      resize: none;
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 5px 5px;
+      min-height: 50px;
+      max-height: 150px;
+      color: #0f1419;
+      font-family: inherit;
+      background: transparent;
+
+      &:focus {
+        box-shadow: none;
+        outline: none;
+        border: none;
+      }
+
+      &::placeholder {
+        color: #8b98a5;
+        font-size: 16px;
+      }
+    }
+
+    > div {
+      > div:last-child {
+        > div:first-child {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+      }
+    }
+
+    .comment-submit-btn {
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-weight: 700;
+      font-size: 15px;
+      min-width: 80px;
+      background: #1d9bf0;
+      border: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(29, 155, 240, 0.2);
+
+      &:hover:not(:disabled) {
+        background: #1a8cd8;
+        box-shadow: 0 4px 8px rgba(29, 155, 240, 0.3);
+        transform: translateY(-1px);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+    }
+
+    small {
+      color: #8b98a5;
+      font-size: 13px;
+    }
+  }
+
+  .comment-modal-comments {
+    padding: 0;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    max-height: 100%;
+    margin-top: 0 !important; // Remove Bootstrap mt-4 margin
+
+    // Hide scrollbar but keep functionality
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE and Edge
+
+    &::-webkit-scrollbar {
+      display: none; // Chrome, Safari, Opera
+    }
+
+    .list-group {
+      border: none;
+      background: transparent;
+
+      .comment-item {
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        padding: 16px 20px;
+        background: transparent;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.02);
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        // Main container
+        > div {
+          width: 100%;
+
+          // Top row with content and buttons
+          > div:first-child {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+            width: 100% !important;
+
+            // Content area (avatar + text)
+            > div:first-child {
+              flex: 1;
+              min-width: 0;
+              display: flex;
+              gap: 12px;
+              align-items: flex-start;
+
+              img {
+                width: 40px;
+                height: 40px;
+                flex-shrink: 0;
+                object-fit: cover;
+                border-radius: 50%;
+              }
+
+              > div:last-child {
+                flex: 1;
+                min-width: 0;
+
+                > div:first-child {
+                  margin-bottom: 6px;
+                  display: flex;
+                  align-items: center;
+                  flex-wrap: wrap;
+                  gap: 4px;
+
+                  strong {
+                    color: #0f1419;
+                    font-size: 15px;
+                    font-weight: 700;
+                  }
+
+                  .small {
+                    color: #536471;
+                    font-size: 13px;
+                  }
+
+                  .badge {
+                    font-size: 11px;
+                    padding: 2px 6px;
+                    font-weight: 500;
+                  }
+                }
+
+                p {
+                  color: #0f1419;
+                  font-size: 15px;
+                  line-height: 1.5;
+                  margin: 0;
+                  word-wrap: break-word;
+                  white-space: pre-wrap;
+                }
+              }
+            }
+
+            // Action buttons container (Edit/Delete) - ensure it's visible
+            > div:last-child {
+              flex-shrink: 0 !important;
+              display: flex !important;
+              gap: 6px !important;
+              align-items: flex-start !important;
+              margin-left: auto !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+            }
+          }
+        }
+
+        // Edit and Delete buttons styling - more specific selectors
+        .btn-outline-primary,
+        .btn-outline-danger {
+          padding: 8px !important;
+          border-radius: 8px !important;
+          transition: all 0.2s ease !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          min-width: 36px !important;
+          height: 36px !important;
+          border-width: 1px !important;
+          border-style: solid !important;
+          flex-shrink: 0 !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+
+          svg {
+            width: 18px !important;
+            height: 18px !important;
+            flex-shrink: 0 !important;
+            display: block !important;
+          }
+
+          // Edit button
+          &.btn-outline-primary {
+            background: rgba(29, 155, 240, 0.1) !important;
+            border-color: rgba(29, 155, 240, 0.3) !important;
+            color: #1d9bf0 !important;
+
+            &:hover:not(:disabled) {
+              background: rgba(29, 155, 240, 0.2) !important;
+              border-color: rgba(29, 155, 240, 0.5) !important;
+              color: #1a8cd8 !important;
+              transform: translateY(-1px);
+            }
+
+            &:active:not(:disabled) {
+              transform: translateY(0);
+            }
+          }
+
+          // Delete button
+          &.btn-outline-danger {
+            background: rgba(244, 33, 46, 0.1) !important;
+            border-color: rgba(244, 33, 46, 0.3) !important;
+            color: #f4212e !important;
+
+            &:hover:not(:disabled) {
+              background: rgba(244, 33, 46, 0.2) !important;
+              border-color: rgba(244, 33, 46, 0.5) !important;
+              color: #d91e2a !important;
+              transform: translateY(-1px);
+            }
+
+            &:active:not(:disabled) {
+              transform: translateY(0);
+            }
+          }
+
+          &:disabled {
+            opacity: 0.5 !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+          }
+        }
+
+        // Ensure buttons container is visible
+        .d-flex.gap-1 {
+          display: flex !important;
+          gap: 6px !important;
+          flex-shrink: 0 !important;
+          visibility: visible !important;
+        }
+      }
+    }
+
+    .text-center {
+      padding: 40px 24px;
+      color: #8b98a5;
+      font-size: 15px;
+    }
+
+    .d-flex.justify-content-center {
+      padding: 20px;
+      gap: 8px;
+
+      .btn {
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 700;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: #fff;
+        color: #0f1419;
+        transition: all 0.2s ease;
+
+        &:hover:not(:disabled) {
+          background: rgba(0, 0, 0, 0.05);
+          border-color: rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      span {
+        color: #8b98a5;
+        font-size: 14px;
+        align-self: center;
+      }
+    }
+  }
+}

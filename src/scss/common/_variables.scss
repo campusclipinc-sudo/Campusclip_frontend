@@ -1,0 +1,30 @@
+// Theme tokens derived from the provided design image
+// Dark theme
+$bg: #0f172a; // page background - dark navy
+$surface: #ffffff; // cards/panels
+$text: #1e2a3a; // primary text
+$muted: #2c3142; // secondary text
+$border: #e6ebf2; // soft borders
+$sidebar-bg: #ffffff; // sidebar surface
+$sidebar-text: #2a3341; // sidebar text
+$sidebar-active-bg: #e9f0ff; // active nav item background
+$sidebar-active-text: #2e70ff; // active nav text/icon
+$primary: #2e70ff; // primary blue
+$primary-2: #5e5df5; // blue-violet for gradient end
+$accent-cyan: #10d2cc; // cyan accent used in badge ring
+$shadow: 0 10px 30px rgba(23, 42, 69, 0.08);
+$radius-md: 12px;
+$radius-lg: 16px;
+$placeholder: #51586f;
+$text-muted: #fff;
+
+// Gradient used on the performance banner
+$gradient-primary: linear-gradient(80deg, #3b82f6 0%, #4f46e5 100%);
+
+// Breakpoints
+$bp-mobile: 480px;
+$bp-phone: 360px;
+$bp-tablet: 768px;
+$bp-laptop: 1024px;
+$bp-desktop: 1280px;
+$bp-wide: 1440px;

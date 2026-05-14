@@ -1,0 +1,68 @@
+@use "./common/variables" as v;
+
+.register-form {
+  max-width: 640px;
+  margin: 4rem auto;
+  padding: 32px 28px;
+  background-color: v.$surface;
+  box-shadow: v.$shadow;
+  border: 1px solid v.$border;
+  border-radius: v.$radius-lg;
+
+  h3 {
+    text-align: center;
+    margin-bottom: 24px;
+    font-weight: 700;
+    color: v.$text;
+  }
+
+  .form-field {
+    border: 1px solid v.$border;
+    border-radius: 10px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    background: v.$surface;
+    &:focus {
+      border-color: v.$primary;
+      box-shadow: 0 0 0 0.2rem rgba(46, 112, 255, 0.15);
+    }
+  }
+
+  .form-field-error {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+  }
+
+  .form-field-success {
+    border-color: #198754;
+  }
+
+  .field-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: v.$muted;
+    text-transform: none;
+  }
+
+  .text-danger {
+    font-size: 0.875rem;
+    margin-top: 4px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 10px;
+    margin-top: 10px;
+    background: v.$primary;
+    border-color: v.$primary;
+  }
+
+  .alert {
+    font-size: 0.95rem;
+    margin-top: 16px;
+    text-align: center;
+  }
+}

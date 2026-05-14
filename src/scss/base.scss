@@ -1,0 +1,123 @@
+@use "./common/variables" as v;
+@use "./components/popup";
+@use "./components/feedItem";
+@use "./components/clubChat";
+@use "./components/classChat";
+
+/* Global base styles aligned to the reference design */
+:root {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+html,
+body {
+  height: 100%;
+  overflow: auto;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  margin: 0;
+  background: v.$bg;
+  color: v.$text;
+  font-family: "Ubuntu", sans-serif;
+  line-height: 1.5;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 0.35rem;
+  font-weight: 700;
+  color: v.$text;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+  color: v.$primary;
+}
+
+h3 {
+  font-size: 1.35rem;
+}
+
+h4 {
+  font-size: 1.15rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.95rem;
+}
+
+p {
+  margin: 0 0 0.5rem;
+  color: v.$muted;
+}
+
+a {
+  color: v.$primary;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Basic surfaces */
+.card {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: v.$radius-md;
+}
+
+/* Buttons refinements to be closer to reference */
+.btn-primary {
+  background: v.$primary;
+  border-color: v.$primary;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.98);
+}
+
+.btn-ghost {
+  background: #fff;
+  color: v.$text;
+  border: 1px solid v.$border;
+}
+
+/* Container spacing (Bootstrap Container is used) */
+.container-fluid {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+/* Small helpers */
+.link-primary {
+  color: v.$primary;
+}
+
+.text-muted {
+  color: v.$text-muted !important;
+}

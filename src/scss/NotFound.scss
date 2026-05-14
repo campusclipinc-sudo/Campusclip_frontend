@@ -1,0 +1,65 @@
+.not-found-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  .not-found-content {
+    color: white;
+    z-index: 1;
+  }
+
+  .not-found-title {
+    font-size: 8rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .not-found-subtitle {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    opacity: 0.95;
+  }
+
+  .not-found-message {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .not-found-button {
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    background-color: white;
+    color: #667eea;
+    border: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .not-found-container {
+    .not-found-title {
+      font-size: 4rem;
+    }
+
+    .not-found-subtitle {
+      font-size: 1.75rem;
+    }
+
+    .not-found-message {
+      font-size: 1rem;
+    }
+  }
+}

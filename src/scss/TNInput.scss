@@ -1,0 +1,96 @@
+@use "./common/variables" as v;
+
+.custom-input {
+  label,
+  .field-label,
+  .form-label {
+    color: v.$muted !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .form-control {
+    background: v.$surface !important;
+    color: v.$text !important;
+    border-color: v.$border !important;
+    caret-color: v.$text;
+    border-radius: 7px;
+    height: 44px;
+  }
+
+  .form-control::placeholder {
+    color: v.$muted !important;
+  }
+
+  .react-select-prefix {
+    &__control {
+      height: 44px;
+      background-color: v.$surface !important;
+      border: 1px solid v.$border;
+      border-radius: 7px;
+      color: v.$text !important;
+
+      &--is-focused {
+        border-color: v.$primary;
+        box-shadow: 0 0 0 0.15rem rgba(46, 112, 255, 0.2);
+      }
+
+      &:hover {
+        border-color: v.$border;
+      }
+    }
+
+    &__single-value {
+      color: v.$text !important;
+    }
+    &__indicator {
+      color: v.$muted !important;
+    }
+    &__dropdown-indicator {
+      color: v.$muted !important;
+    }
+    &__clear-indicator {
+      color: v.$muted !important;
+    }
+    &__value-container {
+      color: v.$text !important;
+    }
+
+    &__placeholder {
+      color: v.$placeholder !important;
+    }
+
+    &__input {
+      color: v.$text !important;
+    }
+
+    &__menu {
+      background-color: v.$surface !important;
+      z-index: 1000;
+      border: 1px solid v.$border;
+      color: v.$text;
+    }
+
+    &__option {
+      color: v.$text !important;
+      &--is-selected {
+        background-color: rgba(46, 112, 255, 0.18) !important;
+        color: v.$text !important;
+      }
+      &--is-focused {
+        background-color: rgba(46, 112, 255, 0.1) !important;
+      }
+    }
+  }
+  position: relative;
+  .eye-icon {
+    top: 43px !important;
+    right: 15px !important;
+    cursor: pointer;
+    color: v.$muted;
+  }
+}
+
+.form-control:focus {
+  border-color: v.$primary !important;
+  box-shadow: 0 0 0 0.15rem rgba(46, 112, 255, 0.2) !important;
+}
