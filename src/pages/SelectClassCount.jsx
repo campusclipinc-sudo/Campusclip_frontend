@@ -12,7 +12,7 @@ import {
 import { useSetClassCount } from "../hooks/index";
 import { toast } from "react-toastify";
 import TNInput from "../component/TNInput";
-import logo from "../assets/logo.png";
+import logo from "../assets/EmailLogo.png";
 import "../scss/Register.scss";
 
 const SelectClassCount = () => {

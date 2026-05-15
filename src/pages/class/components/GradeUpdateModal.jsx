@@ -26,7 +26,7 @@ const GradeUpdateModal = ({
     if (assignment && show) {
       // Clear previous errors when assignment changes
       setErrors({});
-      
+
       // Use marks_obtained (from API) instead of points_earned
       setPointsEarned(
         assignment.marks_obtained || assignment.points_earned || "",
@@ -54,14 +54,14 @@ const GradeUpdateModal = ({
   const handleSave = () => {
     // Validate form
     const newErrors = {};
-    
+
     if (showAdvanced) {
       // Due date is required in advanced mode
       if (!dueDate || dueDate.trim() === "") {
         newErrors.dueDate = "Due date is required";
       }
 
-      
+
       // Title is required
       if (!title || title.trim() === "") {
         newErrors.title = "Assignment title is required";
@@ -172,7 +172,7 @@ const GradeUpdateModal = ({
         </div>
 
         {!showAdvanced ? (
-          <div className="grade-input-container mt-4">
+          <div className="grade-input-container">
             <div className="grade-inputs">
               <Form.Control
                 type="number"

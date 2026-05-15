@@ -134,7 +134,7 @@ const ProfileSetup = () => {
                     error={formik.errors}
                     touched={formik.touched}
                   />
-                  <Form.Text className="text-muted">
+                  <Form.Text className="">
                     Start with a letter; letters, numbers, '.' and '_' allowed.
                     No spaces. No consecutive '.' or '_'.
                   </Form.Text>
@@ -154,12 +154,13 @@ const ProfileSetup = () => {
                     value={formik.values.university}
                     error={formik.errors}
                     touched={formik.touched}
+                    margin="mt-2"
                   />
                 </Col>
               </Row>
 
-              <Row>
-                <Col lg={6} md={6}>
+              <Row className="mt-3">
+                <Col lg={6} md={6} >
                   <TNInput
                     label={"Year"}
                     type="select"

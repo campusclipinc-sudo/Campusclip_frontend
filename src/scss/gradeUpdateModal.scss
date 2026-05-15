@@ -43,7 +43,6 @@
     .advanced-toggle {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 1.5rem;
 
       .btn-advanced {
         display: inline-flex;
@@ -56,6 +55,7 @@
         color: #7c3aed;
         font-size: 0.875rem;
         font-weight: 500;
+        height: 50px;
         cursor: pointer;
         transition: all 0.2s;
 
@@ -71,7 +71,7 @@
     }
 
     .grade-input-container {
-      margin-bottom: 40px;
+      margin: 25px;
 
       .grade-inputs {
         display: flex;
@@ -223,7 +223,6 @@
 
     .modal-body {
       .grade-input-container {
-        padding: 1.5rem;
 
         .grade-inputs {
           .points-input {
@@ -263,6 +262,7 @@
             color: #7c3aed;
             font-size: 0.875rem;
             font-weight: 500;
+            height: 50px;
             cursor: pointer;
             transition: all 0.2s;
 
@@ -278,7 +278,7 @@
         }
 
         .grade-input-container {
-          margin-bottom: 40px;
+          margin: 25px;
 
           .grade-inputs {
             display: flex;

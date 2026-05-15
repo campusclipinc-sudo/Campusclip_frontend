@@ -215,6 +215,9 @@
   border-radius: 12px 12px 12px 2px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   color: #1e293b;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 
   @media (max-width: 768px) {
     max-width: 80%;
@@ -279,11 +282,18 @@
 }
 
 .club-chat-message-content {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
   p {
     margin: 0;
     font-size: 0.9375rem;
     line-height: 1.5;
     word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
   }
 }
 

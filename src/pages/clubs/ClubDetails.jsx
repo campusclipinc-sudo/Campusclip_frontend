@@ -612,7 +612,7 @@ const ClubDetails = () => {
                       </Button>
                       <div className="border"></div>
                       {/* Desktop Dropdown */}
-                      <Dropdown align="end" className="d-none d-lg-block">
+                      <Dropdown align="end" drop="up" className="d-none d-lg-block">
                         <Dropdown.Toggle
                           size="sm"
                           className="club-manage-toggle"

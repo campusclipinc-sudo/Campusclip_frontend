@@ -6,8 +6,7 @@ import DashboardLayout from "../component/DashboardLayout";
 import { useListClubs, useListCategories } from "../hooks/useRQClub";
 import { useFollowClub, useRequestClub } from "../hooks/useRQClubRequest";
 import { UserService } from "../api/authService";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import "../scss/customAnimations.scss";
 
 const AllClubs = () => {
   const navigate = useNavigate();
@@ -35,14 +34,6 @@ const AllClubs = () => {
     refetch();
   });
 
-  React.useEffect(() => {
-    AOS.init({
-      duration: 800,
-      easing: "ease-out-quart",
-      once: true,
-      offset: 40,
-    });
-  }, []);
 
   const myClubs = Array.isArray(clubsData?.data?.myClubs)
     ? clubsData.data.myClubs
@@ -195,7 +186,7 @@ const AllClubs = () => {
     <DashboardLayout>
       <div className="all-students-page">
         <div className="all-students">
-          <div className="all-students-header" data-aos="fade-down">
+          <div className="all-students-header fade-down-animation">
             <div className="d-flex flex-wrap justify-content-between align-items-center w-100 gap-3">
               <Link to="/search" className="back-link">
                 <div className="back-icon">
@@ -313,12 +304,10 @@ const AllClubs = () => {
                   return (
                     <Col key={club.id} sm={6} md={4} lg={3}>
                       <div
-                        className="student-card"
-                        data-aos="zoom-in"
-                        data-aos-delay={
-                          (allClubs.findIndex((c) => c.id === club.id) || 0) *
-                          50
-                        }
+                        className="student-card scale-up-animation"
+                        style={{
+                          animationDelay: `${(allClubs.findIndex((c) => c.id === club.id) || 0) * 0.05}s`
+                        }}
                       >
                         <div className="student-card-content">
                           <div className="student-avatar">

@@ -7,8 +7,7 @@ import { useListAllStudents } from "../hooks/useRQStudent";
 import { useToggleFollow } from "../hooks/useRQUserFollowing";
 import { UserService } from "../api/authService";
 import "../scss/AllStudents.scss";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import "../scss/customAnimations.scss";
 
 const AllStudents = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,14 +37,6 @@ const AllStudents = () => {
     );
   }, [allStudents, searchQuery]);
 
-  React.useEffect(() => {
-    AOS.init({
-      duration: 800,
-      easing: "ease-out-quart",
-      once: true,
-      offset: 40,
-    });
-  }, []);
 
   const getInitials = (name) => {
     if (!name) return "?";
@@ -266,9 +257,10 @@ const AllStudents = () => {
                 {students.map((student, index) => (
                   <Col key={student.id} sm={6} md={4} lg={3}>
                     <div
-                      className="student-card"
-                      data-aos="zoom-in"
-                      data-aos-delay={index * 50}
+                      className="student-card scale-up-animation"
+                      style={{
+                        animationDelay: `${index * 0.05}s`
+                      }}
                     >
                       <div className="student-card-content">
                         <Link

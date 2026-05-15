@@ -11,7 +11,7 @@ import { useCompleteClassOnboarding } from "../hooks/index";
 import { useUpdateTargetGrade, useDeleteClass } from "../hooks/useRQclass";
 import ClassService from "../api/classService";
 import { toast } from "react-toastify";
-import logo from "../assets/logo.png";
+import logo from "../assets/EmailLogo.png";
 import "../scss/AddClasses.scss";
 import OnboardingScheduleModal from "./class/components/OnboardingScheduleModal";
 

@@ -59,6 +59,8 @@ const TNInput = ({
           classNamePrefix="react-select-prefix"
           placeholder={placeholder}
           isDisabled={disabled}
+          menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
+          styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
           {...props}
         />
       ) : type === "date" ? (
