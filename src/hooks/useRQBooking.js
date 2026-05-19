@@ -1,10 +1,7 @@
-import { toast } from "react-toastify";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { BookingService } from "../api/bookingService";
 
-const onDefaultError = (err) => {
-  toast.error(err);
-};
+const onDefaultError = () => {};
 
 /**
  * Custom hook for adding a Booking entry.

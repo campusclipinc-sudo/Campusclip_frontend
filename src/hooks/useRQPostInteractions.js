@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
 
 import {
   addComment,
@@ -46,11 +45,9 @@ export const useToggleLike = () => {
       return { previousLikes };
     },
     onError: (error, { post_id }, context) => {
-      // Rollback on error
       if (context?.previousLikes) {
         queryClient.setQueryData(['postLikes', post_id], context.previousLikes);
       }
-      toast.error(error?.response?.data?.message || 'Failed to update like');
     },
     onSuccess: (data, { post_id }) => {
       // Invalidate to refetch and sync with server
@@ -95,11 +92,9 @@ export const useAddComment = () => {
       return { previousComments };
     },
     onError: (error, { post_id }, context) => {
-      // Rollback on error
       if (context?.previousComments) {
         queryClient.setQueryData(['postComments', post_id], context.previousComments);
       }
-      toast.error(error?.response?.data?.message || 'Failed to add comment');
     },
     onSuccess: (data, { post_id }) => {
       // Invalidate to refetch and sync with server
@@ -137,9 +132,6 @@ export const useUpdateComment = () => {
       const post_id = data.data.comment.post_id;
       queryClient.invalidateQueries({ queryKey: ['postComments', post_id] });
     },
-    onError: (error) => {
-      toast.error(error?.response?.data?.message || 'Failed to update comment');
-    },
   });
 };
 
@@ -156,9 +148,6 @@ export const useDeleteComment = () => {
       const post_id = data.data.post_id;
       queryClient.invalidateQueries({ queryKey: ['postComments', post_id] });
       queryClient.invalidateQueries({ queryKey: ['userFeed'] });
-    },
-    onError: (error) => {
-      toast.error(error?.response?.data?.message || 'Failed to delete comment');
     },
   });
 };

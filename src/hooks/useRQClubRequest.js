@@ -1,12 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import ClubRequestService from "../api/clubRequestService";
 
-const defaultOnError = (err) => {
-  const message =
-    err?.response?.data?.message || err?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 const useRequestClub = (onSuccess, onError = defaultOnError) => {
   return useMutation({

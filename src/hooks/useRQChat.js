@@ -1,12 +1,7 @@
 import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
 import ChatService from '../api/chatService';
 
-const defaultOnError = (error) => {
-  const message =
-    error?.response?.data?.message || error?.message || 'Request failed';
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 /**
  * Hook to get group chat history (infinite scroll)

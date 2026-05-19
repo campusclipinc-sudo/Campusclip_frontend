@@ -1,14 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import { NotificationService } from "../api/notificationService";
 import UserFollowingService from "../api/userFollowingService";
 import ClubRequestService from "../api/clubRequestService";
 
-const defaultOnError = (err) => {
-  const message =
-    err?.response?.data?.message || err?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 // Get all notifications for the current user
 export const useGetUserNotifications = (

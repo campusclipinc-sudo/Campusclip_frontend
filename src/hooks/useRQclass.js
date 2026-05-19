@@ -1,11 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import ClassService from "../api/classService";
 
-const defaultError = (err) => {
-  const message = err?.response?.data?.message;
-  toast.error(message);
-};
+const defaultError = () => {};
 
 const useUploadClass = (onSuccess, onError = defaultError) => {
   return useMutation({

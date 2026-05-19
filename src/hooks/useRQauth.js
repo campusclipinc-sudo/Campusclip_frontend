@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { UserService } from "../api/authService";
 
@@ -6,9 +5,7 @@ import { UserService } from "../api/authService";
  * Default error handler to display error messages using react-toastify.
  * @param {object} err - The error object from the mutation.
  */
-const defaultError = (err) => {
-  toast.error(err.response.data.message);
-};
+const defaultError = () => {};
 
 const useUserLogin = (onSuccess, onError = defaultError) => {
   return useMutation({

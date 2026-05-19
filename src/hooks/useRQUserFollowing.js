@@ -1,12 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import UserFollowingService from "../api/userFollowingService";
 
-const defaultOnError = (err) => {
-  const message =
-    err?.response?.data?.message || err?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 // User following hooks
 export const useToggleFollow = (onSuccess, onError = defaultOnError) => {

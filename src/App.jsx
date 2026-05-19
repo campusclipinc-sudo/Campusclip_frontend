@@ -21,7 +21,17 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+    mutations: {
+      retry: 0,
+    },
+  },
+});
 
 const handleOnBeforeLift = () => {
   if (

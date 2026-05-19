@@ -1,12 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import * as eventInteractionService from "../api/eventInteractionService";
 
-const defaultError = (err) => {
-  const message =
-    err?.response?.data?.message || err?.message || "An error occurred";
-  toast.error(message);
-};
+const defaultError = () => {};
 
 /**
  * Hook to toggle like on an event

@@ -158,9 +158,6 @@ const AddClassModal = ({ show, onHide }) => {
             });
             setShowEnrollmentSuccess(true);
           } else {
-            toast.success(
-              `Successfully added ${classData?.class_name || "class"}!`
-            );
             setTimeout(() => {
               onHide && onHide();
               navigate("/dashboard");
@@ -272,7 +269,6 @@ const AddClassModal = ({ show, onHide }) => {
         });
 
         refetch();
-        toast.success(`Successfully added ${res.data?.class_name || "class"}!`);
       } catch (error) {
         const errorMessage =
           error?.response?.data?.message || "Failed to add class";
@@ -359,9 +355,6 @@ const AddClassModal = ({ show, onHide }) => {
     }
 
     if (successCount > 0 && failureCount === 0) {
-      toast.success(
-        `Successfully added ${successCount} class${successCount > 1 ? "es" : ""}!`
-      );
       setTimeout(() => {
         onHide && onHide();
         navigate("/dashboard");

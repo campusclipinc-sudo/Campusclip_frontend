@@ -1,12 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import StudentService from "../api/studentService";
 
-const defaultOnError = (err) => {
-  const message =
-    err?.response?.data?.message || err?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 const useListAllStudents = (params = {}, onSuccess, onError = defaultOnError) => {
   return useQuery({

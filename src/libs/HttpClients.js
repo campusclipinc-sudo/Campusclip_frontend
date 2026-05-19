@@ -3,11 +3,24 @@ import { toast } from "react-toastify";
 
 const client = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}/api`,
-  timeout: 10000000,
+  timeout: 30000,
   headers: {
     "content-type": "application/json",
   },
 });
+
+let lastErrorTime = 0;
+let lastErrorMessage = "";
+const ERROR_DEBOUNCE_MS = 2000;
+
+const showErrorOnce = (message) => {
+  const now = Date.now();
+  if (now - lastErrorTime > ERROR_DEBOUNCE_MS || message !== lastErrorMessage) {
+    lastErrorTime = now;
+    lastErrorMessage = message;
+    toast.error(message);
+  }
+};
 
 client.interceptors.request.use(
   (reqConfig) => {
@@ -25,7 +38,7 @@ client.interceptors.response.use(
   },
   async (err) => {
     const status = err?.response?.status;
-    const message = err?.response?.data?.message || "API Error";
+    const message = err?.response?.data?.message || "Server error";
     const errorData = err?.response?.data;
 
     // Check for AI/quota limit errors
@@ -47,9 +60,11 @@ client.interceptors.response.use(
         window.location.href = "/login";
       }
     } else if (isAILimitError) {
-      toast.error("AI processing limit reached. Please contact your organization for more quota.");
+      showErrorOnce("AI processing limit reached. Please contact your organization for more quota.");
+    } else if (!status || status >= 500) {
+      showErrorOnce("Server is temporarily unavailable. Please try again later.");
     } else {
-      toast.error(message);
+      showErrorOnce(message);
     }
 
     return Promise.reject(err);

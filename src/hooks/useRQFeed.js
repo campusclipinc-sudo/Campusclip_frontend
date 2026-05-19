@@ -1,12 +1,7 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import feedService from "../api/feedService";
-import { toast } from "react-toastify";
 
-const defaultOnError = (error) => {
-  const message =
-    error?.response?.data?.message || error?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 /**
  * Hook to fetch user's personalized feed

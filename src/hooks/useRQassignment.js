@@ -1,12 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import AssignmentService from "../api/assignmentService";
 
-const defaultOnError = (err) => {
-  const message =
-    err?.response?.data?.message || err?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 const useListAssignments = (params, onSuccess, onError = defaultOnError) => {
   return useQuery({

@@ -1,11 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import SearchService from "../api/searchService";
 
-const defaultError = (err) => {
-  const message = err?.response?.data?.message;
-  toast.error(message);
-};
+const defaultError = () => {};
 
 /**
  * Universal search hook

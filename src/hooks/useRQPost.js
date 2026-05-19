@@ -1,12 +1,7 @@
 import { useQuery, useMutation, useInfiniteQuery } from "@tanstack/react-query";
 import postService from "../api/postService";
-import { toast } from "react-toastify";
 
-const defaultOnError = (error) => {
-  const message =
-    error?.response?.data?.message || error?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 export const useListPosts = (params, onSuccess, onError = defaultOnError) => {
   return useQuery({

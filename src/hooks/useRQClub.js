@@ -1,12 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import ClubService from "../api/clubService";
 
-const defaultOnError = (err) => {
-  const message =
-    err?.response?.data?.message || err?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 const useListClubs = (params, onSuccess, onError = defaultOnError) => {
   return useQuery({

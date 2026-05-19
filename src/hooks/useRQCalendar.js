@@ -1,13 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import CalendarService from "../api/calendarService";
 import GoogleCalendarService from "../api/googleCalendarService";
-import { toast } from "react-toastify";
 
-const defaultOnError = (error) => {
-  const message =
-    error?.response?.data?.message || error?.message || "Request failed";
-  toast.error(message);
-};
+const defaultOnError = () => {};
 
 /**
  * Calculate start and end dates for a given month

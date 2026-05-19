@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArchiveService } from "../api/archiveService";
 
@@ -6,9 +5,7 @@ import { ArchiveService } from "../api/archiveService";
  * Default error handler to display error messages using react-toastify.
  * @param {object} err - The error object from the mutation.
  */
-const defaultError = (err) => {
-  toast.error(err?.response?.data?.message || "An error occurred");
-};
+const defaultError = () => {};
 
 /**
  * Hook to get all archives for the user
