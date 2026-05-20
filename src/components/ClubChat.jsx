@@ -621,11 +621,6 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
                         <span className="club-chat-message-sender">{senderName}</span>
                       )}
                       <span className="club-chat-message-time">{formatTime(msg.created_at)}</span>
-                      {msg.status === "sending" && (
-                        <span className="ms-2" style={{ fontSize: "12px", color: "#65676b" }}>
-                          sending...
-                        </span>
-                      )}
                       {msg.status === "retry" && (
                         <span className="ms-2" style={{ fontSize: "12px", color: "#f5a623" }}>
                           retry {msg.retryCount}/{3}

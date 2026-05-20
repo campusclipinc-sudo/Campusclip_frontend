@@ -495,6 +495,32 @@
 // Emoji picker
 .emoji-picker-wrapper {
   position: relative;
+
+  /* Hide emoji picker search field - multiple targeting methods */
+  .epr-search-container,
+  .epr-search-container input,
+  .epr-icn-search,
+  .epr-btn-clear-search {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Also hide by parent container if needed */
+  [class*="epr-header"] {
+    .epr-search-container {
+      display: none !important;
+    }
+  }
+
+  /* Hide skin tone color picker */
+  .epr-skin-tones,
+  .epr-skin-tone-select {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+  }
 }
 
 .emoji-picker-container {
@@ -623,6 +649,13 @@
     bottom: 60px;
     right: 10px;
     max-width: 92vw;
+    width: 280px;
+    height: 360px;
+  }
+
+  .epr-main {
+    width: 280px !important;
+    height: 360px !important;
   }
 
   @media (max-width: 480px) {
@@ -670,6 +703,22 @@
     .class-chat-send-btn {
       width: 34px;
       height: 34px;
+    }
+
+    /* Mobile emoji picker - full width, reduced height */
+    .emoji-picker-container {
+      position: fixed;
+      bottom: 50px;
+      right: 8px;
+      left: 8px;
+      width: auto !important;
+      max-width: calc(100vw - 16px);
+      height: 280px !important;
+    }
+
+    .epr-main {
+      width: 100% !important;
+      height: 280px !important;
     }
   }
 }

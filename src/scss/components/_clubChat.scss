@@ -379,6 +379,64 @@
 
 .emoji-picker-wrapper {
   position: relative;
+
+  /* Hide emoji picker search field - multiple targeting methods */
+  .epr-search-container,
+  .epr-search-container input,
+  .epr-icn-search,
+  .epr-btn-clear-search {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Also hide by parent container if needed */
+  [class*="epr-header"] {
+    .epr-search-container {
+      display: none !important;
+    }
+  }
+
+  /* Hide skin tone color picker */
+  .epr-skin-tones,
+  .epr-skin-tone-select {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+  }
+
+  .emoji-picker-container {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    z-index: 1000;
+
+    /* Desktop default */
+    @media (min-width: 769px) {
+      width: 320px;
+      height: 400px;
+    }
+
+    /* Tablet */
+    @media (max-width: 768px) {
+      width: 280px;
+      height: 360px;
+      bottom: 45px;
+      right: -20px;
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      position: fixed;
+      bottom: 60px;
+      right: 10px;
+      left: 10px;
+      width: auto;
+      height: 300px;
+      max-width: calc(100vw - 20px);
+    }
+  }
 }
 
 .club-chat-emoji-btn,
@@ -450,8 +508,8 @@
 @media (max-width: 768px) {
   .club-chat-container {
     height: auto;
-    min-height: 250px;
-    max-height: 60vh;
+    min-height: 400px;
+    max-height: 70vh;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -527,10 +585,21 @@
     min-height: 36px;
   }
 
+  /* Tablet emoji picker adjustments */
+  .emoji-picker-wrapper .emoji-picker-container {
+    width: 280px !important;
+    height: 360px !important;
+  }
+
+  .epr-main {
+    width: 280px !important;
+    height: 360px !important;
+  }
+
   @media (max-width: 480px) {
     .club-chat-container {
-      max-height: 55vh;
-      min-height: 230px;
+      max-height: 65vh;
+      min-height: 380px;
     }
 
     .club-chat-header {
@@ -567,6 +636,22 @@
     .club-chat-send-btn {
       width: 34px;
       height: 34px;
+    }
+
+    /* Mobile emoji picker - smaller dimensions */
+    .emoji-picker-wrapper .emoji-picker-container {
+      position: fixed;
+      bottom: 55px;
+      right: 8px;
+      left: 8px;
+      width: auto !important;
+      max-width: calc(100vw - 16px);
+      height: 280px !important;
+    }
+
+    .epr-main {
+      width: 100% !important;
+      height: 280px !important;
     }
   }
 }
