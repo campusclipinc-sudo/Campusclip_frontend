@@ -6,6 +6,43 @@ import { io } from "socket.io-client";
  */
 
 let socket = null;
+let connectionStatus = 'disconnected'; // Track connection state
+let connectionStatusCallbacks = []; // Callbacks for connection status changes
+
+/**
+ * Register callback for connection status changes
+ * @param {Function} callback - Function to call on status change
+ * @returns {Function} Cleanup function
+ */
+export const onConnectionStatusChange = (callback) => {
+  connectionStatusCallbacks.push(callback);
+  // Immediately call with current status
+  callback(connectionStatus);
+
+  // Return cleanup function
+  return () => {
+    connectionStatusCallbacks = connectionStatusCallbacks.filter(cb => cb !== callback);
+  };
+};
+
+/**
+ * Get current connection status
+ * @returns {string} Connection status: 'connected', 'connecting', 'disconnected'
+ */
+export const getConnectionStatus = () => {
+  return connectionStatus;
+};
+
+/**
+ * Update connection status and notify all listeners
+ * @param {string} newStatus - New connection status
+ */
+const setConnectionStatus = (newStatus) => {
+  if (connectionStatus !== newStatus) {
+    connectionStatus = newStatus;
+    connectionStatusCallbacks.forEach(callback => callback(newStatus));
+  }
+};
 
 /**
  * Initialize Socket.io connection
@@ -18,8 +55,9 @@ export const initializeSocket = (token) => {
     return socket;
   }
 
-  // If socket exists but is disconnected or connecting, don't create a new one yet
+  // If socket exists but is disconnected, attempt to reconnect
   if (socket && !socket.connected) {
+    socket.connect();
     return socket;
   }
 
@@ -35,14 +73,32 @@ export const initializeSocket = (token) => {
     reconnectionAttempts: Infinity,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
+    reconnectionDelayGrowth: 1.2,
   });
 
   socket.on("connect", () => {
-    // Socket connected
+    console.log('Socket connected:', socket.id);
+    setConnectionStatus('connected');
   });
 
   socket.on("disconnect", (reason) => {
-    // Socket disconnected
+    console.warn('Socket disconnected:', reason);
+    setConnectionStatus('disconnected');
+  });
+
+  socket.on("reconnect_attempt", () => {
+    console.log('Socket reconnection attempt...');
+    setConnectionStatus('connecting');
+  });
+
+  socket.on("reconnect", () => {
+    console.log('Socket reconnected');
+    setConnectionStatus('connected');
+  });
+
+  socket.on("reconnect_error", (error) => {
+    console.error('Socket reconnection error:', error);
+    setConnectionStatus('disconnected');
   });
 
   socket.on("error", (error) => {
@@ -51,6 +107,7 @@ export const initializeSocket = (token) => {
 
   socket.on("connect_error", (error) => {
     console.error('Socket connection error:', error.message);
+    setConnectionStatus('disconnected');
   });
 
   return socket;
@@ -143,4 +200,6 @@ export default {
   subscribeToPostLikes,
   subscribeToPostComments,
   subscribeToNewMessages,
+  onConnectionStatusChange,
+  getConnectionStatus,
 };

@@ -56,7 +56,6 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
   const classNotifications = useSelector(selectClassNotifications);
-  console.log("Class notifications:", classNotifications); // Debugging log
   // Get authentication status from Redux
   const isAuthenticated = useSelector((state) => state.user?.isLogin);
 
@@ -67,11 +66,8 @@ const Dashboard = () => {
     error: fcmError,
   } = useFCM(isAuthenticated);
 
-  // Log FCM status for debugging
+  // Log FCM errors if they occur
   useEffect(() => {
-    if (fcmToken) {
-      console.log("✅ FCM token registered successfully");
-    }
     if (fcmError) {
       console.error("❌ FCM error:", fcmError);
     }

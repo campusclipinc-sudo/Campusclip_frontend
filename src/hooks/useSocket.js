@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   initializeSocket,
   disconnectSocket,
   subscribeToPostLikes,
   subscribeToPostComments,
+  getSocket,
+  onConnectionStatusChange,
+  getConnectionStatus,
 } from "../utils/socket";
 
 /**
@@ -20,9 +23,51 @@ export const useSocketConnection = (token) => {
     const socket = initializeSocket(token);
 
     return () => {
-      disconnectSocket();
+      // Don't disconnect on component unmount - keep connection alive
+      // Only disconnect when user logs out (token becomes null)
     };
   }, [token]);
+};
+
+/**
+ * Hook to monitor connection status and ensure socket is connected
+ * Automatically attempts to reconnect if disconnected
+ * @param {string} token - JWT access token (optional)
+ * @returns {Object} { isConnected, status }
+ */
+export const useSocketStatus = (token) => {
+  const [isConnected, setIsConnected] = useState(() => getConnectionStatus() === 'connected');
+  const [status, setStatus] = useState(() => getConnectionStatus());
+
+  // Subscribe to connection status changes
+  useEffect(() => {
+    const unsubscribe = onConnectionStatusChange((newStatus) => {
+      setStatus(newStatus);
+      setIsConnected(newStatus === 'connected');
+    });
+
+    return () => {
+      if (typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
+    };
+  }, []);
+
+  // Attempt to reconnect if disconnected and we have a token
+  useEffect(() => {
+    if (!token) return;
+
+    if (!isConnected) {
+      const socket = getSocket();
+      if (socket && !socket.connected) {
+        socket.connect();
+      } else if (!socket) {
+        initializeSocket(token);
+      }
+    }
+  }, [isConnected, token]);
+
+  return { isConnected, status };
 };
 
 /**

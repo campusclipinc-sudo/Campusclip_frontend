@@ -24,7 +24,6 @@ const showErrorOnce = (message) => {
 
 client.interceptors.request.use(
   (reqConfig) => {
-    console.log("Request:", reqConfig.url, reqConfig.method);
     return reqConfig;
   },
   (err) => {
@@ -35,7 +34,6 @@ client.interceptors.request.use(
 
 client.interceptors.response.use(
   (response) => {
-    console.log("Response Success:", response.status, response.config.url);
     return response;
   },
   async (err) => {

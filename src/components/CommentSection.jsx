@@ -10,6 +10,8 @@ import {
 } from "react-bootstrap";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useGetProfile } from "../hooks/useRQauth";
 import {
   useAddComment,
@@ -76,7 +78,8 @@ const CommentItem = ({ comment, currentUserId, isEvent = false }) => {
   };
 
   const getUserName = () => {
-    return comment.user?.name || comment.user?.full_name || "User";
+    if (!comment.user) return "Unknown User";
+    return comment.user?.name || comment.user?.full_name || comment.user?.username || "Unknown User";
   };
 
   const getInitials = () => {
@@ -121,8 +124,10 @@ const CommentItem = ({ comment, currentUserId, isEvent = false }) => {
             )}
             <div className="flex-grow-1">
               <div className="d-flex align-items-center gap-1 mb-1 flex-wrap">
-                <strong>{comment.user.name || comment.user.full_name}</strong>
-                <span className="small">@{comment.user.username}</span>
+                <strong>{getUserName()}</strong>
+                {comment.user?.username && (
+                  <span className="small">@{comment.user.username}</span>
+                )}
                 <span className="small">
                   {formatDistanceToNow(new Date(comment.created_at), {
                     addSuffix: true,
@@ -239,7 +244,6 @@ const CommentSection = ({
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [page, setPage] = useState(1);
-  const [originalPostImageError, setOriginalPostImageError] = useState(false);
   const [currentUserImageError, setCurrentUserImageError] = useState(false);
   const { data: currentUserProfile } = useGetProfile();
   const currentUser = currentUserProfile?.data || currentUserProfile;
@@ -319,18 +323,6 @@ const CommentSection = ({
     setPage(1);
   };
 
-  const getAuthorName = () => {
-    if (isEvent) {
-      return postData?.club?.name || postData?.author?.name || "Unknown";
-    }
-    return postData?.author?.full_name || "Unknown User";
-  };
-  const getAuthorUsername = () => {
-    if (isEvent) {
-      return postData?.club?.username || "";
-    }
-    return postData?.author?.username || "";
-  };
 
   return (
     <>
@@ -398,65 +390,6 @@ const CommentSection = ({
           </div>
         </Modal.Header>
         <Modal.Body className="comment-modal-body">
-          {/* Original Post/Event Preview */}
-          {postData && (
-            <div className="comment-modal-original-post">
-              <div className="d-flex gap-3">
-                <div className="flex-shrink-0">
-                  {(postData.author?.profile_image ||
-                    postData.club?.club_profile_image) &&
-                  !originalPostImageError ? (
-                    <Image
-                      src={
-                        postData.author?.profile_image ||
-                        postData.club?.club_profile_image
-                      }
-                      alt={getAuthorName()}
-                      roundedCircle
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        objectFit: "cover",
-                      }}
-                      onError={() => setOriginalPostImageError(true)}
-                    />
-                  ) : (
-                    <div
-                      className="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white"
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        fontSize: "16px",
-                      }}
-                    >
-                      {getAuthorName()[0]?.toUpperCase() || "U"}
-                    </div>
-                  )}
-                </div>
-                <div className="flex-grow-1">
-                  <div className="d-flex align-items-center gap-2 mb-1">
-                    <strong>{getAuthorName()}</strong>
-                    {getAuthorUsername() && (
-                      <span className="small">@{getAuthorUsername()}</span>
-                    )}
-                  </div>
-                  {postData.content && (
-                    <p className="mb-2">{postData.content}</p>
-                  )}
-                  {isEvent && postData.description && (
-                    <p className="mb-2">{postData.description}</p>
-                  )}
-                  <div className="mb-2">
-                    Replying to{" "}
-                    {getAuthorUsername()
-                      ? `@${getAuthorUsername()}`
-                      : getAuthorName()}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Comment Input */}
           <div className="comment-modal-input">
             <div className="d-flex">
@@ -494,12 +427,8 @@ const CommentSection = ({
                     disabled={addCommentMutation.isPending}
                     className="comment-textarea"
                   />
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="d-flex gap-2">
-                      {/* Media icons can be added here */}
-                    </div>
+                  <div className="d-flex justify-content-end align-items-center">
                     <div className="d-flex align-items-center gap-2">
-                      <small>{commentText.length}/2000</small>
                       <Button
                         variant="primary"
                         onClick={handleAddComment}
@@ -507,11 +436,12 @@ const CommentSection = ({
                           addCommentMutation.isPending || !commentText.trim()
                         }
                         className="comment-submit-btn"
+                        title="Send comment"
                       >
                         {addCommentMutation.isPending ? (
                           <Spinner animation="border" size="sm" />
                         ) : (
-                          "Reply"
+                          <FontAwesomeIcon icon={faPaperPlane} />
                         )}
                       </Button>
                     </div>

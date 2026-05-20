@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChannelNotificationService from '../api/channelNotificationService';
-import { getSocket } from '../utils/socket';
+import { getSocket, onConnectionStatusChange } from '../utils/socket';
 import {
   resetNotificationSummary,
   setNotificationSummary,
@@ -49,10 +49,11 @@ const NotificationStateProvider = ({ children }) => {
 
     let retryTimeout = null;
     let cleanup = () => {};
+    let unsubscribeFromConnectionStatus = null;
 
     const attachListener = () => {
       const socket = getSocket();
-      if (!socket) {
+      if (!socket || !socket.connected) {
         retryTimeout = window.setTimeout(attachListener, 300);
         return;
       }
@@ -69,9 +70,22 @@ const NotificationStateProvider = ({ children }) => {
 
     attachListener();
 
+    // Re-attach listener when socket reconnects
+    unsubscribeFromConnectionStatus = onConnectionStatusChange((status) => {
+      if (status === 'connected') {
+        // Clear existing cleanup
+        cleanup();
+        // Re-attach listener
+        attachListener();
+      }
+    });
+
     return () => {
       if (retryTimeout) {
         window.clearTimeout(retryTimeout);
+      }
+      if (unsubscribeFromConnectionStatus) {
+        unsubscribeFromConnectionStatus();
       }
       cleanup();
     };

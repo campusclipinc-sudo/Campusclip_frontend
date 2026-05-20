@@ -12,6 +12,7 @@ export const useToggleFollow = (onSuccess, onError = defaultOnError) => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["all-students"] });
       queryClient.invalidateQueries({ queryKey: ["feed"] });
+      queryClient.invalidateQueries({ queryKey: ["feed-infinite"] });
       queryClient.invalidateQueries({ queryKey: ["followers"] });
       queryClient.invalidateQueries({ queryKey: ["following"] });
       if (onSuccess) onSuccess(data);
@@ -35,6 +36,8 @@ export const useAcceptFollowRequest = (onSuccess, onError = defaultOnError) => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["pending-requests"] });
       queryClient.invalidateQueries({ queryKey: ["followers"] });
+      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      queryClient.invalidateQueries({ queryKey: ["feed-infinite"] });
       if (onSuccess) onSuccess(data);
     },
     onError,

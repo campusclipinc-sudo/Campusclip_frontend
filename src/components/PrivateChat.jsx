@@ -9,6 +9,7 @@ import {
   useMarkAsRead,
 } from "../hooks/useRQChat";
 import { getSocket } from "../utils/socket";
+import { useSocketStatus } from "../hooks/useSocket";
 
 const PrivateChat = ({ recipientId, recipientName, recipientImage, onBack }) => {
   const navigate = useNavigate();
@@ -28,6 +29,13 @@ const PrivateChat = ({ recipientId, recipientName, recipientImage, onBack }) => 
 
   const currentUser = useSelector((state) => state.user?.user);
   const userId = currentUser?.id;
+  const token = useSelector((state) => {
+    // Try multiple possible token locations in Redux store
+    return state.auth?.token || state.auth?.accessToken || state.user?.accessToken || null;
+  });
+
+  // Monitor socket connection status
+  const { isConnected } = useSocketStatus(token);
 
   const {
     data: chatData,
@@ -72,8 +80,20 @@ const PrivateChat = ({ recipientId, recipientName, recipientImage, onBack }) => 
           scrollToBottom();
           markAsReadMutation.mutate({ recipient_id: recipientId });
         }, 0);
+        return uniqueMessages;
       }
-      return uniqueMessages;
+
+      // For subsequent updates, merge API data with manually-added messages (temp + sending)
+      // Preserve temp messages (with tempId) and only update messages that came from API
+      return prevMessages.map((msg) => {
+        // Keep temp/pending messages as-is
+        if (msg.id.toString().startsWith('pending-')) {
+          return msg;
+        }
+        // For API messages, update from the fetched data if available
+        const updatedMsg = uniqueMessages.find((m) => m.id === msg.id);
+        return updatedMsg || msg;
+      });
     });
   }, [chatData?.pages, recipientId]);
 
@@ -125,15 +145,32 @@ const PrivateChat = ({ recipientId, recipientName, recipientImage, onBack }) => 
   // Socket.io real-time message updates
   useEffect(() => {
     const socket = getSocket();
-    if (!socket || !recipientId) return;
+    if (!socket || !recipientId || !isConnected) return;
 
     socket.emit("chat:start", { recipientId });
 
     const handleNewMessage = (data) => {
       if (data.fromUserId === recipientId) {
         setMessages((prev) => {
-          // Prevent duplicates
-          if (prev.some((m) => m.id === data.id)) return prev;
+          // Check if message already exists by real ID or by sender + content
+          const isDuplicate = prev.some((m) =>
+            m.id === data.id ||
+            (m.from_user_id === data.from_user_id &&
+             m.message === data.message &&
+             m.id.toString().startsWith('pending-'))
+          );
+
+          if (isDuplicate) {
+            // Replace temp message with real message
+            return prev.map((msg) =>
+              msg.from_user_id === data.from_user_id &&
+              msg.message === data.message &&
+              msg.id.toString().startsWith('pending-')
+                ? data // Replace temp with real
+                : msg
+            );
+          }
+
           return [...prev, data];
         });
         setScrollLocked(false); // Auto-scroll on new messages
@@ -165,7 +202,7 @@ const PrivateChat = ({ recipientId, recipientName, recipientImage, onBack }) => 
       socket.off("chat:user-stopped-typing", handleUserStoppedTyping);
       socket.emit("chat:leave", { recipientId });
     };
-  }, [recipientId, userId]);
+  }, [recipientId, userId, isConnected]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -204,43 +241,29 @@ const PrivateChat = ({ recipientId, recipientName, recipientImage, onBack }) => 
 
     const sendMessageWithRetry = async (retryCount = 0) => {
       try {
-        const response = await sendMessageMutation.mutateAsync(messageData);
-
-        // Extract the actual message object from response
-        const serverMessage = response?.data ? response.data : response;
-
-        if (!serverMessage || !serverMessage.id) {
-          throw new Error("Invalid server response: missing message ID");
+        // Emit via socket to save and broadcast message
+        const socket = getSocket();
+        if (!socket) {
+          throw new Error("Socket not connected");
         }
 
-        // Replace temp message with server response (real ID)
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === tempId
-              ? { ...serverMessage, status: "sent" }
-              : msg
-          )
-        );
+        socket.emit("chat:message", {
+          recipientId,
+          message: messageText,
+        });
 
+        socket.emit("chat:stop-typing", { recipientId });
+        if (typingTimeoutRef.current) {
+          clearTimeout(typingTimeoutRef.current);
+        }
+
+        // Message will arrive via socket handler
         // Remove from pending messages
         setPendingMessages((prev) => {
           const newMap = new Map(prev);
           newMap.delete(tempId);
           return newMap;
         });
-
-        // Emit via socket for real-time delivery to other user's browser
-        const socket = getSocket();
-        if (socket) {
-          socket.emit("chat:message", {
-            recipientId,
-            message: messageText,
-          });
-          socket.emit("chat:stop-typing", { recipientId });
-          if (typingTimeoutRef.current) {
-            clearTimeout(typingTimeoutRef.current);
-          }
-        }
       } catch (error) {
         console.error(`Failed to send message (attempt ${retryCount + 1}):`, error);
 

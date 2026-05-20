@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import EmojiPicker from "emoji-picker-react";
 import { useGetGroupChatHistory, useSendMessage } from "../hooks/useRQChat";
 import { getSocket } from "../utils/socket";
+import { useSocketStatus } from "../hooks/useSocket";
 
 const ClubChat = ({ roomId, clubName, clubId }) => {
   const navigate = useNavigate();
@@ -30,6 +31,13 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
 
   const currentUser = useSelector((state) => state.user?.user);
   const currentUserId = currentUser?.id;
+  const token = useSelector((state) => {
+    // Try multiple possible token locations in Redux store
+    return state.auth?.token || state.auth?.accessToken || state.user?.accessToken || null;
+  });
+
+  // Monitor socket connection status
+  const { isConnected } = useSocketStatus(token);
 
   const {
     data: chatData,
@@ -75,8 +83,20 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
         setTimeout(() => {
           scrollToBottom();
         }, 0);
+        return uniqueMessages;
       }
-      return uniqueMessages;
+
+      // For subsequent updates, merge API data with manually-added messages (temp + sending)
+      // Preserve temp messages (with tempId) and only update messages that came from API
+      return prevMessages.map((msg) => {
+        // Keep temp/pending messages as-is
+        if (msg.id.toString().startsWith('pending-')) {
+          return msg;
+        }
+        // For API messages, update from the fetched data if available
+        const updatedMsg = uniqueMessages.find((m) => m.id === msg.id);
+        return updatedMsg || msg;
+      });
     });
   }, [chatData?.pages, roomId]);
 
@@ -124,7 +144,7 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
   // Socket.IO room join and messaging
   useEffect(() => {
     const socket = getSocket();
-    if (!socket || !roomId || !socketConnected) return;
+    if (!socket || !roomId || !isConnected) return;
 
     try {
       socket.emit("group:join", { roomId });
@@ -142,7 +162,25 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
     const handleMessageReceived = (data) => {
       if (data.roomId === roomId) {
         setMessages((prev) => {
-          if (prev.some((m) => m.id === data.id)) return prev;
+          // Check if message already exists by real ID or by sender + content
+          const isDuplicate = prev.some((m) =>
+            m.id === data.id ||
+            (m.from_user_id === data.from_user_id &&
+             m.message === data.message &&
+             m.id.toString().startsWith('pending-'))
+          );
+
+          if (isDuplicate) {
+            // Replace temp message with real message
+            return prev.map((msg) =>
+              msg.from_user_id === data.from_user_id &&
+              msg.message === data.message &&
+              msg.id.toString().startsWith('pending-')
+                ? data // Replace temp with real
+                : msg
+            );
+          }
+
           return [...prev, data];
         });
         setScrollLocked(false);
@@ -213,7 +251,7 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
         console.error("Error leaving room:", error);
       }
     };
-  }, [roomId, currentUserId, socketConnected]);
+  }, [roomId, currentUserId, isConnected]);
 
   const handleScroll = () => {
     if (!chatContainerRef.current) return;
@@ -303,22 +341,23 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
 
     const sendMessageWithRetry = async (retryCount = 0) => {
       try {
-        const response = await sendMessageMutation.mutateAsync(messageData);
-
-        // Extract the actual message object from response
-        const serverMessage = response?.data ? response.data : response;
-
-        if (!serverMessage || !serverMessage.id) {
-          throw new Error("Invalid server response: missing message ID");
+        // Emit via socket to save and broadcast message
+        const socket = getSocket();
+        if (!socket || !socketConnected) {
+          throw new Error("Socket not connected");
         }
 
-        // Replace temp message with server response (real ID)
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === tempId ? { ...serverMessage, status: "sent" } : msg
-          )
-        );
+        socket.emit("group:message", {
+          roomId,
+          message: messageText,
+        });
 
+        socket.emit("group:stop-typing", { roomId });
+        if (typingTimeoutRef.current) {
+          clearTimeout(typingTimeoutRef.current);
+        }
+
+        // Message will arrive via socket handler
         // Remove from pending messages
         setPendingMessages((prev) => {
           const newMap = new Map(prev);
@@ -327,24 +366,6 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
         });
 
         setSocketError(null);
-
-        // Emit via socket for real-time delivery
-        const socket = getSocket();
-        if (socket && socketConnected) {
-          try {
-            socket.emit("group:message", {
-              roomId,
-              message: messageText,
-            });
-            socket.emit("group:stop-typing", { roomId });
-            if (typingTimeoutRef.current) {
-              clearTimeout(typingTimeoutRef.current);
-            }
-          } catch (socketErr) {
-            console.error("Socket emit error:", socketErr);
-            // Socket emit failure doesn't affect persistence since message is already saved
-          }
-        }
       } catch (error) {
         console.error(`Failed to send message (attempt ${retryCount + 1}):`, error);
 

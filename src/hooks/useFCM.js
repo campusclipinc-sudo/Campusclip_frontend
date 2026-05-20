@@ -39,8 +39,6 @@ export const useFCM = (isAuthenticated = false) => {
 
           // Store token in localStorage for cleanup on logout
           localStorage.setItem("fcm_token", token);
-
-          console.log("FCM token saved successfully");
         }
       } catch (err) {
         console.error("Error initializing FCM:", err);

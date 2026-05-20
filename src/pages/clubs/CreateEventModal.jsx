@@ -251,7 +251,7 @@ const CreateEventModalContent = ({ show, onHide, clubId, onSubmit }) => {
                   </div>
                 </div>
 
-                <div className="mt-3">
+                {/* <div className="mt-3">
                   <Form.Check
                     type="switch"
                     id="paymentRequired"
@@ -265,9 +265,9 @@ const CreateEventModalContent = ({ show, onHide, clubId, onSubmit }) => {
                       }
                     }}
                   />
-                </div>
+                </div> */}
 
-                {values.paymentRequired && (
+                {/* {values.paymentRequired && (
                   <>
                     <div className="mt-3">
                       <TNInput
@@ -310,7 +310,7 @@ const CreateEventModalContent = ({ show, onHide, clubId, onSubmit }) => {
                       )}
                     </div>
                   </>
-                )}
+                )} */}
               </Form>
 
               <div className="cancel-add-btn d-flex justify-content-end mt-4">
