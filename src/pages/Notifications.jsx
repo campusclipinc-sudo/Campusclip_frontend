@@ -93,11 +93,20 @@ const Notifications = () => {
   };
 
   const handleNotificationClick = (notification) => {
-    // Handle follow/club requests - switch to requests tab
+    // Handle follow/club requests - switch to requests tab only for pending requests
     if (notification.notification_type === "follow_request") {
       setActiveTab("requests");
       return;
     } else if (notification.notification_type === "club_request") {
+      // For approved/rejected club requests, navigate to club page
+      if (
+        notification.related_entity_id &&
+        (notification.title.includes("Approved") || notification.title.includes("Rejected"))
+      ) {
+        navigate(`/clubs/${notification.related_entity_id}`);
+        return;
+      }
+      // For pending club requests, stay on requests tab
       setActiveTab("requests");
       return;
     }
@@ -437,9 +446,12 @@ const Notifications = () => {
                             </p>
                           )}
                           <div className="notification-meta">
-                            <span className="notification-type">
-                              {notification.notification_type.replace("_", " ")}
-                            </span>
+                            {!(notification.notification_type === "club_request" &&
+                              (notification.title.includes("Approved") || notification.title.includes("Rejected"))) && (
+                              <span className="notification-type">
+                                {notification.notification_type.replace("_", " ")}
+                              </span>
+                            )}
                             <span className="notification-time">
                               {formatDistanceToNow(
                                 new Date(notification.created_at),

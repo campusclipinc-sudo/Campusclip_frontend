@@ -19,6 +19,11 @@
       color: #aaaaaa;
     }
   }
+}
+
+// Portal popper styles
+.tn-datepicker-popper {
+  z-index: 10000 !important;
 
   .react-datepicker {
     font-family: inherit;
@@ -43,7 +48,6 @@
     margin-bottom: 8px;
   }
 
-  // Style the month and year dropdowns
   .react-datepicker__month-dropdown-container,
   .react-datepicker__year-dropdown-container {
     margin: 0 4px;

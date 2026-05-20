@@ -93,10 +93,10 @@ const Followers = () => {
 						<div className="followers-list">
 							{followers.map((follower) => (
 								<div
-									key={follower.id}
+									key={follower.follower?.id || follower.id}
 									className="follower-item"
 									onClick={() =>
-										navigate(`/students/${follower?.id || follower.id}`)
+										navigate(`/students/${follower.follower?.id || follower.id}`)
 									}
 									style={{ cursor: "pointer" }}
 								>

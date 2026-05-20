@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken, loginSuccess } from "../store/userSlice";
 import "../scss/Register.scss";
 import TNInput from "../component/TNInput";
-import { toast } from "react-toastify";
 import logo from "../assets/EmailLogo.png";
 
 const ProfileSetup = () => {
@@ -134,10 +133,6 @@ const ProfileSetup = () => {
                     error={formik.errors}
                     touched={formik.touched}
                   />
-                  <Form.Text className="">
-                    Start with a letter; letters, numbers, '.' and '_' allowed.
-                    No spaces. No consecutive '.' or '_'.
-                  </Form.Text>
                 </Col>
               </Row>
 
@@ -200,7 +195,7 @@ const ProfileSetup = () => {
 
               <Row>
                 <Col>
-                  <div className="privacy-row mt-3">
+                  <div className="privacy-row mt-3 mb-4">
                     <label className="form-label">Account Privacy</label>
                     <Form.Check
                       type="switch"
@@ -223,7 +218,7 @@ const ProfileSetup = () => {
               </Row>
 
               <Row>
-                <Col className="mt-3">
+                <Col>
                   <TNInput
                     label={"Birthday (Optional)"}
                     type="date"

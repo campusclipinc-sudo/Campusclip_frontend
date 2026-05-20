@@ -97,7 +97,7 @@ const Following = () => {
                 const target = isClub ? item.club : item.following;
                 return (
                   <div
-                    key={item.id}
+                    key={isClub ? item.following_club : (item.following?.id || item.id)}
                     className="following-item mb-2"
                     onClick={() =>
                       navigate(

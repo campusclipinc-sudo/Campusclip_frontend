@@ -5,6 +5,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { HelmetProvider } from "react-helmet-async";
 import PagesRoutes from "./routes/PagesRoutes";
 import { ToastContainer } from "react-toastify";
 import SocketProvider from "./components/SocketProvider";
@@ -53,26 +54,28 @@ function App() {
   }, []);
 
   return (
-    <Provider store={store}>
-      <PersistGate
-        loading={<LoadingSpinner />}
-        persistor={persistor}
-        onBeforeLift={handleOnBeforeLift}
-      >
-        <GoogleOAuthProvider clientId={googleClientId}>
-          <QueryClientProvider client={queryClient}>
-            <SocketProvider>
-              <NotificationStateProvider>
-                <BrowserRouter>
-                  <PagesRoutes />
-                  <ToastContainer />
-                </BrowserRouter>
-              </NotificationStateProvider>
-            </SocketProvider>
-          </QueryClientProvider>
-        </GoogleOAuthProvider>
-      </PersistGate>
-    </Provider>
+    <HelmetProvider>
+      <Provider store={store}>
+        <PersistGate
+          loading={<LoadingSpinner />}
+          persistor={persistor}
+          onBeforeLift={handleOnBeforeLift}
+        >
+          <GoogleOAuthProvider clientId={googleClientId}>
+            <QueryClientProvider client={queryClient}>
+              <SocketProvider>
+                <NotificationStateProvider>
+                  <BrowserRouter>
+                    <PagesRoutes />
+                    <ToastContainer />
+                  </BrowserRouter>
+                </NotificationStateProvider>
+              </SocketProvider>
+            </QueryClientProvider>
+          </GoogleOAuthProvider>
+        </PersistGate>
+      </Provider>
+    </HelmetProvider>
   );
 }
 

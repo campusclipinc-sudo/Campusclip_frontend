@@ -5,11 +5,14 @@ import { Form, Button, Spinner } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import { EnvelopeAt } from "react-bootstrap-icons";
 import TNInput from "../component/TNInput";
+import SEOHead from "../components/SEOHead";
+import { getMetadata } from "../utils/seoConfig";
 import "../scss/ForgotPassword.scss";
 import { toast } from "react-toastify";
 import { useForgotPassword } from "../hooks/index";
 
 const ForgotPassword = () => {
+  const metadata = getMetadata("forgotPassword");
   const navigate = useNavigate();
 
   const { mutate: forgot, isLoading } = useForgotPassword((res) => {
@@ -31,7 +34,9 @@ const ForgotPassword = () => {
   });
 
   return (
-    <div className="register-page auth-flow-page" role="main">
+    <>
+      <SEOHead {...metadata} />
+      <div className="register-page auth-flow-page" role="main">
       <div className="register-wrap">
         <div className="auth-column">
           <div
@@ -98,7 +103,8 @@ const ForgotPassword = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /feed
+Disallow: /chat
+Disallow: /notifications
+Disallow: /archive
+Disallow: /profile-setup
+Disallow: /select-class-count
+Disallow: /add-classes
+Disallow: /profile
+Disallow: /follow-requests
+Disallow: /calendar
+
+Sitemap: https://campusclip.com/sitemap.xml

@@ -1,5 +1,7 @@
 import React from "react";
 import { Modal, Button, Spinner, ListGroup, Badge } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import {
   useListClubRequests,
   useActionClubRequest,
@@ -68,19 +70,40 @@ const ClubRequestsModal = ({ show, onHide, clubId, clubName }) => {
             {requests.map((r) => (
               <ListGroup.Item
                 key={r.id}
-                className="d-flex align-items-center justify-content-between"
+                className="club-request-item d-flex align-items-center gap-3"
               >
-                <div className="d-flex align-items-center gap-3">
-                  <div className="club-avatar">
+                <div className="d-flex align-items-center gap-3 flex-grow-1">
+                  <div
+                    className="club-avatar"
+                    style={{
+                      backgroundColor: r?.requester?.profile_image ? "transparent" : "#f4f4f5",
+                      fontSize: r?.requester?.profile_image ? "0" : "1.125rem",
+                      fontWeight: r?.requester?.profile_image ? "0" : "bold",
+                      color: r?.requester?.profile_image ? "transparent" : "#212529",
+                    }}
+                  >
                     {r?.requester?.profile_image ? (
                       <img
                         src={r.requester.profile_image}
                         alt={r.requester.full_name}
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.parentElement.innerHTML = String(
+                            r?.requester?.full_name || r?.requester?.email || "U"
+                          )
+                            .charAt(0)
+                            .toUpperCase();
+                          e.target.parentElement.style.backgroundColor = "#f4f4f5";
+                          e.target.parentElement.style.fontSize = "1.125rem";
+                          e.target.parentElement.style.fontWeight = "bold";
+                          e.target.parentElement.style.color = "#212529";
+                        }}
                         style={{
                           width: "100%",
                           height: "100%",
                           objectFit: "cover",
-                          borderRadius: "inherit",
+                          borderRadius: "50%",
+                          display: "block",
                         }}
                       />
                     ) : (
@@ -89,34 +112,33 @@ const ClubRequestsModal = ({ show, onHide, clubId, clubName }) => {
                         .toUpperCase()
                     )}
                   </div>
-                  <div>
+                  <div className="flex-grow-1">
                     <div className="fw-semibold">
                       {r?.requester?.full_name || r?.requester?.email || "User"}
                     </div>
-                    <div className="small">{r?.requester?.email}</div>
                   </div>
-                </div>
-                <div className="d-flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline-secondary"
-                    disabled={isPending}
-                    onClick={() =>
-                      act({ request_id: r.id, status: "rejected" })
-                    }
-                  >
-                    {isPending ? "..." : "Reject"}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="primary"
-                    disabled={isPending}
-                    onClick={() =>
-                      act({ request_id: r.id, status: "approved" })
-                    }
-                  >
-                    {isPending ? "..." : "Approve"}
-                  </Button>
+                  <div className="d-flex gap-2 ms-auto ms-md-0">
+                    <Button
+                      disabled={isPending}
+                      onClick={() =>
+                        act({ request_id: r.id, status: "rejected" })
+                      }
+                      className="club-reject-btn-icon"
+                      title="Reject Request"
+                    >
+                      <FontAwesomeIcon icon={faXmark} />
+                    </Button>
+                    <Button
+                      disabled={isPending}
+                      onClick={() =>
+                        act({ request_id: r.id, status: "approved" })
+                      }
+                      className="club-approve-btn-icon"
+                      title="Approve Request"
+                    >
+                      <FontAwesomeIcon icon={faCheck} />
+                    </Button>
+                  </div>
                 </div>
               </ListGroup.Item>
             ))}

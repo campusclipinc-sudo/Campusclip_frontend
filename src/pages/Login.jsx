@@ -7,6 +7,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import AppleSignin from "react-apple-signin-auth";
 import { toast } from "react-toastify";
 import TNInput from "../component/TNInput";
+import SEOHead from "../components/SEOHead";
+import { getMetadata } from "../utils/seoConfig";
 import {
   useUserLogin,
   useGoogleLogin as useGoogleLoginMutation,
@@ -22,6 +24,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const LoginForm = () => {
+  const metadata = getMetadata("login");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -175,7 +178,9 @@ const LoginForm = () => {
   });
 
   return (
-    <div className="auth-split">
+    <>
+      <SEOHead {...metadata} />
+      <div className="auth-split">
       {/* Decorative background orbs */}
       <div className="bg-orb orb-1" />
       <div className="bg-orb orb-2" />
@@ -409,7 +414,8 @@ const LoginForm = () => {
           <div className="float-shape shape-3" />
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

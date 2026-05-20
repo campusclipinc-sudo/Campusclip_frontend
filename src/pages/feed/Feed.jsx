@@ -3,6 +3,8 @@ import { Spinner, Badge, Image, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow, format } from "date-fns";
 import DashboardLayout from "../../component/DashboardLayout";
+import SEOHead from "../../components/SEOHead";
+import { getMetadata } from "../../utils/seoConfig";
 import { useInfiniteUserFeed } from "../../hooks/useRQFeed";
 import { useGetProfile } from "../../hooks/useRQauth";
 import { useGetUnreadCount } from "../../hooks/useRQChat";
@@ -15,6 +17,7 @@ import "../../scss/feed.scss";
 
 
 const Feed = () => {
+  const metadata = getMetadata("feed");
   const navigate = useNavigate();
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [doubleClickLikeAnimation, setDoubleClickLikeAnimation] = useState(null);
@@ -147,7 +150,9 @@ const Feed = () => {
   };
 
   return (
-    <DashboardLayout>
+    <>
+      <SEOHead {...metadata} />
+      <DashboardLayout>
       <div className="feed-page-main">
         <div className="feed-page">
           <div className="feed-header" data-aos="fade-up">
@@ -725,7 +730,8 @@ const Feed = () => {
         onHide={() => setShowCreatePost(false)}
         onSuccess={handlePostCreated}
       />
-    </DashboardLayout>
+      </DashboardLayout>
+    </>
   );
 };
 

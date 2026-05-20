@@ -13,6 +13,7 @@ const ClassChat = ({ classId, className }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [typingUsers, setTypingUsers] = useState([]);
   const [scrollLocked, setScrollLocked] = useState(false);
+  const [pendingMessages, setPendingMessages] = useState(new Map()); // Track pending messages
 
   const chatContainerRef = useRef(null);
   const emojiPickerRef = useRef(null);
@@ -20,6 +21,7 @@ const ClassChat = ({ classId, className }) => {
   const typingTimeoutsRef = useRef({}); // Track timeout per userId
   const prevScrollHeightRef = useRef(0);
   const isLoadingMoreRef = useRef(false);
+  const retryTimeoutRef = useRef(null);
 
   const currentUser = useSelector((state) => state.user?.user);
   const currentUserId = currentUser?.id;
@@ -43,6 +45,10 @@ const ClassChat = ({ classId, className }) => {
   // Clear messages when switching to a different class
   useEffect(() => {
     setMessages([]);
+    setPendingMessages(new Map());
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current);
+    }
   }, [classId]);
 
   // Flatten all pages into a single messages array
@@ -187,7 +193,14 @@ const ClassChat = ({ classId, className }) => {
     if (!message.trim()) return;
 
     const messageText = message.trim();
-    const tempId = Date.now();
+    const tempId = `pending-${Date.now()}`;
+    const messageData = {
+      message: messageText,
+      room_id: roomId,
+      message_type: 'group',
+      media_type: 'text',
+    };
+
     const tempMessage = {
       id: tempId,
       message: messageText,
@@ -199,43 +212,91 @@ const ClassChat = ({ classId, className }) => {
         profile_image: currentUser.profile_image,
       },
       media_type: 'text',
+      status: 'sending',
+      retryCount: 0,
     };
 
     setMessages((prev) => [...prev, tempMessage]);
     setMessage('');
     setScrollLocked(false);
+    setPendingMessages((prev) => new Map(prev).set(tempId, { ...messageData, retryCount: 0 }));
 
-    try {
-      const response = await sendMessageMutation.mutateAsync({
-        message: messageText,
-        room_id: roomId,
-        message_type: 'group',
-        media_type: 'text',
-      });
+    const sendMessageWithRetry = async (retryCount = 0) => {
+      try {
+        const response = await sendMessageMutation.mutateAsync(messageData);
 
-      // Replace temp message with server response (real ID)
-      const serverMessage = response?.data || response;
-      if (serverMessage?.id) {
+        // Extract the actual message object from response
+        const serverMessage = response?.data ? response.data : response;
+
+        if (!serverMessage || !serverMessage.id) {
+          throw new Error('Invalid server response: missing message ID');
+        }
+
+        // Replace temp message with server response (real ID)
         setMessages((prev) =>
-          prev.map((msg) => (msg.id === tempId ? serverMessage : msg))
+          prev.map((msg) =>
+            msg.id === tempId ? { ...serverMessage, status: 'sent' } : msg
+          )
         );
-      }
 
-      const socket = getSocket();
-      if (socket) {
-        socket.emit('group:message', {
-          roomId,
-          message: messageText,
+        // Remove from pending messages
+        setPendingMessages((prev) => {
+          const newMap = new Map(prev);
+          newMap.delete(tempId);
+          return newMap;
         });
-        socket.emit('group:stop-typing', { roomId });
-        if (typingTimeoutRef.current) {
-          clearTimeout(typingTimeoutRef.current);
+
+        // Emit via socket for real-time delivery
+        const socket = getSocket();
+        if (socket) {
+          socket.emit('group:message', {
+            roomId,
+            message: messageText,
+          });
+          socket.emit('group:stop-typing', { roomId });
+          if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+          }
+        }
+      } catch (error) {
+        console.error(`Failed to send message (attempt ${retryCount + 1}):`, error);
+
+        const maxRetries = 3;
+        if (retryCount < maxRetries) {
+          // Schedule retry with exponential backoff (1s, 2s, 4s)
+          const delayMs = Math.pow(2, retryCount) * 1000;
+
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === tempId
+                ? { ...msg, status: 'retry', retryCount: retryCount + 1 }
+                : msg
+            )
+          );
+
+          retryTimeoutRef.current = setTimeout(() => {
+            sendMessageWithRetry(retryCount + 1);
+          }, delayMs);
+        } else {
+          // Final failure
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === tempId
+                ? { ...msg, status: 'failed', error: 'Failed to send after retries' }
+                : msg
+            )
+          );
+
+          setPendingMessages((prev) => {
+            const newMap = new Map(prev);
+            newMap.delete(tempId);
+            return newMap;
+          });
         }
       }
-    } catch (error) {
-      console.error('Failed to send message:', error);
-      setMessages((prev) => prev.filter((msg) => msg.id !== tempId));
-    }
+    };
+
+    sendMessageWithRetry(0);
   };
 
   const handleTyping = (e) => {
@@ -426,6 +487,56 @@ const ClassChat = ({ classId, className }) => {
                         <span className="class-chat-message-sender">{senderName}</span>
                       )}
                       <span className="class-chat-message-time">{formatTime(msg.created_at)}</span>
+                      {msg.status === 'sending' && (
+                        <span className="ms-2" style={{ fontSize: '12px', color: '#65676b' }}>
+                          sending...
+                        </span>
+                      )}
+                      {msg.status === 'retry' && (
+                        <span className="ms-2" style={{ fontSize: '12px', color: '#f5a623' }}>
+                          retry {msg.retryCount}/{3}
+                        </span>
+                      )}
+                      {msg.status === 'failed' && (
+                        <span
+                          className="ms-2"
+                          style={{
+                            fontSize: '12px',
+                            color: '#e74c3c',
+                            cursor: 'pointer',
+                            textDecoration: 'underline',
+                          }}
+                          onClick={() => {
+                            const pendingData = pendingMessages.get(msg.id);
+                            if (pendingData) {
+                              sendMessageMutation
+                                .mutateAsync(pendingData)
+                                .then((response) => {
+                                  const serverMessage = response?.data ? response.data : response;
+                                  setMessages((prev) =>
+                                    prev.map((m) =>
+                                      m.id === msg.id ? { ...serverMessage, status: 'sent' } : m
+                                    )
+                                  );
+                                  setPendingMessages((prev) => {
+                                    const newMap = new Map(prev);
+                                    newMap.delete(msg.id);
+                                    return newMap;
+                                  });
+                                })
+                                .catch(() => {
+                                  setMessages((prev) =>
+                                    prev.map((m) =>
+                                      m.id === msg.id ? { ...m, status: 'failed' } : m
+                                    )
+                                  );
+                                });
+                            }
+                          }}
+                        >
+                          failed - retry
+                        </span>
+                      )}
                     </div>
                   </div>
 

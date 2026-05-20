@@ -3,6 +3,34 @@
 
 <head>
   <meta charset="UTF-8" />
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="CampusClip — your all-in-one campus social platform for clubs, classes, events, and student connections." />
+  <meta name="keywords" content="campus social, student clubs, college events, class management, campus networking, student community" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="language" content="English" />
+  <meta name="author" content="CampusClip" />
+
+  <!-- Open Graph Tags (for social sharing) -->
+  <meta property="og:title" content="CampusClip — Campus Social Platform" />
+  <meta property="og:description" content="Your all-in-one platform to connect with student clubs, manage classes, and discover campus events." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://campusclip.com/" />
+  <meta property="og:image" content="https://campusclip.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="CampusClip" />
+
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CampusClip — Campus Social Platform" />
+  <meta name="twitter:description" content="Connect with student clubs, manage classes, and discover campus events." />
+  <meta name="twitter:image" content="https://campusclip.com/og-image.png" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://campusclip.com/" />
+
   <!-- Favicon - Using public folder for direct access -->
   <!-- Note: Browser tabs display favicons at fixed sizes (16x16 or 32x32), we cannot make them larger -->
   <!-- Using absolute path to ensure it loads correctly -->
@@ -13,11 +41,47 @@
   <link rel="shortcut icon" type="image/png" href="/favicon.png?v=2" />
   <!-- Apple Touch Icon for iOS devices (appears larger on iOS home screen) -->
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=2" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
   <!-- Inter font (reference uses a clean geometric sans similar to Inter) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- JSON-LD Schema (Organization) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "CampusClip",
+      "url": "https://campusclip.com",
+      "logo": "https://campusclip.com/favicon.png",
+      "description": "Your all-in-one campus social platform for clubs, classes, events, and student connections.",
+      "sameAs": [
+        "https://www.facebook.com/campusclip",
+        "https://www.twitter.com/campusclip",
+        "https://www.instagram.com/campusclip"
+      ]
+    }
+  </script>
+
+  <!-- JSON-LD Schema (WebSite) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "CampusClip",
+      "url": "https://campusclip.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://campusclip.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+
   <title>CampusClip</title>
 </head>
 

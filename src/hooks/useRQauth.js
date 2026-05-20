@@ -3,9 +3,12 @@ import { UserService } from "../api/authService";
 
 /**
  * Default error handler to display error messages using react-toastify.
+ * Only shows errors that haven't already been handled by the HTTP interceptor.
  * @param {object} err - The error object from the mutation.
  */
-const defaultError = () => {};
+const defaultError = () => {
+  // toast.error(err.response.data.message);
+};
 
 const useUserLogin = (onSuccess, onError = defaultError) => {
   return useMutation({

@@ -6,6 +6,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { KeyFill } from "react-bootstrap-icons";
 import TNInput from "../component/TNInput";
+import SEOHead from "../components/SEOHead";
+import { getMetadata } from "../utils/seoConfig";
 import { useSetPassword } from "../hooks/index";
 import { loginSuccess } from "../store/userSlice";
 import { setAuthToken } from "../libs/HttpClients";
@@ -13,6 +15,7 @@ import { toast } from "react-toastify";
 import "../scss/SetPassword.scss";
 
 const SetPassword = () => {
+  const metadata = getMetadata("setPassword");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
@@ -53,7 +56,9 @@ const SetPassword = () => {
   });
 
   return (
-    <div className="register-page auth-flow-page" role="main">
+    <>
+      <SEOHead {...metadata} />
+      <div className="register-page auth-flow-page" role="main">
       <div className="register-wrap">
         <div className="auth-column">
           <div
@@ -126,7 +131,8 @@ const SetPassword = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import { Form, Button, Alert, Spinner, Col, Row } from "react-bootstrap";
 import { useGoogleLogin } from "@react-oauth/google";
 import AppleSignin from "react-apple-signin-auth";
+import SEOHead from "../components/SEOHead";
+import { getMetadata } from "../utils/seoConfig";
 import {
   useGetEducationalInstitutions,
   useUserRegister,
@@ -20,6 +22,7 @@ import logo from "../assets/EmailLogo.png";
 import google from "../assets/google.svg";
 
 const RegisterForm = () => {
+  const metadata = getMetadata("signup");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -175,7 +178,9 @@ const RegisterForm = () => {
   });
 
   return (
-    <div className="register-page" role="main">
+    <>
+      <SEOHead {...metadata} />
+      <div className="register-page" role="main">
       <div className="register-wrap">
         {/* <div className="phone-mockup" aria-hidden="true" /> */}
         <div className="auth-column">
@@ -309,10 +314,6 @@ const RegisterForm = () => {
                     error={formik.errors}
                     touched={formik.touched}
                   />
-                  <Form.Text>
-                    Start with a letter; letters, numbers, '.' and '_' allowed.
-                    No spaces. No consecutive '.' or '_'.
-                  </Form.Text>
                 </Col>
               </Row>
               <Row>
@@ -372,7 +373,7 @@ const RegisterForm = () => {
               </Row>
               <Row>
                 <Col>
-                  <div className="privacy-row mt-3">
+                  <div className="privacy-row mt-3 mb-4">
                     <label className="form-label">Account Privacy</label>
                     <Form.Check
                       type="switch"
@@ -394,7 +395,7 @@ const RegisterForm = () => {
                 </Col>
               </Row>
               <Row>
-                <Col className="mt-3">
+                <Col>
                   <TNInput
                     label={"Birthday (Optional)"}
                     type="date"
@@ -447,7 +448,8 @@ const RegisterForm = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import DashboardLayout from "../component/DashboardLayout";
+import SEOHead from "../components/SEOHead";
+import { getMetadata } from "../utils/seoConfig";
 import "../scss/layout.scss";
 import AddClassModal from "./class/AddClassModal";
 import {
@@ -18,6 +20,7 @@ import { NotificationDot } from "../components/NotificationIndicators";
 import { selectClassNotifications } from "../store/notificationSlice";
 
 const Dashboard = () => {
+  const metadata = getMetadata("dashboard");
   // IMPORTANT: The AddClassModalProvider lives inside DashboardLayout, so
   // we must consume the context inside a descendant of DashboardLayout.
   const OpenAddClassButton = () => {
@@ -104,10 +107,12 @@ const Dashboard = () => {
   }, [classes?.length]);
 
   return (
-    <AddClassModalProvider
-      openAddClass={openAddClass}
-      closeAddClass={closeAddClass}
-    >
+    <>
+      <SEOHead {...metadata} />
+      <AddClassModalProvider
+        openAddClass={openAddClass}
+        closeAddClass={closeAddClass}
+      >
       <DashboardLayout>
         <div className="dashboard-main">
           <div className="d-flex flex-wrap align-items-center justify-content-between page-head">
@@ -329,7 +334,8 @@ const Dashboard = () => {
           <AddClassModal show={showAddClass} onHide={closeAddClass} />
         </div>
       </DashboardLayout>
-    </AddClassModalProvider>
+      </AddClassModalProvider>
+    </>
   );
 };
 

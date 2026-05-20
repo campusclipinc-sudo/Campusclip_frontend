@@ -1,5 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import DashboardLayout from "../component/DashboardLayout";
+import SEOHead from "../components/SEOHead";
+import { getMetadata } from "../utils/seoConfig";
 import {
   Container,
   Row,
@@ -68,6 +70,7 @@ const dayLabel = (d) =>
   });
 
 const Calendar = () => {
+  const metadata = getMetadata("calendar");
   const today = new Date();
   const [cursor, setCursor] = useState(
     new Date(today.getFullYear(), today.getMonth(), 1),
@@ -301,6 +304,9 @@ const Calendar = () => {
   };
 
   return (
+    <>
+      <SEOHead {...metadata} />
+
     <DashboardLayout headerTitle="" headerSubtitle="" showActions={false}>
       <div className="calendar-main d-flex flex-wrap">
         <div className="calendar-pane" data-aos="zoom-in">
@@ -788,6 +794,7 @@ const Calendar = () => {
         </div>
       )}
     </DashboardLayout>
+    </>
   );
 };
 

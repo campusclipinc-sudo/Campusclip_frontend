@@ -4,11 +4,14 @@ import { Form, Button, Spinner } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ShieldLock } from "react-bootstrap-icons";
+import SEOHead from "../components/SEOHead";
+import { getMetadata } from "../utils/seoConfig";
 import { useOtpVerify, useResendOtp } from "../hooks/index";
 import { toast } from "react-toastify";
 import "../scss/OTPVerify.scss";
 
 const OtpVerify = () => {
+  const metadata = getMetadata("otpVerify");
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
   const [secondsLeft, setSecondsLeft] = useState(60);
@@ -113,7 +116,9 @@ const OtpVerify = () => {
   };
 
   return (
-    <div className="register-page auth-flow-page" role="main">
+    <>
+      <SEOHead {...metadata} />
+      <div className="register-page auth-flow-page" role="main">
       <div className="register-wrap">
         <div className="auth-column">
           <div
@@ -206,7 +211,8 @@ const OtpVerify = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

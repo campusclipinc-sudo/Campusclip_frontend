@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import DashboardLayout from "../../component/DashboardLayout";
+import SEOHead from "../../components/SEOHead";
 import {
   Container,
   Row,
@@ -398,8 +399,29 @@ const Profile = () => {
     });
   };
 
+  const currentProfileData = isOwnProfile ? ownProfile : otherUserProfile;
+  const userName = currentProfileData?.name || "User";
+  const userBio = currentProfileData?.bio || `${userName}'s profile on CampusClip`;
+  const userProfileMetadata = {
+    title: `${userName}`,
+    description: userBio.substring(0, 150),
+    keywords: `${userName}, student profile, campus network`,
+    canonical: isOwnProfile ? "/profile" : `/profile/${userId}`,
+    ogType: "profile",
+  };
+
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": userName,
+    "url": `https://campusclip.com${userProfileMetadata.canonical}`,
+    "image": currentProfileData?.profile_pic_url || "https://campusclip.com/og-image.png",
+  };
+
   return (
-    <DashboardLayout>
+    <>
+      <SEOHead {...userProfileMetadata} jsonLd={personSchema} />
+      <DashboardLayout>
       <div className="profile-main">
         {/* Profile Card */}
         <div className="profile-card" data-aos="fade-right">
@@ -1423,7 +1445,8 @@ const Profile = () => {
         imageUrl={profile?.profile_image}
         userName={profile?.full_name || userStore?.name}
       />
-    </DashboardLayout>
+      </DashboardLayout>
+    </>
   );
 };
 

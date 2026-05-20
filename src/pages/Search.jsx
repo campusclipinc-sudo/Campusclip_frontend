@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Select from "react-select";
 import DashboardLayout from "../component/DashboardLayout";
+import SEOHead from "../components/SEOHead";
+import { getMetadata } from "../utils/seoConfig";
 import { useListCategories } from "../hooks/useRQClub";
 import { useJoinClass, useLeaveClass } from "../hooks/useRQclass";
 import {
@@ -18,6 +20,7 @@ import { UserService } from "../api/authService";
 import "../scss/Search.scss";
 
 const Search = () => {
+    const metadata = getMetadata("search");
     // const currentUser = useSelector((state) => state.user?.user);
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -241,7 +244,9 @@ const Search = () => {
     // };
 
     return (
-        <DashboardLayout>
+        <>
+            <SEOHead {...metadata} />
+            <DashboardLayout>
             <div className="search-page">
                 <div className="search-container">
                     <div className="search-header animate-fade-down">
@@ -624,7 +629,8 @@ const Search = () => {
                 onHide={() => setShowSuccessModal(false)}
                 classData={joinedClassData}
             />
-        </DashboardLayout>
+            </DashboardLayout>
+        </>
     );
 };
 

@@ -16,6 +16,7 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [roomJoined, setRoomJoined] = useState(false);
   const [socketError, setSocketError] = useState(null);
+  const [pendingMessages, setPendingMessages] = useState(new Map()); // Track pending messages
 
   const chatContainerRef = useRef(null);
   const emojiPickerRef = useRef(null);
@@ -24,6 +25,7 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
   const prevScrollHeightRef = useRef(0);
   const isLoadingMoreRef = useRef(false);
   const socketRetryRef = useRef(0);
+  const retryTimeoutRef = useRef(null);
   const maxRetries = 3;
 
   const currentUser = useSelector((state) => state.user?.user);
@@ -44,6 +46,10 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
   // Clear messages when switching to a different club
   useEffect(() => {
     setMessages([]);
+    setPendingMessages(new Map());
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current);
+    }
   }, [clubId]);
 
   // Flatten all pages into a single messages array
@@ -267,7 +273,14 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
     }
 
     const messageText = message.trim();
-    const tempId = Date.now();
+    const tempId = `pending-${Date.now()}`;
+    const messageData = {
+      message: messageText,
+      room_id: roomId,
+      message_type: "group",
+      media_type: "text",
+    };
+
     const tempMessage = {
       id: tempId,
       message: messageText,
@@ -279,48 +292,100 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
         profile_image: currentUser.profile_image,
       },
       media_type: "text",
+      status: "sending",
+      retryCount: 0,
     };
 
     setMessages((prev) => [...prev, tempMessage]);
     setMessage("");
     setScrollLocked(false);
+    setPendingMessages((prev) => new Map(prev).set(tempId, { ...messageData, retryCount: 0 }));
 
-    try {
-      const response = await sendMessageMutation.mutateAsync({
-        message: messageText,
-        room_id: roomId,
-        message_type: "group",
-        media_type: "text",
-      });
+    const sendMessageWithRetry = async (retryCount = 0) => {
+      try {
+        const response = await sendMessageMutation.mutateAsync(messageData);
 
-      const serverMessage = response?.data || response;
-      if (serverMessage?.id) {
+        // Extract the actual message object from response
+        const serverMessage = response?.data ? response.data : response;
+
+        if (!serverMessage || !serverMessage.id) {
+          throw new Error("Invalid server response: missing message ID");
+        }
+
+        // Replace temp message with server response (real ID)
         setMessages((prev) =>
-          prev.map((msg) => (msg.id === tempId ? serverMessage : msg))
+          prev.map((msg) =>
+            msg.id === tempId ? { ...serverMessage, status: "sent" } : msg
+          )
         );
-      }
 
-      const socket = getSocket();
-      if (socket && socketConnected) {
-        try {
-          socket.emit("group:message", {
-            roomId,
-            message: messageText,
-          });
-          socket.emit("group:stop-typing", { roomId });
-          if (typingTimeoutRef.current) {
-            clearTimeout(typingTimeoutRef.current);
+        // Remove from pending messages
+        setPendingMessages((prev) => {
+          const newMap = new Map(prev);
+          newMap.delete(tempId);
+          return newMap;
+        });
+
+        setSocketError(null);
+
+        // Emit via socket for real-time delivery
+        const socket = getSocket();
+        if (socket && socketConnected) {
+          try {
+            socket.emit("group:message", {
+              roomId,
+              message: messageText,
+            });
+            socket.emit("group:stop-typing", { roomId });
+            if (typingTimeoutRef.current) {
+              clearTimeout(typingTimeoutRef.current);
+            }
+          } catch (socketErr) {
+            console.error("Socket emit error:", socketErr);
+            // Socket emit failure doesn't affect persistence since message is already saved
           }
-        } catch (socketErr) {
-          console.error("Socket emit error:", socketErr);
-          setSocketError("Failed to broadcast message");
+        }
+      } catch (error) {
+        console.error(`Failed to send message (attempt ${retryCount + 1}):`, error);
+
+        const msgMaxRetries = 3;
+        if (retryCount < msgMaxRetries) {
+          // Schedule retry with exponential backoff
+          const delayMs = Math.pow(2, retryCount) * 1000;
+
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === tempId
+                ? { ...msg, status: "retry", retryCount: retryCount + 1 }
+                : msg
+            )
+          );
+
+          retryTimeoutRef.current = setTimeout(() => {
+            sendMessageWithRetry(retryCount + 1);
+          }, delayMs);
+        } else {
+          // Final failure
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === tempId
+                ? { ...msg, status: "failed", error: "Failed to send after retries" }
+                : msg
+            )
+          );
+
+          setPendingMessages((prev) => {
+            const newMap = new Map(prev);
+            newMap.delete(tempId);
+            return newMap;
+          });
+
+          setSocketError("Failed to send message. Please try again.");
         }
       }
-    } catch (error) {
-      console.error("Failed to send message:", error);
-      setMessages((prev) => prev.filter((msg) => msg.id !== tempId));
-      setSocketError("Failed to send message. Please try again.");
-    }
+    };
+
+    sendMessageWithRetry(0);
   };
 
   const handleTyping = (e) => {
@@ -535,6 +600,56 @@ const ClubChat = ({ roomId, clubName, clubId }) => {
                         <span className="club-chat-message-sender">{senderName}</span>
                       )}
                       <span className="club-chat-message-time">{formatTime(msg.created_at)}</span>
+                      {msg.status === "sending" && (
+                        <span className="ms-2" style={{ fontSize: "12px", color: "#65676b" }}>
+                          sending...
+                        </span>
+                      )}
+                      {msg.status === "retry" && (
+                        <span className="ms-2" style={{ fontSize: "12px", color: "#f5a623" }}>
+                          retry {msg.retryCount}/{3}
+                        </span>
+                      )}
+                      {msg.status === "failed" && (
+                        <span
+                          className="ms-2"
+                          style={{
+                            fontSize: "12px",
+                            color: "#e74c3c",
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                          }}
+                          onClick={() => {
+                            const pendingData = pendingMessages.get(msg.id);
+                            if (pendingData) {
+                              sendMessageMutation
+                                .mutateAsync(pendingData)
+                                .then((response) => {
+                                  const serverMessage = response?.data ? response.data : response;
+                                  setMessages((prev) =>
+                                    prev.map((m) =>
+                                      m.id === msg.id ? { ...serverMessage, status: "sent" } : m
+                                    )
+                                  );
+                                  setPendingMessages((prev) => {
+                                    const newMap = new Map(prev);
+                                    newMap.delete(msg.id);
+                                    return newMap;
+                                  });
+                                })
+                                .catch(() => {
+                                  setMessages((prev) =>
+                                    prev.map((m) =>
+                                      m.id === msg.id ? { ...m, status: "failed" } : m
+                                    )
+                                  );
+                                });
+                            }
+                          }}
+                        >
+                          failed - retry
+                        </span>
+                      )}
                     </div>
                   </div>
 

@@ -2,6 +2,8 @@ import React from "react";
 import { Modal, Button, Badge, Spinner } from "react-bootstrap";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCrown, faTrash } from "@fortawesome/free-solid-svg-icons";
 import {
     useListMembers,
     usePromoteMember,
@@ -100,10 +102,7 @@ const ManageMembersModal = ({ show, onHide, clubId }) => {
                                             (owner.full_name || "Owner").charAt(0).toUpperCase()
                                         )}
                                     </div>
-                                    <div>
-                                        <div className="fw-semibold">{owner.full_name || "Owner"}</div>
-                                        <div className="small">{owner.email}</div>
-                                    </div>
+                                    <div className="fw-semibold">{owner.full_name || "Owner"}</div>
                                 </div>
                                 <Badge bg="primary">Admin</Badge>
                             </div>
@@ -135,10 +134,7 @@ const ManageMembersModal = ({ show, onHide, clubId }) => {
                                                 String(m.full_name || m.email || "").charAt(0).toUpperCase()
                                             )}
                                         </div>
-                                        <div>
-                                            <div className="fw-semibold">{m.full_name || "Member"}</div>
-                                            <div className="small">{m.email}</div>
-                                        </div>
+                                        <div className="fw-semibold">{m.full_name || "Member"}</div>
                                     </div>
                                     <div className="d-flex align-items-center gap-2">
                                         {m.is_admin ? (
@@ -148,18 +144,30 @@ const ManageMembersModal = ({ show, onHide, clubId }) => {
                                                 <Button
                                                     size="sm"
                                                     variant="warning"
+                                                    className="icon-btn"
                                                     onClick={() => handlePromote(m.id)}
                                                     disabled={promoteMut.isLoading}
+                                                    title={promoteMut.isLoading ? "Promoting..." : "Promote to Admin"}
                                                 >
-                                                    {promoteMut.isLoading ? "Promoting..." : "Promote"}
+                                                    {promoteMut.isLoading ? (
+                                                        <Spinner size="sm" animation="border" />
+                                                    ) : (
+                                                        <FontAwesomeIcon icon={faCrown} />
+                                                    )}
                                                 </Button>
                                                 <Button
                                                     size="sm"
                                                     variant="outline-danger"
+                                                    className="icon-btn"
                                                     onClick={() => handleRemove(m.id)}
                                                     disabled={removeMut.isLoading}
+                                                    title={removeMut.isLoading ? "Removing..." : "Remove Member"}
                                                 >
-                                                    {removeMut.isLoading ? "Removing..." : "Remove"}
+                                                    {removeMut.isLoading ? (
+                                                        <Spinner size="sm" animation="border" />
+                                                    ) : (
+                                                        <FontAwesomeIcon icon={faTrash} />
+                                                    )}
                                                 </Button>
                                             </>
                                         ) : null}

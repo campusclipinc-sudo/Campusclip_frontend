@@ -2,6 +2,8 @@ import React, { useMemo, useState } from "react";
 import { Row, Col, Card, Button, Badge, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import DashboardLayout from "../../component/DashboardLayout";
+import SEOHead from "../../components/SEOHead";
+import { getMetadata } from "../../utils/seoConfig";
 import CreateClubModal from "./CreateClubModal";
 import "../../scss/clubs.scss";
 import AOS from "aos";
@@ -178,6 +180,7 @@ const MyClubCard = ({
 );
 
 const Clubs = () => {
+  const metadata = getMetadata("clubs");
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = useState(false);
   const currentUser = useSelector((state) => state.user?.user);
@@ -232,7 +235,9 @@ const Clubs = () => {
   //   : otherClubs.length + myClubs.length;
 
   return (
-    <DashboardLayout>
+    <>
+      <SEOHead {...metadata} />
+      <DashboardLayout>
       <div className="campus-clubs-main">
         <div
           className="d-flex flex-wrap align-items-center justify-content-between page-head"
@@ -478,7 +483,8 @@ const Clubs = () => {
           onSuccess={() => getListClubs()}
         />
       </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </>
   );
 };
 
