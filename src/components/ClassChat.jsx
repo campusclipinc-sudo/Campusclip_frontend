@@ -86,17 +86,31 @@ const ClassChat = ({ classId, className }) => {
         return uniqueMessages;
       }
 
-      // For subsequent updates, merge API data with manually-added messages (temp + sending)
-      // Preserve temp messages (with tempId) and only update messages that came from API
-      return prevMessages.map((msg) => {
-        // Keep temp/pending messages as-is
-        if (msg.id.toString().startsWith('pending-')) {
-          return msg;
+      // For subsequent updates, merge API data with locally-added messages
+      // Strategy: Keep any messages from prevMessages that aren't in the API yet (recently sent)
+      // This preserves pending/temporary messages and very recent messages
+      const mergedMessages = [];
+      const uniqueMessagesMap = new Map(uniqueMessages.map((m) => [m.id, m]));
+
+      // Add all API messages
+      uniqueMessages.forEach((msg) => mergedMessages.push(msg));
+
+      // Add any prev messages that aren't in the API yet (these are pending/very recent)
+      prevMessages.forEach((prevMsg) => {
+        if (!uniqueMessagesMap.has(prevMsg.id)) {
+          mergedMessages.push(prevMsg);
         }
-        // For API messages, update from the fetched data if available
-        const updatedMsg = uniqueMessages.find((m) => m.id === msg.id);
-        return updatedMsg || msg;
       });
+
+      // Sort by ID (oldest first)
+      mergedMessages.sort((a, b) => {
+        const aId = parseInt(a.id) || 0;
+        const bId = parseInt(b.id) || 0;
+        if (aId === 0 || bId === 0) return 0; // Keep temp messages at the end
+        return aId - bId;
+      });
+
+      return mergedMessages;
     });
   }, [chatData?.pages, roomId]);
 

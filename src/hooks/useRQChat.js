@@ -26,9 +26,10 @@ export const useGetGroupChatHistory = (
     enabled: !!roomId && params.enabled !== false,
     onSuccess,
     onError,
-    staleTime: 10 * 60 * 1000,
+    staleTime: 5 * 1000, // 5 seconds - data is fresh for 5 seconds
     gcTime: 15 * 60 * 1000,
     initialPageParam: null,
+    refetchOnWindowFocus: false, // Disabled to prevent losing recent unsent messages
   });
 };
 
@@ -54,6 +55,8 @@ export const useGetPrivateChatHistory = (
     onSuccess,
     onError,
     initialPageParam: null,
+    staleTime: 5 * 1000, // 5 seconds - data is fresh for 5 seconds
+    refetchOnWindowFocus: false, // Disabled to prevent losing recent unsent messages
   });
 };
 
