@@ -17,12 +17,16 @@ html,
 body {
   height: 100%;
   overflow: auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-#root {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+/* Instagram iOS WebView fixes */
+html {
+  position: relative;
+  -webkit-user-select: text;
+  -webkit-touch-callout: default;
 }
 
 body {
@@ -31,6 +35,36 @@ body {
   color: v.$text;
   font-family: "Ubuntu", sans-serif;
   line-height: 1.5;
+  position: relative;
+  -webkit-user-select: auto;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Ensure interactive elements work on iOS Instagram browser */
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Prevent white space rendering issues in Instagram iOS */
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Fix potential layout shift in Instagram iOS */
+html, body, #root {
+  position: relative;
 }
 
 /* Typography */

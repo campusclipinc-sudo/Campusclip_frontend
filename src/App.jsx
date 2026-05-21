@@ -10,6 +10,8 @@ import PagesRoutes from "./routes/PagesRoutes";
 import { ToastContainer } from "react-toastify";
 import SocketProvider from "./components/SocketProvider";
 import NotificationStateProvider from "./components/NotificationStateProvider";
+import InstagramIOSWrapper from "./components/InstagramIOSWrapper";
+import InstagramIOSDebugger from "./components/InstagramIOSDebugger";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // Import our global styles after Bootstrap so our tokens & Inter font override defaults
@@ -66,8 +68,11 @@ function App() {
               <SocketProvider>
                 <NotificationStateProvider>
                   <BrowserRouter>
-                    <PagesRoutes />
-                    <ToastContainer />
+                    <InstagramIOSWrapper>
+                      <InstagramIOSDebugger />
+                      <PagesRoutes />
+                      <ToastContainer />
+                    </InstagramIOSWrapper>
                   </BrowserRouter>
                 </NotificationStateProvider>
               </SocketProvider>
