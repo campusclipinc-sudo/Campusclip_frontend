@@ -14,6 +14,7 @@ import InstagramIOSWrapper from "./components/InstagramIOSWrapper";
 import InstagramIOSDebugger from "./components/InstagramIOSDebugger";
 import InstagramIOSErrorBoundary from "./components/InstagramIOSErrorBoundary";
 import InstagramIOSVisibleErrors from "./components/InstagramIOSVisibleErrors";
+import InstagramIOSStatusDisplay from "./components/InstagramIOSStatusDisplay";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // Import our global styles after Bootstrap so our tokens & Inter font override defaults
@@ -60,6 +61,7 @@ function App() {
   return (
     <>
       <InstagramIOSVisibleErrors />
+      <InstagramIOSStatusDisplay />
       <HelmetProvider>
         <Provider store={store}>
         <PersistGate
