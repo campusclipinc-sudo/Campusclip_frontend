@@ -12,6 +12,8 @@ import SocketProvider from "./components/SocketProvider";
 import NotificationStateProvider from "./components/NotificationStateProvider";
 import InstagramIOSWrapper from "./components/InstagramIOSWrapper";
 import InstagramIOSDebugger from "./components/InstagramIOSDebugger";
+import InstagramIOSErrorBoundary from "./components/InstagramIOSErrorBoundary";
+import InstagramIOSVisibleErrors from "./components/InstagramIOSVisibleErrors";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // Import our global styles after Bootstrap so our tokens & Inter font override defaults
@@ -56,8 +58,10 @@ function App() {
   }, []);
 
   return (
-    <HelmetProvider>
-      <Provider store={store}>
+    <>
+      <InstagramIOSVisibleErrors />
+      <HelmetProvider>
+        <Provider store={store}>
         <PersistGate
           loading={<LoadingSpinner />}
           persistor={persistor}
@@ -69,9 +73,11 @@ function App() {
                 <NotificationStateProvider>
                   <BrowserRouter>
                     <InstagramIOSWrapper>
-                      <InstagramIOSDebugger />
-                      <PagesRoutes />
-                      <ToastContainer />
+                      <InstagramIOSErrorBoundary>
+                        <InstagramIOSDebugger />
+                        <PagesRoutes />
+                        <ToastContainer />
+                      </InstagramIOSErrorBoundary>
                     </InstagramIOSWrapper>
                   </BrowserRouter>
                 </NotificationStateProvider>
@@ -81,6 +87,7 @@ function App() {
         </PersistGate>
       </Provider>
     </HelmetProvider>
+    </>
   );
 }
 
