@@ -56,6 +56,14 @@
   border-radius: 0.25rem;
 }
 
+.event-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .feed-list {

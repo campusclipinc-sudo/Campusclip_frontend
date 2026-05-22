@@ -399,7 +399,7 @@ const Profile = () => {
     });
   };
 
-  const currentProfileData = isOwnProfile ? ownProfile : otherUserProfile;
+  const currentProfileData = isOwnProfile ? ownProfile : profileData?.user || profileData;
   const userName = currentProfileData?.name || "User";
   const userBio = currentProfileData?.bio || `${userName}'s profile on CampusClip`;
   const userProfileMetadata = {

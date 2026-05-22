@@ -404,7 +404,7 @@ const FeedItem = ({
           style={{ cursor: "pointer" }}
         >
           <div className="post-content">
-            {title && <p>{title}</p>}
+            {title && <h5 className="event-title">{title}</h5>}
             {description && <p className="mt-2">{description}</p>}
 
             <div className="event-details mt-4 d-flex flex-wrap flex-column">

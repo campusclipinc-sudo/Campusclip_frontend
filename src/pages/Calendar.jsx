@@ -566,7 +566,9 @@ const Calendar = () => {
                       />
                       <div>
                         <div className="fw-semibold">{e.title}</div>
-                        <div className="text-muted small">{e.subtitle}</div>
+                        {e.type !== "event" && (
+                          <div className="text-muted small">{e.subtitle}</div>
+                        )}
                         <div className="text-muted small d-flex align-items-center gap-1">
                           <FontAwesomeIcon icon={faClock} /> {e.time}
                         </div>
