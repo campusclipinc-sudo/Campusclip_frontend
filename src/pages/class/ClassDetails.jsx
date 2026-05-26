@@ -699,7 +699,10 @@ const ClassDetails = () => {
                                           )}
                                         </>
                                       ) : (
-                                        "Due: N/A"
+                                        <>
+                                          Due: N/A
+                                          {a.weight != null && <span>• Weight {Number(a.weight).toFixed(1)}%</span>}
+                                        </>
                                       )}
                                     </div>
 
@@ -798,7 +801,10 @@ const ClassDetails = () => {
                                         {a.weight != null && <span>• Weight {Number(a.weight).toFixed(1)}%</span>}
                                       </>
                                     ) : (
-                                      "Due: N/A"
+                                      <>
+                                        Due: N/A
+                                        {a.weight != null && <span>• Weight {Number(a.weight).toFixed(1)}%</span>}
+                                      </>
                                     )}
                                   </div>
                                 </div>
