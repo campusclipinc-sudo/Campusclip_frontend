@@ -2,6 +2,12 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 
+// 🔧 Prevent React DevTools conflicts in production
+if (typeof window !== 'undefined' && window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+  window.__REACT_DEVTOOLS_GLOBAL_HOOK__._AsyncMode = undefined;
+  window.__REACT_DEVTOOLS_GLOBAL_HOOK__.onCommitFiberRoot = () => {};
+}
+
 // 🔧 Instagram iOS Fix: Clean URL parameters before React renders
 // Instagram injects fbclid and other tracking params that break React Router
 const ua = navigator.userAgent || navigator.vendor || window.opera;
