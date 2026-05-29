@@ -1,38 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getActiveUserDetails, isUserLoggedIn } from "../store/userSlice";
+import RouteLoadingFallback from "../components/RouteLoadingFallback";
 
+// Auth pages - loaded eagerly (needed immediately)
 import Home from "../pages/Home";
 import RegisterForm from "../pages/Register";
 import LoginForm from "../pages/Login";
-import ProfileSetup from "../pages/ProfileSetup";
-import SelectClassCount from "../pages/SelectClassCount";
-import AddClasses from "../pages/AddClasses";
-import Dashboard from "../pages/Dashboard";
-import Feed from "../pages/feed/Feed";
-import Chat from "../pages/chat/Chat";
-import Calendar from "../pages/Calendar";
-import Profile from "../pages/profile/Profile";
-import Followers from "../pages/profile/Followers";
-import Following from "../pages/profile/Following";
-import FollowRequests from "../pages/profile/FollowRequests";
-import Clubs from "../pages/clubs/Clubs";
-import ClubDetails from "../pages/clubs/ClubDetails";
 import OtpVerify from "../pages/OtpVerify";
 import SetPassword from "../pages/SetPassword";
 import ForgotPassword from "../pages/ForgotPassword";
-import ClassDetails from "../pages/class/ClassDetails";
-import Archive from "../pages/archive/Archive";
-import Search from "../pages/Search";
-import AllClasses from "../pages/AllClasses";
-import AllStudents from "../pages/AllStudents";
-import AllClubs from "../pages/AllClubs";
-import PaymentSuccess from "../pages/events/PaymentSuccess";
-import PaymentCancel from "../pages/events/PaymentCancel";
-import Notifications from "../pages/Notifications";
 
-import StudentProfile from "../pages/StudentProfile";
+// Lazy-loaded pages (split into separate chunks)
+const ProfileSetup = React.lazy(() => import("../pages/ProfileSetup"));
+const SelectClassCount = React.lazy(() => import("../pages/SelectClassCount"));
+const AddClasses = React.lazy(() => import("../pages/AddClasses"));
+const Dashboard = React.lazy(() => import("../pages/Dashboard"));
+const Feed = React.lazy(() => import("../pages/feed/Feed"));
+const Chat = React.lazy(() => import("../pages/chat/Chat"));
+const Calendar = React.lazy(() => import("../pages/Calendar"));
+const Profile = React.lazy(() => import("../pages/profile/Profile"));
+const Followers = React.lazy(() => import("../pages/profile/Followers"));
+const Following = React.lazy(() => import("../pages/profile/Following"));
+const FollowRequests = React.lazy(() => import("../pages/profile/FollowRequests"));
+const Clubs = React.lazy(() => import("../pages/clubs/Clubs"));
+const ClubDetails = React.lazy(() => import("../pages/clubs/ClubDetails"));
+const ClassDetails = React.lazy(() => import("../pages/class/ClassDetails"));
+const Archive = React.lazy(() => import("../pages/archive/Archive"));
+const Search = React.lazy(() => import("../pages/Search"));
+const AllClasses = React.lazy(() => import("../pages/AllClasses"));
+const AllStudents = React.lazy(() => import("../pages/AllStudents"));
+const AllClubs = React.lazy(() => import("../pages/AllClubs"));
+const PaymentSuccess = React.lazy(() => import("../pages/events/PaymentSuccess"));
+const PaymentCancel = React.lazy(() => import("../pages/events/PaymentCancel"));
+const Notifications = React.lazy(() => import("../pages/Notifications"));
+const StudentProfile = React.lazy(() => import("../pages/StudentProfile"));
 
 const PagesRoutes = () => {
   const isLoggedIn = useSelector(isUserLoggedIn);
@@ -74,13 +77,19 @@ const PagesRoutes = () => {
     return null;
   };
 
+  const WithSuspense = (Component) => (
+    <Suspense fallback={<RouteLoadingFallback />}>
+      <Component />
+    </Suspense>
+  );
+
   const prepareLoggedInRoutes = () => {
     if (isLoggedIn && userData) {
       // Profile setup not complete
       if (userData.profile_setup === false) {
         return (
           <>
-            <Route path="/profile-setup" element={<ProfileSetup />} />
+            <Route path="/profile-setup" element={WithSuspense(ProfileSetup)} />
             <Route path="*" element={<Navigate to="/profile-setup" replace />} />
           </>
         );
@@ -90,8 +99,8 @@ const PagesRoutes = () => {
       if (userData.classes_onboarding_completed === false) {
         return (
           <>
-            <Route path="/select-class-count" element={<SelectClassCount />} />
-            <Route path="/add-classes" element={<AddClasses />} />
+            <Route path="/select-class-count" element={WithSuspense(SelectClassCount)} />
+            <Route path="/add-classes" element={WithSuspense(AddClasses)} />
             <Route path="*" element={<Navigate to="/select-class-count" replace />} />
           </>
         );
@@ -100,35 +109,32 @@ const PagesRoutes = () => {
       // Full access - onboarding complete
       return (
         <>
-          <Route path="/profile-setup" element={<ProfileSetup />} />
-          <Route path="/select-class-count" element={<SelectClassCount />} />
-          <Route path="/add-classes" element={<AddClasses />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:userId" element={<Profile />} />
-          <Route path="/profile/followers" element={<Followers />} />
-          <Route path="/profile/:userId/followers" element={<Followers />} />
-          <Route path="/profile/following" element={<Following />} />
-          <Route path="/profile/:userId/following" element={<Following />} />
-          <Route path="/follow-requests" element={<FollowRequests />} />
-          <Route path="/students/:id" element={<StudentProfile />} />
-          <Route path="/clubs" element={<Clubs />} />
-          <Route path="/clubs/:id" element={<ClubDetails />} />
-          <Route path="/archive" element={<Archive />} />
-          <Route path="/class/:id" element={<ClassDetails />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/search/classes" element={<AllClasses />} />
-          <Route path="/search/students" element={<AllStudents />} />
-          <Route path="/search/clubs" element={<AllClubs />} />
-          <Route
-            path="/events/payment-success"
-            element={<PaymentSuccess />}
-          />
-          <Route path="/events/payment-cancel" element={<PaymentCancel />} />
+          <Route path="/profile-setup" element={WithSuspense(ProfileSetup)} />
+          <Route path="/select-class-count" element={WithSuspense(SelectClassCount)} />
+          <Route path="/add-classes" element={WithSuspense(AddClasses)} />
+          <Route path="/dashboard" element={WithSuspense(Dashboard)} />
+          <Route path="/feed" element={WithSuspense(Feed)} />
+          <Route path="/chat" element={WithSuspense(Chat)} />
+          <Route path="/calendar" element={WithSuspense(Calendar)} />
+          <Route path="/notifications" element={WithSuspense(Notifications)} />
+          <Route path="/profile" element={WithSuspense(Profile)} />
+          <Route path="/profile/:userId" element={WithSuspense(Profile)} />
+          <Route path="/profile/followers" element={WithSuspense(Followers)} />
+          <Route path="/profile/:userId/followers" element={WithSuspense(Followers)} />
+          <Route path="/profile/following" element={WithSuspense(Following)} />
+          <Route path="/profile/:userId/following" element={WithSuspense(Following)} />
+          <Route path="/follow-requests" element={WithSuspense(FollowRequests)} />
+          <Route path="/students/:id" element={WithSuspense(StudentProfile)} />
+          <Route path="/clubs" element={WithSuspense(Clubs)} />
+          <Route path="/clubs/:id" element={WithSuspense(ClubDetails)} />
+          <Route path="/archive" element={WithSuspense(Archive)} />
+          <Route path="/class/:id" element={WithSuspense(ClassDetails)} />
+          <Route path="/search" element={WithSuspense(Search)} />
+          <Route path="/search/classes" element={WithSuspense(AllClasses)} />
+          <Route path="/search/students" element={WithSuspense(AllStudents)} />
+          <Route path="/search/clubs" element={WithSuspense(AllClubs)} />
+          <Route path="/events/payment-success" element={WithSuspense(PaymentSuccess)} />
+          <Route path="/events/payment-cancel" element={WithSuspense(PaymentCancel)} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </>
       );

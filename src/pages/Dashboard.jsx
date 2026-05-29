@@ -12,8 +12,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useListClasses } from "../hooks/index";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import { useFCM } from "../hooks/useFCM";
 import Gauge from "../components/dashboard/Gauge";
 import { NotificationDot } from "../components/NotificationIndicators";
@@ -88,19 +86,6 @@ const Dashboard = () => {
   const [showAddClass, setShowAddClass] = useState(false);
   const openAddClass = () => setShowAddClass(true);
   const closeAddClass = () => setShowAddClass(false);
-
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-      easing: "ease-out-quart",
-      once: true,
-      offset: 40,
-    });
-  }, []);
-  useEffect(() => {
-    // Refresh AOS when list length changes
-    AOS.refresh();
-  }, [classes?.length]);
 
   return (
     <>
