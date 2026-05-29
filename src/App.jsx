@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import { store, persistor } from "./store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,10 +10,10 @@ import { ToastContainer } from "react-toastify";
 import SocketProvider from "./components/SocketProvider";
 import NotificationStateProvider from "./components/NotificationStateProvider";
 import InstagramIOSWrapper from "./components/InstagramIOSWrapper";
-import InstagramIOSDebugger from "./components/InstagramIOSDebugger";
 import InstagramIOSErrorBoundary from "./components/InstagramIOSErrorBoundary";
 import InstagramIOSVisibleErrors from "./components/InstagramIOSVisibleErrors";
 import InstagramIOSStatusDisplay from "./components/InstagramIOSStatusDisplay";
+import InstagramIOSDebugger from "./components/InstagramIOSDebugger";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./scss/base.scss";
@@ -37,9 +37,8 @@ const queryClient = new QueryClient({
   },
 });
 
-const AppContent = () => {
+const AppContent = React.memo(() => {
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -59,19 +58,23 @@ const AppContent = () => {
     });
   }, []);
 
+  // Memoize provider clients to prevent unnecessary re-initialization
+  const queryClientMemo = useMemo(() => queryClient, []);
+  const googleClientIdMemo = useMemo(() => googleClientId, [googleClientId]);
+
   return (
     <>
       <InstagramIOSVisibleErrors />
       <InstagramIOSStatusDisplay />
       <HelmetProvider>
-        <GoogleOAuthProvider clientId={googleClientId}>
-          <QueryClientProvider client={queryClient}>
+        <GoogleOAuthProvider clientId={googleClientIdMemo}>
+          <QueryClientProvider client={queryClientMemo}>
             <SocketProvider>
               <NotificationStateProvider>
                 <BrowserRouter>
                   <InstagramIOSWrapper>
                     <InstagramIOSErrorBoundary>
-                      <InstagramIOSDebugger />
+                      {import.meta.env.DEV && <InstagramIOSDebugger />}
                       <PagesRoutes />
                       <ToastContainer />
                     </InstagramIOSErrorBoundary>
@@ -84,7 +87,7 @@ const AppContent = () => {
       </HelmetProvider>
     </>
   );
-};
+});
 
 function App() {
   return (

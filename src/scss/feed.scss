@@ -1,6 +1,7 @@
 @use "./common/variables" as v;
 @use "./common/mixins" as m;
-@import "./comment-modal";
+@use "sass:color";
+@use "./comment-modal";
 
 .create-post-popup {
     .modal-content {
@@ -662,7 +663,7 @@
         transition: all 0.2s;
 
         &:hover:not(:disabled) {
-            background: darken(#2e70ff, 10%);
+            background: color.adjust(#2e70ff, $lightness: -10%);
             transform: translateY(-1px);
         }
 

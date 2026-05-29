@@ -101,4 +101,13 @@ const EventAttendButton = ({
   );
 };
 
-export default EventAttendButton;
+export default React.memo(EventAttendButton, (prevProps, nextProps) => {
+  return (
+    prevProps.eventId === nextProps.eventId &&
+    prevProps.paymentRequired === nextProps.paymentRequired &&
+    prevProps.price === nextProps.price &&
+    prevProps.creatorId === nextProps.creatorId &&
+    prevProps.currentUserId === nextProps.currentUserId &&
+    prevProps.isCompleted === nextProps.isCompleted
+  );
+});

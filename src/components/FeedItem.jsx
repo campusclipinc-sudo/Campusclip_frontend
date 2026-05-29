@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Card, Badge, Button, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow, format } from "date-fns";
@@ -551,4 +551,12 @@ const FeedItem = ({
   return null;
 };
 
-export default FeedItem;
+export default React.memo(FeedItem, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary re-renders
+  return (
+    prevProps.item === nextProps.item &&
+    prevProps.currentUserId === nextProps.currentUserId &&
+    prevProps.showClubInfo === nextProps.showClubInfo &&
+    prevProps.clubInfo === nextProps.clubInfo
+  );
+});

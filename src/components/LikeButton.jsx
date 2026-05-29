@@ -93,4 +93,9 @@ const LikeButton = ({ post_id, event_id }) => {
   );
 };
 
-export default LikeButton;
+export default React.memo(LikeButton, (prevProps, nextProps) => {
+  return (
+    prevProps.post_id === nextProps.post_id &&
+    prevProps.event_id === nextProps.event_id
+  );
+});
