@@ -17,10 +17,8 @@ import {
   faChevronRight,
   faClock,
   faCircle,
-  faSync,
-  faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+// import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import "../scss/calendar.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -39,7 +37,7 @@ const pad = (n) => (n < 10 ? `0${n}` : `${n}`);
 function buildMonth(year, month) {
   // month is 0-indexed
   const first = new Date(year, month, 1);
-  const last = new Date(year, month + 1, 0);
+  // const last = new Date(year, month + 1, 0);
   const weeks = [];
   let current = new Date(first);
   // start from Sunday of the first week
@@ -83,7 +81,6 @@ const Calendar = () => {
   const {
     data: calendarData,
     isLoading: loading,
-    refetch: refetchCalendarItems,
   } = useGetCalendarItems(cursor);
 
   const calendarItems = calendarData?.data?.items || [];
@@ -757,9 +754,11 @@ const Calendar = () => {
 
             {/* Modal Content */}
             <div className="calendar-modal-content">
-              {/* Events List */}
-              {events.list.length > 0 ? (
-                <div className="modal-events-list">
+              {/* Events List Wrapper */}
+              <div className="modal-events-wrapper">
+                {/* Events List */}
+                {events.list.length > 0 ? (
+                  <div className="modal-events-list">
                   {events.list.map((item) => {
                     let dotColor = "#ffffff";
                     if (item.type === "class") dotColor = "#22c55e";
@@ -785,12 +784,13 @@ const Calendar = () => {
                       </div>
                     );
                   })}
-                </div>
-              ) : (
-                <div className="modal-empty">
-                  <p>No events scheduled for this date</p>
-                </div>
-              )}
+                  </div>
+                ) : (
+                  <div className="modal-empty">
+                    <p className="text-muted">No events scheduled for this date</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -16,6 +16,7 @@ import TNInput from "../component/TNInput";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import ProfilePhotoCropper from "../pages/profile/ProfilePhotoCropper";
+import "../scss/profile-photo-modal.scss";
 
 // Validation Schema
 const postSchema = Yup.object().shape({

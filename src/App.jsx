@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { Provider, useSelector, useDispatch } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store, persistor } from "./store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
@@ -9,11 +9,9 @@ import PagesRoutes from "./routes/PagesRoutes";
 import { ToastContainer } from "react-toastify";
 import SocketProvider from "./components/SocketProvider";
 import NotificationStateProvider from "./components/NotificationStateProvider";
-import InstagramIOSWrapper from "./components/InstagramIOSWrapper";
-import InstagramIOSErrorBoundary from "./components/InstagramIOSErrorBoundary";
 import InstagramIOSVisibleErrors from "./components/InstagramIOSVisibleErrors";
 import InstagramIOSStatusDisplay from "./components/InstagramIOSStatusDisplay";
-import InstagramIOSDebugger from "./components/InstagramIOSDebugger";
+import ScrollLockFixer from "./components/ScrollLockFixer";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./scss/base.scss";
@@ -72,13 +70,9 @@ const AppContent = React.memo(() => {
             <SocketProvider>
               <NotificationStateProvider>
                 <BrowserRouter>
-                  <InstagramIOSWrapper>
-                    <InstagramIOSErrorBoundary>
-                      {import.meta.env.DEV && <InstagramIOSDebugger />}
-                      <PagesRoutes />
-                      <ToastContainer />
-                    </InstagramIOSErrorBoundary>
-                  </InstagramIOSWrapper>
+                  <ScrollLockFixer />
+                  <PagesRoutes />
+                  <ToastContainer />
                 </BrowserRouter>
               </NotificationStateProvider>
             </SocketProvider>

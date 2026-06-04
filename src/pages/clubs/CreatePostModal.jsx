@@ -14,6 +14,7 @@ import { Form as FormikForm, useFormik } from "formik";
 import TNInput from "../../component/TNInput";
 import * as Yup from "yup";
 import ProfilePhotoCropper from "../profile/ProfilePhotoCropper";
+import "../../scss/profile-photo-modal.scss";
 
 // Validation Schema
 const postSchema = Yup.object().shape({

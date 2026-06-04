@@ -3,6 +3,7 @@
 @use "./components/feedItem";
 @use "./components/clubChat";
 @use "./components/classChat";
+@use "./scrollLockFix";
 
 /* Global base styles aligned to the reference design */
 :root {

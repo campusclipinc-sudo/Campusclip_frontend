@@ -13,6 +13,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import DashboardLayout from "../../component/DashboardLayout";
+import "../../scss/clubs.scss";
 import {
   useGetClub,
   useLeaveClub,

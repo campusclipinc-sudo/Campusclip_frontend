@@ -1,0 +1,128 @@
+/* ============================================
+   Scroll Lock Prevention Styles
+   ============================================
+
+   Prevents modals and other components from
+   permanently locking page scrolling.
+
+   Root cause: React Bootstrap Modal applies
+   overflow:hidden to body, but doesn't always
+   clean it up properly on unmount.
+*/
+
+/* Ensure body and html are always scrollable by default */
+html,
+body {
+  overflow: auto !important;
+
+  /* Prevent sticky overflow:hidden from previous modals */
+  &.modal-open {
+    overflow: hidden;
+  }
+}
+
+/* Fix for Bootstrap Modal backdrop cleanup */
+.modal-backdrop {
+  /* Ensure backdrop doesn't prevent scroll when detached */
+  &.show {
+    opacity: 0.5;
+  }
+
+  /* Remove fade animation issues that can affect scroll */
+  transition: opacity 0.15s linear !important;
+}
+
+/* Ensure main content area remains scrollable */
+main,
+[role="main"] {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Ensure flex layout doesn't break scrolling */
+  min-height: 0;
+  flex: 1;
+}
+
+/* Fix for cc-shell layout (your custom shell) */
+.cc-shell {
+  /* Ensure shell itself can handle overflow properly */
+  &--header {
+    main {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      min-height: 0 !important;
+
+      /* Critical: flex items need min-height: 0 to shrink properly */
+      flex: 1 !important;
+    }
+  }
+}
+
+/* Ensure modals don't affect parent scroll on close */
+.modal {
+  /* Prevent modal from affecting parent when hidden */
+  &:not(.show) {
+    pointer-events: none;
+  }
+}
+
+/* Fix for fixed position elements that might block scroll */
+[style*="position: fixed"],
+[style*="position:fixed"] {
+  /* Ensure fixed elements have proper pointer-events */
+  &:not(.mobile-manage-sheet):not([class*="modal"]) {
+    pointer-events: auto;
+  }
+}
+
+/* Utility class to forcefully enable scrolling */
+.scroll-enabled {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Utility class to prevent scroll (use carefully) */
+.scroll-disabled {
+  overflow: hidden !important;
+}
+
+/* Ensure transitions don't affect scrolling ability */
+* {
+  &.transitioning {
+    overflow: visible !important;
+  }
+}
+
+/* Fix potential z-index issues that might cause scroll blocking */
+body {
+  position: relative;
+  z-index: 1;
+}
+
+html {
+  position: relative;
+  z-index: 0;
+}
+
+/* Prevent iOS rubber-band scroll issues */
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: auto;
+}
+
+/* Media query for smaller screens where fixed elements are common */
+@media (max-width: 768px) {
+  /* Ensure mobile layouts can scroll even with fixed headers */
+  body {
+    overflow-y: scroll !important;
+  }
+
+  /* Mobile modals should not lock scroll of parent */
+  .modal.show {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}

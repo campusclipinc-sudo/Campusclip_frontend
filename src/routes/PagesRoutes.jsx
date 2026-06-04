@@ -2,7 +2,6 @@ import React, { useEffect, Suspense } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getActiveUserDetails, isUserLoggedIn } from "../store/userSlice";
-import RouteLoadingFallback from "../components/RouteLoadingFallback";
 
 // Auth pages - loaded eagerly (needed immediately)
 import Home from "../pages/Home";
@@ -78,7 +77,7 @@ const PagesRoutes = () => {
   };
 
   const WithSuspense = (Component) => (
-    <Suspense fallback={<RouteLoadingFallback />}>
+    <Suspense fallback={null}>
       <Component />
     </Suspense>
   );

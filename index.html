@@ -2,6 +2,17 @@
 <html lang="en">
 
 <head>
+  <!-- Prevent React DevTools AsyncMode error in production builds -->
+  <script>
+    // Disable React DevTools extension completely
+    window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = undefined;
+    // Create empty React object to prevent "Cannot set properties of undefined" errors
+    if (typeof window !== 'undefined' && !window.React) {
+      window.React = {
+        __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {}
+      };
+    }
+  </script>
   <meta charset="UTF-8" />
   <!-- SEO Meta Tags -->
   <meta name="description" content="CampusClip — your all-in-one campus social platform for clubs, classes, events, and student connections." />
