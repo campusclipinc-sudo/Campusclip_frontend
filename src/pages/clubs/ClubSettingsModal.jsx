@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import TNInput from "../../component/TNInput";
 import { useEditClub, useDeleteClub } from "../../hooks/useRQClub";
+import useUpdateThemeColor from "../../hooks/useUpdateThemeColor";
 import { useNavigate } from "react-router-dom";
 import ProfilePhotoCropper from "../profile/ProfilePhotoCropper";
 import { confirmAlert } from "react-confirm-alert";
@@ -30,6 +31,7 @@ const ClubSettingsModal = ({ show, onHide, club, onSuccess }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [cropperOpen, setCropperOpen] = useState(false);
   const [cropSrc, setCropSrc] = useState("");
+  const [themeColor, setThemeColor] = useState(club?.theme_color || "#3b82f6");
   const fileInputRef = useRef(null);
 
   // Edit club mutation
@@ -37,6 +39,7 @@ const ClubSettingsModal = ({ show, onHide, club, onSuccess }) => {
     (data) => {
       setImagePreview(null);
       setSelectedFile(null);
+      toast.success("Club updated successfully!");
       onSuccess?.(data);
       onHide();
     },
@@ -61,6 +64,21 @@ const ClubSettingsModal = ({ show, onHide, club, onSuccess }) => {
         error?.response?.data?.message ||
         error?.message ||
         "Failed to delete club";
+      toast.error(message);
+    }
+  );
+
+  // Update theme color mutation
+  const { mutate: updateThemeColor, isPending: isUpdatingColor } = useUpdateThemeColor(
+    (data) => {
+      toast.success("Club color updated successfully");
+      onSuccess?.(data);
+    },
+    (error) => {
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to update club color";
       toast.error(message);
     }
   );
@@ -300,6 +318,47 @@ const ClubSettingsModal = ({ show, onHide, club, onSuccess }) => {
             touched={formik.touched}
             disabled={isEditing || isDeleting}
           />
+
+          {/* Club Theme Color */}
+          <div className="mb-3">
+            <label className="form-label">Club Header Color</label>
+            <div className="d-flex align-items-center gap-2">
+              <div className="d-flex align-items-center gap-2">
+                <input
+                  type="color"
+                  value={themeColor}
+                  onChange={(e) => setThemeColor(e.target.value)}
+                  className="form-control form-control-color"
+                  style={{ width: "60px", height: "40px", cursor: "pointer" }}
+                  disabled={isUpdatingColor || isEditing}
+                />
+                <input
+                  type="text"
+                  value={themeColor}
+                  onChange={(e) => {
+                    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                      setThemeColor(e.target.value);
+                    }
+                  }}
+                  className="form-control"
+                  placeholder="#3b82f6"
+                  disabled={isUpdatingColor || isEditing}
+                  style={{ flex: 1, maxWidth: "120px" }}
+                />
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => updateThemeColor({ clubId: club.id, themeColor })}
+                disabled={isUpdatingColor || isEditing || themeColor === club?.theme_color}
+              >
+                {isUpdatingColor ? "Updating..." : "Apply"}
+              </Button>
+            </div>
+            <small className="d-block mt-1">
+              Select a color for your club's header background
+            </small>
+          </div>
 
           {/* Club Settings */}
           <div className="switch-card-main">

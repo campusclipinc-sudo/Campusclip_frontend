@@ -7,6 +7,7 @@ import { useListClubs, useListCategories } from "../hooks/useRQClub";
 import { useFollowClub, useRequestClub } from "../hooks/useRQClubRequest";
 import { UserService } from "../api/authService";
 import "../scss/customAnimations.scss";
+import "../scss/AllStudents.scss";
 
 const AllClubs = () => {
   const navigate = useNavigate();
@@ -147,6 +148,11 @@ const AllClubs = () => {
       borderRadius: "12px",
       boxShadow: "0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(59, 130, 246, 0.1)",
       marginTop: "8px",
+      zIndex: 9999,
+    }),
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999,
     }),
     menuList: (base) => ({
       ...base,
@@ -196,16 +202,11 @@ const AllClubs = () => {
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="currentColor"
+                    stroke="#fff"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="lucide lucide-arrow-left"
-                    data-filename="pages/AllStudents"
-                    data-linenumber="127"
-                    data-visual-selector-id="pages/AllStudents127"
-                    data-source-location="pages/AllStudents:127:12"
-                    data-dynamic-content="false"
                   >
                     <path d="m12 19-7-7 7-7"></path>
                     <path d="M19 12H5"></path>
@@ -271,6 +272,7 @@ const AllClubs = () => {
                   isSearchable={true}
                   placeholder="Select School"
                   className="school-filter-select"
+                  menuPortalTarget={document.body}
                 />
               </div>
             </div>
@@ -287,7 +289,8 @@ const AllClubs = () => {
                 <p className="text-muted">No clubs available</p>
               </div>
             ) : (
-              <Row>
+              <section className="search-section">
+                <Row>
                 {allClubs.map((club) => {
                   const isOwnClub = isMyClub(club.id);
                   const hasPending = Array.isArray(club.requests)
@@ -375,7 +378,8 @@ const AllClubs = () => {
                     </Col>
                   );
                 })}
-              </Row>
+                </Row>
+              </section>
             )}
           </div>
         </div>

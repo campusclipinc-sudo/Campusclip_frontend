@@ -11,19 +11,27 @@ import {
     useLeaveClub,
 } from "../../hooks/useRQClub";
 
-const ManageMembersModal = ({ show, onHide, clubId }) => {
+const ManageMembersModal = ({ show, onHide, clubId, onSuccess }) => {
     const currentUser = useSelector((s) => s.user?.user) || null;
 
     const { data, isLoading, refetch } = useListMembers(
         show && clubId ? { club_id: clubId } : null
     );
     const promoteMut = usePromoteMember(
-        () => refetch(),
+        () => {
+            refetch();
+            onSuccess?.();
+        },
     );
     const removeMut = useRemoveMember(
-        () => refetch(),
+        () => {
+            refetch();
+            onSuccess?.();
+        },
     );
-    const leaveMut = useLeaveClub();
+    const leaveMut = useLeaveClub(() => {
+        onSuccess?.();
+    });
 
     const formik = useFormik({
         enableReinitialize: true,

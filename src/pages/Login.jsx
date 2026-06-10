@@ -96,7 +96,6 @@ const LoginForm = () => {
     (error) => {
       setGoogleLoading(false);
       console.error("Google login error:", error);
-      toast.error(error?.response?.data?.message || "Google login failed");
     },
   );
 
@@ -131,7 +130,6 @@ const LoginForm = () => {
     (error) => {
       setAppleLoading(false);
       console.error("Apple login error:", error);
-      toast.error(error?.response?.data?.message || "Apple login failed");
     },
   );
 

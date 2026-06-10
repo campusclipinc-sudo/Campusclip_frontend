@@ -6,9 +6,7 @@ import {
   Form as BootstrapForm,
   Spinner,
   Form,
-  Alert,
 } from "react-bootstrap";
-import { FaImage, FaLock, FaGlobe } from "react-icons/fa";
 import { useCreatePost } from "../hooks/useRQPost";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
@@ -17,6 +15,7 @@ import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import ProfilePhotoCropper from "../pages/profile/ProfilePhotoCropper";
 import "../scss/profile-photo-modal.scss";
+import "../scss/clubs.scss";
 
 // Validation Schema
 const postSchema = Yup.object().shape({
@@ -67,7 +66,6 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
         toast.error("File size should be less than 5MB");
         return;
       }
-      // Reset input so selecting the same file again fires the event
       e.target.value = "";
       const reader = new FileReader();
       reader.onload = (ev) => {
@@ -108,18 +106,8 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
     formData.append("content", values.content);
 
     if (values.media) {
-      // Append the file with field name matching what backend expects
       formData.append("media", values.media);
     }
-
-    // Debug: Log FormData contents
-    console.log("FormData contents:");
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ": ", pair[1]);
-    }
-
-    // Don't send club_id - this is a personal post
-    // Backend will automatically set is_public based on user's account_privacy
 
     createPost(formData);
   };
@@ -130,6 +118,8 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
     onSubmit: handleFormSubmit,
     enableReinitialize: true,
   });
+
+  const userInitial = user?.full_name?.charAt(0)?.toUpperCase() || "U";
 
   return (
     <>
@@ -142,65 +132,51 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
       title="Adjust Post Image"
       exportSize={1200}
     />
-    <Modal show={show} onHide={onHide} centered className="create-post-popup">
-      <Modal.Header closeButton>
-        <Modal.Title>Create Personal Post</Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={formik.handleSubmit}>
-        <Modal.Body>
-          {/* Privacy Info Alert */}
-          <Alert variant={isUserPublic ? "info" : "warning"} className="mb-3">
-            <div className="d-flex align-items-center">
-              {isUserPublic ? (
-                <>
-                  <FaGlobe className="me-2" />
-                  <span>
-                    Your account is <strong>Public</strong>. This post will be
-                    visible to everyone.
-                  </span>
-                </>
+    <Modal className="create-club-post modern-modal" show={show} onHide={onHide} centered>
+      <Modal.Header closeButton className="modern-header">
+        <Modal.Title className="w-100">
+          <div className="modal-title-content">
+            <div className="club-avatar-small">
+              {user?.profile_image ? (
+                <img src={user.profile_image} alt={user.full_name} />
               ) : (
-                <>
-                  <FaLock className="me-2" />
-                  <span>
-                    Your account is <strong>Private</strong>. This post will
-                    only be visible to your followers.
-                  </span>
-                </>
+                userInitial
               )}
             </div>
-          </Alert>
-
-          <BootstrapForm.Group className="mb-3">
-            <TNInput
-              as="textarea"
-              name="content"
-              rows={4}
-              placeholder="What's on your mind?"
-              className="border-0"
-              style={{ resize: "none", fontSize: "1rem" }}
-              value={formik.values.content}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              isInvalid={formik.touched.content && !!formik.errors.content}
-            />
-            {formik.touched.content && formik.errors.content ? (
-              <div className="text-danger small mt-1">
-                {formik.errors.content}
-              </div>
-            ) : null}
-          </BootstrapForm.Group>
+            <div className="title-text">
+              <h5>Create a Post</h5>
+              <p className="club-name">{user?.full_name || "User"}</p>
+            </div>
+          </div>
+        </Modal.Title>
+      </Modal.Header>
+      <Form onSubmit={formik.handleSubmit}>
+        <Modal.Body className="modern-body">
+          <div className="post-input-section">
+            <div className="post-input-container">
+              <TNInput
+                as="textarea"
+                name="content"
+                placeholder="What's on your mind?"
+                className="modern-textarea"
+                style={{ resize: "none" }}
+                value={formik.values.content}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={formik.touched.content && !!formik.errors.content}
+              />
+              {formik.touched.content && formik.errors.content ? (
+                <div className="text-danger small mt-2">
+                  {formik.errors.content}
+                </div>
+              ) : null}
+            </div>
+          </div>
 
           {preview && (
-            <div
-              className="mb-3 position-relative"
-              style={{ maxHeight: "400px", overflow: "hidden" }}
-            >
+            <div className="post-img-preview">
               <Image src={preview} fluid className="rounded" />
               <Button
-                variant="light"
-                size="sm"
-                className="position-absolute top-0 end-0 m-2 rounded-circle"
                 onClick={() => {
                   formik.setFieldValue("media", null);
                   setPreview(null);
@@ -211,7 +187,35 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
             </div>
           )}
 
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="post-values d-flex align-items-center justify-content-between">
+            <div className="d-flex align-items-center gap-3">
+              <div className={`icon-box ${isUserPublic ? "icon-success" : "icon-purple"}`}>
+                {isUserPublic ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                    <path d="M2 12h20"></path>
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                )}
+              </div>
+
+              <div>
+                <h6>{isUserPublic ? "Public Post" : "Private Post"}</h6>
+                <p>
+                  {isUserPublic
+                    ? "Everyone can see this post"
+                    : "Only your followers can see this post"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-between align-items-center file-upload-submit">
             <div>
               <input
                 type="file"
@@ -223,15 +227,21 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
               <Button
                 variant="light"
                 size="sm"
-                className="rounded-pill"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <FaImage className="me-1" /> Add Photo
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 5h6"></path>
+                  <path d="M19 2v6"></path>
+                  <path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"></path>
+                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+                  <circle cx="9" cy="9" r="2"></circle>
+                </svg>
               </Button>
             </div>
+
             <Button
               type="submit"
-              variant="primary"
+              variant="btns"
               disabled={
                 formik.isSubmitting ||
                 (!formik.values.content?.trim() && !formik.values.media)
@@ -253,6 +263,7 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
               )}
             </Button>
           </div>
+
         </Modal.Body>
       </Form>
     </Modal>

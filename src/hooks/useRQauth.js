@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 import { UserService } from "../api/authService";
 
 /**
@@ -51,9 +52,12 @@ const useUserRegister = (onSuccess, onError = defaultError) => {
 };
 
 const useGetProfile = (params, onSuccess, onError = defaultError) => {
+  const currentUserId = useSelector((state) => state.user?.user?.id);
+
   return useQuery({
-    queryKey: ["profile-data", params], // Query key
+    queryKey: ["profile-data", currentUserId, params], // User-specific query key
     queryFn: () => UserService.getProfile({ params }), // Query function
+    enabled: !!currentUserId, // Only fetch if user is logged in
     onSuccess, // Success callback
     onError, // Error callback
   });

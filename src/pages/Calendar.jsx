@@ -546,28 +546,28 @@ const Calendar = () => {
                 <div className="empty text-white">No events</div>
               ) : (
                 events.list.map((e) => (
-                  <Card key={e.id} className="event-item">
-                    <Card.Body className="d-flex align-items-start gap-2 p-0">
-                      <FontAwesomeIcon
-                        icon={faCircle}
-                        style={{
-                          marginTop: 6,
-                          color:
-                            e.color ||
-                            (e.type === "event"
-                              ? "#22c55e"
-                              : e.type === "class"
-                                ? "#3b82f6"
-                                : "#f97316"),
-                        }}
-                      />
-                      <div>
-                        <div className="fw-semibold">{e.title}</div>
+                  <Card
+                    key={e.id}
+                    className={`event-item event-type-${
+                      e.type === "event"
+                        ? "event"
+                        : e.type === "class"
+                          ? "class"
+                          : "assignment"
+                    }`}
+                  >
+                    <Card.Body className="d-flex align-items-start gap-3">
+                      <div className="event-icon">
+                        <FontAwesomeIcon icon={faCircle} />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div className="event-title">{e.title}</div>
                         {e.type !== "event" && (
-                          <div className="text-muted small">{e.subtitle}</div>
+                          <div className="event-subtitle">{e.subtitle}</div>
                         )}
-                        <div className="text-muted small d-flex align-items-center gap-1">
-                          <FontAwesomeIcon icon={faClock} /> {e.time}
+                        <div className="event-time">
+                          <FontAwesomeIcon icon={faClock} />
+                          <span>{e.time}</span>
                         </div>
                       </div>
                     </Card.Body>

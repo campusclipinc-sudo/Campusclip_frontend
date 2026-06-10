@@ -2,19 +2,61 @@
 
 /* Popup/Confirm/Modal shared styles */
 
+/* Global cursor styling for all modals and popups */
+.modal {
+  cursor: auto;
+
+  .modal-content {
+    cursor: auto;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    cursor: auto;
+  }
+
+  button,
+  a {
+    cursor: pointer;
+  }
+
+  input,
+  textarea,
+  select {
+    cursor: text;
+  }
+}
+
 /* Overlay tweaks for react-confirm-alert */
 .react-confirm-alert-overlay {
   background: rgba(0, 0, 0, 0.35) !important;
   backdrop-filter: saturate(120%) blur(1px);
   padding: 0 15px;
+  z-index: 1060 !important; /* Higher than modal z-index (1050) */
+  cursor: auto;
 
   .cc-confirm {
     max-width: 420px;
     background-color: #eef4fe;
+    z-index: 1061 !important; /* Higher than overlay */
+    animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: auto;
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
     .card-body {
       padding: 0;
-      
+      cursor: auto;
     }
   }
 }

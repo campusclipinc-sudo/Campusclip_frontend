@@ -10,6 +10,7 @@ import LoginForm from "../pages/Login";
 import OtpVerify from "../pages/OtpVerify";
 import SetPassword from "../pages/SetPassword";
 import ForgotPassword from "../pages/ForgotPassword";
+import Waitlist from "../pages/Waitlist";
 
 // Lazy-loaded pages (split into separate chunks)
 const ProfileSetup = React.lazy(() => import("../pages/ProfileSetup"));
@@ -63,13 +64,13 @@ const PagesRoutes = () => {
     if (!isLoggedIn) {
       return (
         <>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Waitlist />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/signup" element={<RegisterForm />} />
           <Route path="/otp-verify" element={<OtpVerify />} />
           <Route path="/set-password" element={<SetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </>
       );
     }

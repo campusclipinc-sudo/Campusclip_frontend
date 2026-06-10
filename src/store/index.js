@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import userReducer from './userSlice';
 import notificationReducer from './notificationSlice';
+import { logoutMiddleware } from './logoutMiddleware';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -24,7 +25,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(logoutMiddleware),
 });
 
 export const persistor = persistStore(store);

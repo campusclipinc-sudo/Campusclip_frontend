@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./scss/base.scss";
 import { setAuthToken } from "./libs/HttpClients";
+import { setQueryClientRef } from "./store/logoutMiddleware";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import AOS from "aos";
@@ -27,13 +28,16 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
-      gcTime: 10 * 60 * 1000,
+      gcTime: 5 * 60 * 1000, // Reduced from 10 to 5 minutes for security
     },
     mutations: {
       retry: 0,
     },
   },
 });
+
+// Initialize queryClient reference for logout middleware
+setQueryClientRef(queryClient);
 
 const AppContent = React.memo(() => {
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";

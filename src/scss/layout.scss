@@ -48,6 +48,7 @@ button.btn {
 
 .cc-shell {
     display: flex;
+    cursor: auto;
     min-height: 100vh;
     background: linear-gradient(to bottom right,
             rgb(20 29 58 / 100%),
@@ -1057,6 +1058,7 @@ button.btn {
 
 .modal-backdrop {
     --bs-backdrop-opacity: 0.8 !important;
+    cursor: auto;
 }
 
 .classAddPopup {

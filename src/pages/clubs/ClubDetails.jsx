@@ -11,6 +11,7 @@ import {
   Spinner,
   Nav,
   Dropdown,
+  Modal,
 } from "react-bootstrap";
 import DashboardLayout from "../../component/DashboardLayout";
 import "../../scss/clubs.scss";
@@ -19,6 +20,7 @@ import {
   useLeaveClub,
   useListMembers,
 } from "../../hooks/useRQClub";
+import useUpdateThemeColor from "../../hooks/useUpdateThemeColor";
 import {
   useListClubRequests,
   useRequestClub,
@@ -111,7 +113,29 @@ const ClubDetails = () => {
   const [showCreatePost, setShowCreatePost] = React.useState(false);
   const [showPhotoModal, setShowPhotoModal] = React.useState(false);
   const [showManageMenu, setShowManageMenu] = React.useState(false);
+  const [showColorPicker, setShowColorPicker] = React.useState(false);
+  const [tempColor, setTempColor] = React.useState(club?.theme_color || "#3b82f6");
   const queryClient = useQueryClient();
+
+  // Update tempColor when club data changes
+  React.useEffect(() => {
+    if (club?.theme_color) {
+      setTempColor(club.theme_color);
+    }
+  }, [club?.theme_color]);
+
+  const { mutate: updateThemeColor, isPending: isUpdatingColor } = useUpdateThemeColor(
+    (data) => {
+      toast.success("Club color updated!");
+      // Refetch club data to get updated theme_color
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+      queryClient.invalidateQueries({ queryKey: ["club", id] });
+      setShowColorPicker(false);
+    },
+    (error) => {
+      toast.error(error?.response?.data?.message || "Failed to update color");
+    }
+  );
 
   // Sync activeTab with URL when URL changes (e.g., browser back/forward)
   React.useEffect(() => {
@@ -405,7 +429,21 @@ const ClubDetails = () => {
               </div>
 
               <div className="club-profile" data-aos="fade-left">
-                <div className="club-profile-bg d-flex align-items-end">
+                <div
+                  className="club-profile-bg d-flex align-items-end"
+                  style={{
+                    background: club?.theme_color
+                      ? `linear-gradient(135deg, ${club.theme_color} 0%, ${club.theme_color}dd 100%)`
+                      : 'linear-gradient(135deg, #3b82f6 0%, #3b82f6dd 100%)',
+                    cursor: isAdmin ? "pointer" : "default",
+                    position: "relative"
+                  }}
+                  onClick={() => isAdmin && setShowColorPicker(true)}
+                  role={isAdmin ? "button" : undefined}
+                  tabIndex={isAdmin ? 0 : undefined}
+                  onKeyDown={(e) => isAdmin && e.key === 'Enter' && setShowColorPicker(true)}
+                  title={isAdmin ? "Click to change club color" : undefined}
+                >
                   <div
                     className="club-profile-img clickable"
                     onClick={() => setShowPhotoModal(true)}
@@ -1444,13 +1482,22 @@ const ClubDetails = () => {
             show={showSettings}
             onHide={() => setShowSettings(false)}
             club={club}
-            onSave={() => setShowSettings(false)}
+            onSuccess={() => {
+              // Refetch club data to get latest updates
+              queryClient.invalidateQueries({ queryKey: ["club", id] });
+              queryClient.invalidateQueries({ queryKey: ["clubs"] });
+            }}
           />
           <ManageMembersModal
             show={showMembers}
             onHide={() => setShowMembers(false)}
             clubId={club?.id}
             clubName={club?.name}
+            onSuccess={() => {
+              // Refetch club data to update member count and details
+              queryClient.invalidateQueries({ queryKey: ["club", id] });
+              queryClient.invalidateQueries({ queryKey: ["clubs"] });
+            }}
           />
           <CreateEventModal
             show={showCreateEvent}
@@ -1644,6 +1691,62 @@ const ClubDetails = () => {
           </svg>
         </button>
       )}
+
+      {/* Quick Color Picker Modal */}
+      <Modal show={showColorPicker} onHide={() => setShowColorPicker(false)} centered size="sm">
+        <Modal.Header closeButton>
+          <Modal.Title>Change Club Color</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="mb-3">
+            <label className="form-label">Select Color</label>
+            <div className="d-flex align-items-center gap-3">
+              <input
+                type="color"
+                value={tempColor}
+                onChange={(e) => setTempColor(e.target.value)}
+                className="form-control form-control-color"
+                style={{ width: "80px", height: "50px", cursor: "pointer" }}
+              />
+              <input
+                type="text"
+                value={tempColor}
+                onChange={(e) => {
+                  if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                    setTempColor(e.target.value);
+                  }
+                }}
+                className="form-control"
+                placeholder="#3b82f6"
+                style={{ flex: 1 }}
+              />
+            </div>
+            <small className="text-muted d-block mt-2">
+              Preview:
+              <div
+                style={{
+                  background: `linear-gradient(135deg, ${tempColor} 0%, ${tempColor}dd 100%)`,
+                  height: "60px",
+                  borderRadius: "8px",
+                  marginTop: "8px"
+                }}
+              ></div>
+            </small>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="light" onClick={() => setShowColorPicker(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => updateThemeColor({ clubId: club.id, themeColor: tempColor })}
+            disabled={isUpdatingColor}
+          >
+            {isUpdatingColor ? "Updating..." : "Apply"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </DashboardLayout>
   );
 };
