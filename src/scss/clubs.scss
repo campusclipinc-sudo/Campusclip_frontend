@@ -2409,10 +2409,10 @@
 }
 
 // Club Create Post Floating Action Button
-// Mobile Manage Bottom Sheet - iOS Fix
+// Mobile Manage Bottom Sheet - Opens from footer position
 .mobile-manage-sheet {
     position: fixed;
-    bottom: 0;
+    bottom: 70px;
     left: 0;
     right: 0;
     background-color: #fff;
@@ -2420,19 +2420,21 @@
     padding: 20px;
     padding-bottom: calc(30px + env(safe-area-inset-bottom));
     z-index: 1060;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
+    transform: translateY(calc(100% + 100px));
+    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
     max-height: calc(90vh - env(safe-area-inset-bottom));
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
     will-change: transform;
-    -webkit-transform: translateY(100%);
+    -webkit-transform: translateY(calc(100% + 100px));
     -webkit-transition: -webkit-transform 0.3s ease;
+    pointer-events: none;
 
     &.show {
         transform: translateY(0);
         -webkit-transform: translateY(0);
+        pointer-events: auto;
     }
 
     h3 {
