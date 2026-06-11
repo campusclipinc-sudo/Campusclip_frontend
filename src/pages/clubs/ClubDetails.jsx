@@ -1534,141 +1534,53 @@ const ClubDetails = () => {
       />
 
       {/* Mobile Manage Menu Bottom Sheet */}
-      <div
-        className={`mobile-manage-sheet ${showManageMenu ? 'show' : ''}`}
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: '#fff',
-          borderRadius: '20px 20px 0 0',
-          padding: '20px',
-          zIndex: 1060,
-          transform: showManageMenu ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.3s ease',
-          maxHeight: '90vh',
-          overflowY: 'auto',
-          boxShadow: '0 -4px 20px rgba(0,0,0,0.15)'
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#000' }}>Manage Club</h3>
-          <button
-            onClick={() => setShowManageMenu(false)}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '24px',
-              cursor: 'pointer',
-              color: '#666'
-            }}
-          >
-            ✕
-          </button>
+      <div className={`mobile-manage-sheet ${showManageMenu ? 'show' : ''}`}>
+        <h3>
+          Manage Club
+          <button onClick={() => setShowManageMenu(false)}>✕</button>
+        </h3>
+
+        <div className="mobile-manage-item" onClick={() => {
+          setShowSettings(true);
+          setShowManageMenu(false);
+        }}>
+          <div className="icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+          <div className="text-container">
+            <div className="label">Club Settings</div>
+            <div className="description">Edit name, image & privacy</div>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div
-            onClick={() => {
-              setShowSettings(true);
-              setShowManageMenu(false);
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '16px',
-              borderRadius: '12px',
-              backgroundColor: '#f5f5f5',
-              cursor: 'pointer',
-              transition: 'background 0.15s'
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#efefef'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#f5f5f5'}
-          >
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '8px',
-              backgroundColor: '#e8e8e8',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
-            }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </div>
-            <div>
-              <div style={{ fontSize: '16px', fontWeight: '600', color: '#000' }}>Club Settings</div>
-              <div style={{ fontSize: '14px', color: '#666' }}>Edit name, image & privacy</div>
-            </div>
+        <div className="mobile-manage-item" onClick={() => {
+          setShowMembers(true);
+          setShowManageMenu(false);
+        }}>
+          <div className="icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
           </div>
-
-          <div
-            onClick={() => {
-              setShowMembers(true);
-              setShowManageMenu(false);
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '16px',
-              borderRadius: '12px',
-              backgroundColor: '#f5f5f5',
-              cursor: 'pointer',
-              transition: 'background 0.15s'
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#efefef'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#f5f5f5'}
-          >
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '8px',
-              backgroundColor: '#e8e8e8',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
-            }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-            </div>
-            <div>
-              <div style={{ fontSize: '16px', fontWeight: '600', color: '#000' }}>Manage Members</div>
-              <div style={{ fontSize: '14px', color: '#666' }}>View, promote & remove</div>
-            </div>
+          <div className="text-container">
+            <div className="label">Manage Members</div>
+            <div className="description">View, promote & remove</div>
           </div>
         </div>
       </div>
 
       {/* Overlay for bottom sheet */}
       {showManageMenu && (
-        <div
-          onClick={() => setShowManageMenu(false)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            zIndex: 1059,
-            display: 'lg' ? 'none' : 'block'
-          }}
-        />
+        <div className="mobile-manage-overlay" onClick={() => setShowManageMenu(false)} />
       )}
 
-      {club && isMember && (
+      {club && isMember && activeTab === "discussion" && (
         <button
           className="club-create-post-btn"
           onClick={() => setShowCreatePost(true)}

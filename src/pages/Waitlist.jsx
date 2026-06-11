@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/waitlist.scss';
 import logo from '../assets/logo.png';
 
 const Waitlist = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [countdown, setCountdown] = useState({
@@ -13,6 +15,22 @@ const Waitlist = () => {
   });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [cursorSize, setCursorSize] = useState('small');
+  const [isLaunched, setIsLaunched] = useState(false);
+
+  // Check if launch date has been reached
+  useEffect(() => {
+    const launch = new Date('2026-08-15T00:00:00');
+    const today = new Date();
+
+    if (today >= launch) {
+      // Launch date reached, redirect to login
+      setIsLaunched(true);
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+      return;
+    }
+  }, [navigate]);
 
   // Countdown timer
   useEffect(() => {
@@ -99,6 +117,57 @@ const Waitlist = () => {
   };
 
   const pad = (n) => String(n).padStart(2, '0');
+
+  // If platform is launched, show launch message
+  if (isLaunched) {
+    return (
+      <div className="waitlist-page launch-live-page">
+        {/* Custom Cursor */}
+        <div
+          id="cursor"
+          className={`cursor ${cursorSize}`}
+          style={{
+            left: `${mousePos.x}px`,
+            top: `${mousePos.y}px`,
+          }}
+        />
+        <div
+          id="cursor-ring"
+          className={`cursor-ring ${cursorSize}`}
+          style={{
+            left: `${mousePos.x}px`,
+            top: `${mousePos.y}px`,
+          }}
+        />
+
+        {/* Background Effects */}
+        <div className="grid-overlay" />
+        <div className="glow-orb orb1" />
+        <div className="glow-orb orb2" />
+        <div className="glow-orb orb3" />
+
+        {/* Live Message */}
+        <div className="launch-live-container">
+          <div className="launch-live-content">
+            <div className="launch-badge">🎉 LIVE NOW</div>
+            <h1 className="launch-title">Campus is Live!</h1>
+            <p className="launch-desc">
+              The platform is now open. Join us and connect with your campus community.
+            </p>
+            <button
+              className="launch-btn"
+              onClick={() => navigate('/login')}
+              onMouseEnter={handleCursorEnter}
+              onMouseLeave={handleCursorLeave}
+            >
+              Go to Login
+            </button>
+            <p className="launch-redirect">Redirecting to login in 2 seconds...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="waitlist-page">
@@ -300,16 +369,6 @@ const Waitlist = () => {
           />
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="waitlist-footer">
-        <span className="footer-logo">© 2026 CampusClip</span>
-        <div className="footer-links">
-          <a href="#privacy">Privacy</a>
-          <a href="#terms">Terms</a>
-          <a href="mailto:hello@campusclip.com">Contact</a>
-        </div>
-      </footer>
     </div>
   );
 };

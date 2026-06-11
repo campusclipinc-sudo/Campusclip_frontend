@@ -3,6 +3,7 @@ import { Modal, Button, Card, Row, Col } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 import TNInput from "../../component/TNInput";
 import { useEditClub, useDeleteClub } from "../../hooks/useRQClub";
 import useUpdateThemeColor from "../../hooks/useUpdateThemeColor";
@@ -27,6 +28,7 @@ const validationSchema = Yup.object({
 
 const ClubSettingsModal = ({ show, onHide, club, onSuccess }) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [cropperOpen, setCropperOpen] = useState(false);
@@ -55,9 +57,14 @@ const ClubSettingsModal = ({ show, onHide, club, onSuccess }) => {
   // Delete club mutation
   const { mutate: deleteClub, isPending: isDeleting } = useDeleteClub(
     (data) => {
+      toast.success("Club deleted successfully!");
       onSuccess?.(data);
+      // Invalidate clubs list to refresh on clubs page
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
       onHide();
-      navigate("/clubs");
+      setTimeout(() => {
+        navigate("/clubs");
+      }, 500);
     },
     (error) => {
       const message =

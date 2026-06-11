@@ -1,6 +1,6 @@
 import React from "react";
 import { Nav, Container, Dropdown, Image, Badge } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetProfile } from "../hooks/index";
 import { useSelector } from "react-redux";
 import { useLogout } from "../hooks/useLogout";
@@ -15,6 +15,7 @@ import Logo from "../assets/logo.png";
 
 const DashboardHeader = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + "/");
     const { logout } = useLogout();
 

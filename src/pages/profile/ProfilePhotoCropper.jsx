@@ -5,6 +5,7 @@ import { faSearchMinus, faSearchPlus } from "@fortawesome/free-solid-svg-icons";
 
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import "../../scss/profile-photo-modal.scss";
 
 /**
  * ProfilePhotoCropper

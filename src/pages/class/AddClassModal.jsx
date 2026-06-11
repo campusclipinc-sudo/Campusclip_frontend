@@ -283,26 +283,25 @@ const AddClassModal = ({ show, onHide }) => {
     [classes, updateClass, refetch]
   );
 
-  // Sequential submission of all classes
+  // Parallel submission of all classes
   const submitAllClasses = useCallback(async () => {
     if (!allMultiClassesValid || isSubmittingAll) return;
 
     setIsSubmittingAll(true);
     setSubmissionProgress({ current: 0, total: classes.length });
 
-    let successCount = 0;
-    let failureCount = 0;
-    const enrollmentClasses = [];
-
-    for (let i = 0; i < classes.length; i++) {
-      const classData = classes[i];
-      if (classData?.submitted) {
-        successCount++;
-        continue;
+    // Mark all classes as submitting
+    classes.forEach((_, i) => {
+      if (!classes[i].submitted) {
+        updateClass(i, { isSubmitting: true, error: null });
       }
+    });
 
-      setSubmissionProgress({ current: i + 1, total: classes.length });
-      updateClass(i, { isSubmitting: true, error: null });
+    // Create upload promises for all classes
+    const uploadPromises = classes.map(async (classData, i) => {
+      if (classData?.submitted) {
+        return { index: i, success: true, data: null, error: null };
+      }
 
       try {
         let payload = { file: null, extra: {} };
@@ -315,38 +314,56 @@ const AddClassModal = ({ show, onHide }) => {
             extra: { uploadType: "Text", classroomText: classData.pastedText },
           };
         } else {
-          continue;
+          return { index: i, success: false, data: null, error: "No data provided" };
         }
 
         const res = await ClassService.uploadClass(payload);
 
-        if (res.data?._enrolled) {
+        return { index: i, success: true, data: res.data, error: null };
+      } catch (error) {
+        const errorMessage =
+          error?.response?.data?.message || "Failed to add class";
+        return { index: i, success: false, data: null, error: errorMessage };
+      }
+    });
+
+    // Wait for all uploads to complete in parallel
+    const results = await Promise.all(uploadPromises);
+
+    // Process results
+    let successCount = 0;
+    let failureCount = 0;
+    const enrollmentClasses = [];
+
+    results.forEach(({ index, success, data, error }) => {
+      if (success) {
+        if (data?._enrolled) {
           enrollmentClasses.push({
-            class_name: res.data.class_name,
+            class_name: data.class_name,
             students_count: 0,
-            assignments_count: res.data.assignments?.length || 0,
+            assignments_count: data.assignments?.length || 0,
           });
         }
 
-        updateClass(i, {
+        updateClass(index, {
           isSubmitting: false,
           submitted: true,
           error: null,
         });
         successCount++;
-      } catch (error) {
-        const errorMessage =
-          error?.response?.data?.message || "Failed to add class";
-        updateClass(i, {
+      } else {
+        updateClass(index, {
           isSubmitting: false,
           submitted: false,
-          error: errorMessage,
+          error: error,
         });
         failureCount++;
+        toast.error(`Class ${index + 1}: ${error}`);
       }
-    }
+    });
 
     setIsSubmittingAll(false);
+    setSubmissionProgress({ current: classes.length, total: classes.length });
     refetch();
 
     if (enrollmentClasses.length > 0) {
@@ -355,16 +372,17 @@ const AddClassModal = ({ show, onHide }) => {
     }
 
     if (successCount > 0 && failureCount === 0) {
+      toast.success(`✅ All ${successCount} class${successCount > 1 ? "es" : ""} added successfully!`);
       setTimeout(() => {
         onHide && onHide();
         navigate("/dashboard");
       }, 1500);
     } else if (successCount > 0 && failureCount > 0) {
       toast.warning(
-        `Added ${successCount} class${successCount > 1 ? "es" : ""}, but ${failureCount} failed.`
+        `✅ Added ${successCount} class${successCount > 1 ? "es" : ""}, but ❌ ${failureCount} failed.`
       );
     } else if (failureCount > 0) {
-      toast.error("Failed to add classes. Please try again.");
+      toast.error("❌ Failed to add classes. Please try again.");
     }
   }, [allMultiClassesValid, isSubmittingAll, classes, updateClass, refetch, onHide, navigate]);
 
