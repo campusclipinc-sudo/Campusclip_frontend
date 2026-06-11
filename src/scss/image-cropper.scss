@@ -1,7 +1,11 @@
-// Avatar Cropper Modal Styles
-.avatar-cropper-modal {
+// Image Cropper Modal Styles (Two-Mode: Fit to Screen & Original)
+.image-cropper-modal {
+  z-index: 10000 !important;
+  position: relative;
+
   .modal-dialog {
     max-width: 500px;
+    z-index: 10001 !important;
   }
 
   .modal-content {
@@ -10,6 +14,7 @@
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     overflow: hidden;
+    z-index: 10001 !important;
   }
 
   .modal-header {
@@ -53,6 +58,8 @@
   .modal-body {
     padding: 24px !important;
     background-color: #ffffff;
+    pointer-events: auto !important;
+    z-index: 10001 !important;
 
     h2 {
       font-size: 20px;
@@ -71,28 +78,47 @@
   }
 
   // Viewport (image cropping area)
-  .avatar-cropper-viewport {
+  .image-cropper-viewport {
     width: 100%;
     height: 300px;
-    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    background: #000000; // Black background for Instagram-like feel
     border: 2px solid #e5e7eb;
     border-radius: 12px;
     position: relative;
     overflow: hidden;
-    cursor: grab;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+    pointer-events: auto !important;
+    z-index: 10001 !important;
 
-    &:active {
-      cursor: grabbing;
+    &.fit-mode {
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
     }
 
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+    &.original-mode {
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+
+      img {
+        max-width: none;
+        max-height: none;
+      }
     }
 
     .grid-overlay {
@@ -107,60 +133,87 @@
       .grid-lines {
         width: 100%;
         height: 100%;
-        stroke: rgba(0, 0, 0, 0.1);
+        stroke: rgba(255, 255, 255, 0.2);
         stroke-width: 1;
       }
     }
   }
 
   // Controls section
-  .avatar-cropper-controls {
+  .image-cropper-controls {
     display: flex !important;
     align-items: center !important;
     gap: 12px;
     margin-bottom: 20px;
     padding: 0;
 
-    .fit-to-screen-btn {
+    > div:first-child {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .zoom-btn {
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       width: 36px !important;
       height: 36px !important;
       padding: 0 !important;
-      margin-right: 12px !important;
       background-color: #f3f4f6 !important;
       border: 1px solid #e5e7eb !important;
       border-radius: 6px !important;
       cursor: pointer !important;
       transition: all 0.2s ease !important;
-      color: #6b7280 !important;
+      color: #374151 !important;
       flex-shrink: 0 !important;
       pointer-events: auto !important;
       z-index: 10 !important;
+      font-size: 18px !important;
+      font-weight: 600 !important;
+      line-height: 1 !important;
 
       &:hover {
         background-color: #e5e7eb !important;
         border-color: #d1d5db !important;
-        color: #374151 !important;
+        color: #1f2937 !important;
       }
 
       &:active {
         transform: scale(0.95) !important;
       }
-
-      svg {
-        width: 18px !important;
-        height: 18px !important;
-        pointer-events: none !important;
-      }
     }
 
-    svg {
-      width: 20px !important;
-      height: 20px !important;
-      color: #9ca3af;
-      flex-shrink: 0;
+    .mode-toggle-btn {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 36px !important;
+      font-size: 13px !important;
+      padding: 8px 16px !important;
+      min-width: 80px !important;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+      flex-shrink: 0 !important;
+      pointer-events: auto !important;
+      z-index: 10 !important;
+      font-weight: 500 !important;
+      white-space: nowrap !important;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2) !important;
+
+      &:hover {
+        background: linear-gradient(135deg, #5568d3 0%, #6a3f94 100%) !important;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+      }
+
+      &:active {
+        transform: scale(0.98) !important;
+      }
     }
 
     // RC Slider override
@@ -254,104 +307,35 @@
   }
 }
 
-.profile-photo-modal {
-  .modal-dialog {
-    max-width: 600px;
-  }
+// Backdrop styling for image cropper
+.image-cropper-modal + .modal-backdrop,
+.modal-backdrop.show ~ .image-cropper-modal {
+  z-index: 9999 !important;
+}
 
-  .modal-content {
-    background-color: transparent;
-    border: none;
-    border-radius: 12px;
-    box-shadow: none;
-  }
-
-  .modal-body {
-    background-color: transparent;
-    border-radius: 12px;
-    padding: 0 !important;
-  }
-
-  .profile-photo-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 500px;
-    background-color: transparent;
-    border-radius: 12px;
-    padding: 20px;
-    overflow: hidden;
-
-    @media (max-width: 576px) {
-      min-height: 400px;
+// Responsive adjustments
+@media (max-width: 576px) {
+  .image-cropper-modal {
+    .modal-dialog {
+      max-width: 95%;
     }
-  }
 
-  .profile-photo {
-    max-width: 100%;
-    max-height: 500px;
-    object-fit: contain;
-    border-radius: 8px;
-    animation: fadeIn 0.3s ease-in-out;
-
-    @media (max-width: 576px) {
-      max-height: 400px;
-    }
-  }
-
-  .profile-photo-placeholder {
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 120px;
-    color: white;
-    font-weight: bold;
-    animation: fadeIn 0.3s ease-in-out;
-
-    @media (max-width: 576px) {
-      width: 250px;
+    .image-cropper-viewport {
       height: 250px;
-      font-size: 100px;
     }
-  }
 
-  p {
-    font-weight: 500;
-    font-size: 16px;
-    margin-left: 16px;
-    margin-right: 16px;
-    margin-bottom: 16px;
-    word-break: break-word;
-    color: #1f2937;
-  }
-}
+    .image-cropper-controls {
+      flex-wrap: wrap;
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+      > div:first-child {
+        width: 100%;
+        margin-bottom: 8px;
+      }
 
-// Add cursor pointer to profile images
-.avatar-lg,
-.student-avatar,
-.post-avatar {
-  &.clickable {
-    cursor: pointer;
-    transition: transform 0.2s ease, filter 0.2s ease;
-
-    &:hover {
-      transform: scale(1.05);
-      filter: brightness(0.95);
+      .mode-toggle-btn {
+        width: 100%;
+        min-width: auto;
+      }
     }
   }
 }

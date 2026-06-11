@@ -13,8 +13,8 @@ import { useFormik } from "formik";
 import TNInput from "../component/TNInput";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
-import ProfilePhotoCropper from "../pages/profile/ProfilePhotoCropper";
-import "../scss/profile-photo-modal.scss";
+import ImageCropper, { CROP_MODES } from "../pages/profile/ImageCropper";
+import "../scss/image-cropper.scss";
 import "../scss/clubs.scss";
 
 // Validation Schema
@@ -38,6 +38,7 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
   const [preview, setPreview] = React.useState(null);
   const [cropperOpen, setCropperOpen] = React.useState(false);
   const [cropSrc, setCropSrc] = React.useState("");
+  const [cropperMode, setCropperMode] = React.useState(CROP_MODES.FIT_TO_SCREEN);
   const fileInputRef = React.useRef(null);
 
   // Get user's account privacy from Redux store
@@ -123,7 +124,7 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
 
   return (
     <>
-    <ProfilePhotoCropper
+    <ImageCropper
       show={cropperOpen}
       src={cropSrc}
       onCancel={onCropCancel}
@@ -131,6 +132,8 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
       circular={false}
       title="Adjust Post Image"
       exportSize={1200}
+      mode={cropperMode}
+      onModeChange={setCropperMode}
     />
     <Modal className="create-club-post modern-modal" show={show} onHide={onHide} centered>
       <Modal.Header closeButton className="modern-header">
@@ -175,7 +178,7 @@ const CreatePersonalPostModal = ({ show, onHide, onSuccess }) => {
 
           {preview && (
             <div className="post-img-preview">
-              <Image src={preview} fluid className="rounded" />
+              <img src={preview} alt="Post preview" style={{ width: "100%", height: "auto" }} />
               <Button
                 onClick={() => {
                   formik.setFieldValue("media", null);

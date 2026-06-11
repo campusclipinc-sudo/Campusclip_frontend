@@ -316,7 +316,7 @@ const Archive = () => {
                   Class Archives
                 </h1>
               </div>
-              <p className="archive-subtitle">
+              <p className="archive-subtitle d-none d-md-block">
                 Your completed academic history, organized by you
               </p>
             </div>
@@ -361,9 +361,12 @@ const Archive = () => {
                   </svg>
                 </div>
                 <h2>No Archives Yet</h2>
-                <p className="empty-description">
+                <p className="empty-description d-none d-md-block">
                   Archive your completed classes to keep your dashboard
                   organized while preserving your academic history.
+                </p>
+                <p className="empty-description d-md-none">
+                  Archive completed classes to organize your dashboard.
                 </p>
                 <Button
                   variant="dark"
