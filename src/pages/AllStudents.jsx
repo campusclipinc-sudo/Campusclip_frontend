@@ -114,6 +114,7 @@ const AllStudents = () => {
       borderRadius: "12px",
       boxShadow: "0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(59, 130, 246, 0.1)",
       marginTop: "8px",
+      zIndex: 1000,
     }),
     menuList: (base) => ({
       ...base,
@@ -222,7 +223,7 @@ const AllStudents = () => {
                   }}
                 />
               </div>
-              <div style={{ minWidth: "200px" }}>
+              <div style={{ minWidth: "200px", position: "relative", zIndex: 100 }}>
                 <Select
                   options={schoolOptions}
                   value={selectedSchoolOption}
@@ -238,6 +239,8 @@ const AllStudents = () => {
                   isSearchable={true}
                   placeholder="Select School"
                   className="school-filter-select"
+                  menuPortalTarget={document.body}
+                  menuPosition="fixed"
                 />
               </div>
             </div>
