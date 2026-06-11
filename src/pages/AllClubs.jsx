@@ -2,6 +2,8 @@ import React, { useMemo, useState, useEffect } from "react";
 import { Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Select from "react-select";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import DashboardLayout from "../component/DashboardLayout";
 import { useListClubs, useListCategories } from "../hooks/useRQClub";
 import { useFollowClub, useRequestClub } from "../hooks/useRQClubRequest";
@@ -329,6 +331,18 @@ const AllClubs = () => {
                           <div className="student-info">
                             <h4 className="student-name" title={club.name}>
                               {club.name || "Untitled Club"}
+                              {club.is_verified && (
+                                <FontAwesomeIcon
+                                  icon={faCheckCircle}
+                                  style={{
+                                    marginLeft: "6px",
+                                    color: "#60a5fa",
+                                    fontSize: "0.9em",
+                                    verticalAlign: "middle"
+                                  }}
+                                  title="Verified Club"
+                                />
+                              )}
                             </h4>
                             <p className="student-major">
                               {club.category?.name ||

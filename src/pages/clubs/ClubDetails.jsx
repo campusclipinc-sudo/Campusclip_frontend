@@ -2,6 +2,8 @@ import React from "react";
 import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { format, formatDistanceToNow } from "date-fns";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import {
   Card,
   Row,
@@ -463,7 +465,21 @@ const ClubDetails = () => {
                   </div>
 
                   <div className="club-profile-name">
-                    <h3>{club.name}</h3>
+                    <h3>
+                      {club.name}
+                      {club.is_verified && (
+                        <FontAwesomeIcon
+                          icon={faCheckCircle}
+                          style={{
+                            marginLeft: "10px",
+                            color: "#60a5fa",
+                            fontSize: "0.8em",
+                            verticalAlign: "middle"
+                          }}
+                          title="Verified Club"
+                        />
+                      )}
+                    </h3>
                     <p>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
