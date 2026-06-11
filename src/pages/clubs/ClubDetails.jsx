@@ -2,8 +2,6 @@ import React from "react";
 import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { format, formatDistanceToNow } from "date-fns";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import {
   Card,
   Row,
@@ -17,6 +15,20 @@ import {
 } from "react-bootstrap";
 import DashboardLayout from "../../component/DashboardLayout";
 import "../../scss/clubs.scss";
+
+const VerifiedBadge = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="26"
+    height="26"
+    style={{ marginLeft: "8px", verticalAlign: "middle" }}
+    title="Verified Club"
+  >
+    <path fill="#1D9BF0" d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.99-3.818-3.99-.48 0-.94.1-1.348.27C14.825 2.515 13.512 1.5 12 1.5s-2.825 1.015-3.422 2.28c-.407-.17-.867-.27-1.348-.27-2.108 0-3.818 1.78-3.818 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.71 3.99 3.818 3.99.48 0 .94-.1 1.348-.27.597 1.265 1.91 2.28 3.422 2.28s2.825-1.015 3.422-2.28c.407.17.867.27 1.348.27 2.108 0 3.818-1.78 3.818-4 0-.495-.084-.965-.238-1.4 1.273-.65 2.148-2.02 2.148-3.6z" />
+    <path fill="#FFFFFF" d="M10.19 16.14l-3.39-3.39 1.42-1.42 1.98 1.98 5.57-5.57 1.42 1.42-7 7z" />
+  </svg>
+);
 import {
   useGetClub,
   useLeaveClub,
@@ -467,18 +479,7 @@ const ClubDetails = () => {
                   <div className="club-profile-name">
                     <h3>
                       {club.name}
-                      {club.is_verified && (
-                        <FontAwesomeIcon
-                          icon={faCheckCircle}
-                          style={{
-                            marginLeft: "10px",
-                            color: "#60a5fa",
-                            fontSize: "0.8em",
-                            verticalAlign: "middle"
-                          }}
-                          title="Verified Club"
-                        />
-                      )}
+                      {club.is_verified && <VerifiedBadge />}
                     </h3>
                     <p>
                       <svg

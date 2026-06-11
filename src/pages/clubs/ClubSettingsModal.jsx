@@ -56,15 +56,10 @@ const ClubSettingsModal = ({ show, onHide, club, onSuccess }) => {
 
   // Delete club mutation
   const { mutate: deleteClub, isPending: isDeleting } = useDeleteClub(
-    (data) => {
-      toast.success("Club deleted successfully!");
-      onSuccess?.(data);
-      // Invalidate clubs list to refresh on clubs page
-      queryClient.invalidateQueries({ queryKey: ["clubs"] });
-      onHide();
+    () => {
       setTimeout(() => {
         navigate("/clubs");
-      }, 500);
+      }, 100);
     },
     (error) => {
       const message =
